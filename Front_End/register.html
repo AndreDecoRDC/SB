@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadastrar — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="brand"><div class="logo">SB</div><strong>StudyBridge</strong></a>
+  </header>
+
+  <main class="container" style="max-width:450px;">
+    <h2>Crie sua conta</h2>
+    <form class="card">
+      <label class="field"><span>Email</span><input class="input" type="email" placeholder="exemplo@gmail.com" required></label>
+      <label class="field"><span>Senha</span><input class="input" type="password" placeholder="••••••••" required></label>
+      <label class="field"><span>Confirmar Senha</span><input class="input" type="password" placeholder="••••••••" required></label>
+      <label class="field"><span>Tipo de conta</span>
+        <select class="select" required>
+          <option>Estudante</option>
+          <option>Monitor</option>
+        </select>
+      </label>
+      <div class="toolbar" style="justify-content:center;">
+        <a class="btn" href="verificar-email.html">Cadastrar</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
+</html>

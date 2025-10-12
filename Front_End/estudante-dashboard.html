@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard do Estudante — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .grid-3 {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .card {
+      flex: 1 1 300px;
+      max-width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="estudante-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="busca.html">Buscar Monitores</a>
+      <a class="btn" href="aulas-estudante.html">Aulas</a>
+      <a class="btn" href="perfil-estudante.html">Perfil</a>
+      <a class="notif" href="#notifPanel">
+  <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
+</a>
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Bem-vindo(a), Estudante</h2>
+    <p class="subtle">Gerencie suas aulas e monitores dentro do CEFET-MG — Campus Belo Horizonte.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Próxima Aula</h3>
+        <p><b>Matemática com Carla Mendes</b></p>
+        <p>15/10/2025 às 14:00</p>
+        <a class="btn" href="aulas-estudante.html">Ver aulas marcadas</a>
+      </div>
+
+      <div class="card">
+        <h3>Monitores Recomendados</h3>
+        <p><b>Física com Rafael Costa</b></p>
+        <p>Nota média: <b>4.7</b></p>
+        <a class="btn" href="busca.html">Buscar Monitores</a>
+      </div>
+
+      <div class="card">
+        <h3>Histórico de Aulas</h3>
+        <p><b>Última aula:</b> Programação com Ana Paula</p>
+        <p>05/10/2025 — Avaliação: ⭐ 4.5</p>
+        <a class="btn" href="aulas-estudante.html#historico">Ver histórico completo</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+  <div id="notifPanel" class="notif-panel">
+  <h3>Notificações</h3>
+  <div class="notif-item"> Aula confirmada com <b>Carla Mendes</b> — 15/10/2025 14:00</div>
+  <div class="notif-item"> Nova mensagem do monitor <b>Rafael Costa</b></div>
+  <div class="notif-item">️ Lembrete: Avalie o monitor da última aula!</div>
+  <div class="notif-item"> Nova vaga de monitoria aberta em <b>Física</b>.</div>
+  <a class="btn ghost notif-close" href="#">Fechar</a>
+</div>
+
+</body>
+</html>

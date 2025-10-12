@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aulas — Estudante | StudyBridge</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .aulas-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 950px) {
+      .aulas-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+      }
+    }
+    .aulas-section {
+      flex: 1;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 2rem;
+      max-width: 600px;
+      min-height: 520px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { padding: 0.75rem 0.6rem; border-bottom: 1px solid #e5e7eb; text-align: center; }
+    th { background: #f3f4f6; color: #374151; }
+    .status.ok { color: #16a34a; font-weight: 600; }
+
+    .nome-link {
+      color: #1e3fae;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nome-link:hover { text-decoration: underline; }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      flex-direction: row-reverse;
+      gap: 0.2rem;
+      margin-bottom: 1rem;
+    }
+    .stars input { display: none; }
+    .stars label {
+      font-size: 2rem;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .stars label:hover,
+    .stars label:hover ~ label,
+    .stars input:checked ~ label { color: #facc15; }
+
+    .perfil-modal { max-width: 520px; text-align: left; }
+    .perfil-info { line-height: 1.6; margin-bottom: 1rem; }
+    .perfil-info p { margin: 0.3rem 0; }
+    .perfil-info span { font-weight: 600; color: #374151; }
+
+    .horarios {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+    }
+    .horarios h4 { margin-bottom: 0.5rem; color: #1e3fae; }
+    .horarios ul { list-style: none; padding-left: 0; line-height: 1.6; color: #374151; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="estudante-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="busca.html">Buscar Monitores</a>
+      <a class="btn" href="aulas-estudante.html">Aulas</a>
+      <a class="btn" href="perfil.html">Perfil</a>
+      <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Suas Aulas</h2>
+    <p class="subtle">Veja suas aulas, detalhes e avaliações de monitores.</p>
+
+    <div class="aulas-container">
+      <div class="aulas-section">
+        <h3>Aulas Futuras</h3>
+        <table>
+          <thead><tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="#perfilModalCarla" class="nome-link">Carla Mendes</a></td>
+              <td>Matemática</td>
+              <td>15/10/2025</td>
+              <td><span class="status ok">Confirmada</span></td>
+              <td>
+                <a class="btn light" href="#detalhesAula1">Ver detalhes</a>
+                <a class="btn ghost" href="#cancelar1">Cancelar</a>
+              </td>
+              <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="aulas-section">
+        <h3>Histórico</h3>
+        <table>
+          <thead><tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Avaliação</th><th>Ações</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="#perfilModalRafael" class="nome-link">Rafael Costa</a></td>
+              <td>Física</td>
+              <td>02/10/2025</td>
+              <td>⭐ 4.5</td>
+              <td><a class="btn light" href="#avaliar1">Avaliar</a></td>
+              <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="detalhesAula1" class="modal">
+    <div class="modal-content">
+      <h3>Detalhes da Aula</h3>
+      <p><strong>Monitor:</strong> Carla Mendes</p>
+      <p><strong>Disciplina:</strong> Matemática</p>
+      <p><strong>Data e horário:</strong> 15/10/2025 às 14:00</p>
+      <p><strong>Mensagem enviada:</strong> Mensagem genérica do aluno descrevendo o motivo da solicitação.</p>
+      <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+    </div>
+  </div>
+
+  <div id="avaliar1" class="modal">
+    <div class="modal-content">
+      <h3>Avaliar Monitor</h3>
+      <form>
+        <div class="stars">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+        </div>
+        <label class="field"><span>Comentário</span>
+          <textarea class="textarea" placeholder="Como foi sua experiência com o monitor?"></textarea>
+        </label>
+      </form>
+      <div class="toolbar">
+        <a class="btn" href="#">Enviar Avaliação</a>
+        <a class="btn ghost" href="#">Cancelar</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="denunciaModal" class="modal">
+    <div class="modal-content">
+      <h3>Enviar Denúncia</h3>
+      <form>
+        <label class="field"><span>Motivo</span>
+          <select class="select">
+            <option>Falta sem aviso</option>
+            <option>Comportamento inadequado</option>
+            <option>Assédio / Discurso ofensivo</option>
+            <option>Outro</option>
+          </select>
+        </label>
+        <label class="field"><span>Descrição</span>
+          <textarea class="textarea" placeholder="Descreva o ocorrido..."></textarea>
+        </label>
+        <div class="toolbar">
+          <a class="btn" href="#">Enviar</a>
+          <a class="btn ghost" href="#">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="perfilModalCarla" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Carla Mendes</h3>
+      <div class="perfil-info">
+        <p><span>Curso:</span> Informática</p>
+        <p><span>Disciplinas:</span> Matemática, Geometria</p>
+        <p><span>Nota média:</span> ⭐ 4.8</p>
+        <p><span>Descrição:</span> Monitora didática, especialista em álgebra.</p>
+      </div>
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Segunda:</b> 14:00 — 16:00</li>
+          <li><b>Quarta:</b> 10:00 — 12:00</li>
+          <li><b>Sexta:</b> 18:00 — 19:00</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;">Duração média: 1 hora</p>
+      </div>
+      <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+    </div>
+  </div>
+
+  <div id="perfilModalRafael" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Rafael Costa</h3>
+      <div class="perfil-info">
+        <p><span>Curso:</span> Eletrotécnica</p>
+        <p><span>Disciplinas:</span> Física e Matemática</p>
+        <p><span>Nota média:</span> ⭐ 4.6</p>
+        <p><span>Descrição:</span> Explicações com exemplos práticos.</p>
+      </div>
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Terça:</b> 09:00 — 11:00</li>
+          <li><b>Quinta:</b> 13:30 — 15:30</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;">Duração média: 1h 30min</p>
+      </div>
+      <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+    </div>
+  </div>
+
+  <div id="notifPanel" class="modal">
+    <div class="modal-content">
+      <h3>Notificações</h3>
+      <ul>
+        <li>Aula confirmada com <b>Carla Mendes</b> — 15/10/2025 às 14:00</li>
+        <li>Nova mensagem de <b>Rafael Costa</b></li>
+        <li>⭐ Avalie o monitor da última aula</li>
+      </ul>
+      <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+    </div>
+  </div>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
+</html>

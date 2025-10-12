@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Buscar Monitores — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .filters .field {
+      flex: 1 1 220px;
+      min-width: 220px;
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .horarios {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+    }
+    .horarios h4 {
+      margin-bottom: 0.5rem;
+      color: #1e3fae;
+    }
+    .horarios ul {
+      list-style: none;
+      padding-left: 0;
+      line-height: 1.6;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="estudante-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="busca.html">Buscar Monitores</a>
+      <a class="btn" href="aulas-estudante.html">Aulas</a>
+      <a class="btn" href="perfil-estudante.html">Perfil</a>
+      <a class="notif" href="#notifPanel">
+  <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Buscar Monitores</h2>
+    <p class="subtle">Veja os monitores disponíveis no CEFET-MG e seus horários de atendimento.</p>
+
+    <div class="card">
+      <div class="filters">
+        <label class="field">
+          <span>Nome do Monitor</span>
+          <input class="input" placeholder="Busque aqui">
+        </label>
+        <label class="field">
+          <span>Disciplina</span>
+          <select class="select">
+            <option>Matemática</option>
+            <option>Física</option>
+            <option>Português</option>
+            <option>Química</option>
+            <option>Qualquer</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Ordenar por</span>
+          <select class="select">
+            <option>Ordem Alfabética</option>
+            <option>Melhor Avaliação</option>
+          </select>
+        </label>
+      </div>
+      <div class="toolbar" style="justify-content:center;margin-top:1.5rem;">
+        <a class="btn">Aplicar filtros</a>
+        <a class="btn ghost">Limpar</a>
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="card">
+        <h3>Carla Mendes</h3>
+        <p class="subtle">Matemática · ⭐ 4.8</p>
+        <p>“Explica álgebra e geometria de forma simples e direta.”</p>
+        <div class="toolbar">
+          <a class="btn light" href="#perfilModalCarla">Ver Perfil</a>
+          <a class="btn" href="solicitar.html">Solicitar aula</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Rafael Costa</h3>
+        <p class="subtle">Física · ⭐ 4.6</p>
+        <p>“Aulas práticas e com exemplos do dia a dia.”</p>
+        <div class="toolbar">
+          <a class="btn light" href="#perfilModalRafael">Ver Perfil</a>
+          <a class="btn" href="solicitar.html">Solicitar aula</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  
+  <div id="perfilModalCarla" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Carla Mendes</h3>
+      <p><b>Curso:</b> Informática</p>
+      <p><b>Disciplinas:</b> Matemática e Geometria</p>
+      <p><b>Nota média:</b> ⭐ 4.8</p>
+      <p><b>Descrição:</b> Monitora atenciosa e dedicada, especializada em álgebra.</p>
+
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Segunda:</b> 14:00 — 16:00</li>
+          <li><b>Quarta:</b> 10:00 — 12:00</li>
+          <li><b>Sexta:</b> 18:00 — 19:00</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;"> Duração média: 1 hora</p>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#">Fechar</a>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="perfilModalRafael" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Rafael Costa</h3>
+      <p><b>Curso:</b> Eletrotécnica</p>
+      <p><b>Disciplinas:</b> Física e Matemática</p>
+      <p><b>Nota média:</b> ⭐ 4.6</p>
+      <p><b>Descrição:</b> Ensina com exemplos práticos e foco na compreensão dos conceitos.</p>
+
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Terça:</b> 09:00 — 11:00</li>
+          <li><b>Quinta:</b> 13:30 — 15:30</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;">⏱️ Duração média: 1h 30min</p>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#">Fechar</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+
+<div id="notifPanel" class="notif-panel">
+  <h3>Notificações</h3>
+  <div class="notif-item"> Aula confirmada com <b>Carla Mendes</b> — 15/10/2025 14:00</div>
+  <div class="notif-item"> Nova mensagem do monitor <b>Rafael Costa</b></div>
+  <div class="notif-item"> Lembrete: Avalie o monitor da última aula!</div>
+  <a class="btn ghost notif-close" href="#">Fechar</a>
+</div>
+
+</body>
+</html>

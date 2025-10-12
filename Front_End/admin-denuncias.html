@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Denúncias — Administração | StudyBridge</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+
+    .perfil-modal {
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .perfil-modal h3 {
+      margin-bottom: 0.8rem;
+      color: #1e3fae;
+    }
+
+    .perfil-info {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .perfil-info p {
+      margin: 0.3rem 0;
+    }
+
+    .perfil-info span {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .horarios {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+    }
+
+    .horarios h4 {
+      margin-bottom: 0.5rem;
+      color: #1e3fae;
+    }
+
+    .horarios ul {
+      list-style: none;
+      padding-left: 0;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .table td a.btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .nome-link {
+      color: #1e3fae;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .nome-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="admin-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="admin-busca.html">Buscar Usuários</a>
+      <a class="btn" href="admin-denuncias.html">Denúncias</a>
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>Gerenciar Denúncias</h2>
+      <p class="subtle">Analise os casos e consulte o perfil dos monitores e estudantes denunciados.</p>
+    </section>
+
+    <table class="table">
+      <thead>
+        <tr><th>ID</th><th>Denunciado</th><th>Motivo</th><th>Ações</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>D-001</td>
+          <td><a href="#perfilCarla" class="nome-link">Carla Mendes</a></td>
+          <td>Falta sem aviso</td>
+          <td>
+            <a class="btn ghost" href="#">Suspender</a>
+            <a class="btn ghost" href="#">Detalhes da Denúncia</a>
+          </td>
+        </tr>
+        <tr>
+          <td>D-002</td>
+          <td><a href="#perfilRafael" class="nome-link">Rafael Costa</a></td>
+          <td>Comportamento inadequado</td>
+          <td>
+            <a class="btn ghost" href="#">Suspender</a>
+            <a class="btn ghost" href="#">Detalhes da Denúncia</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  
+  <div id="perfilCarla" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Carla Mendes</h3>
+      <div class="perfil-info">
+        <p><span>Tipo:</span> Monitor</p>
+        <p><span>Curso:</span> Informática</p>
+        <p><span>Disciplinas:</span> Matemática, Geometria</p>
+        <p><span>Nota média:</span> ⭐ 4.8</p>
+        <p><span>Descrição:</span> Monitora paciente e responsável, com bom histórico de aulas.</p>
+      </div>
+
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Segunda-feira:</b> 14:00 — 16:00</li>
+          <li><b>Quarta-feira:</b> 10:00 — 12:00</li>
+          <li><b>Sexta-feira:</b> 18:00 — 19:00</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;">⏱️ Duração média das aulas: 1 hora</p>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#">Fechar</a>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="perfilRafael" class="modal">
+    <div class="modal-content perfil-modal">
+      <h3>Perfil de Rafael Costa</h3>
+      <div class="perfil-info">
+        <p><span>Tipo:</span> Monitor</p>
+        <p><span>Curso:</span> Eletrotécnica</p>
+        <p><span>Disciplinas:</span> Física e Matemática</p>
+        <p><span>Nota média:</span> ⭐ 4.6</p>
+        <p><span>Descrição:</span> Ministra aulas de física com foco em prática e experimentos.</p>
+      </div>
+
+      <div class="horarios">
+        <h4>Horários Disponíveis</h4>
+        <ul>
+          <li><b>Terça-feira:</b> 09:00 — 11:00</li>
+          <li><b>Quinta-feira:</b> 13:30 — 15:30</li>
+        </ul>
+        <p class="subtle" style="margin-top:0.5rem;"> Duração média das aulas: 1h 30min</p>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#">Fechar</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">© 2025 StudyBridge — Administração | CEFET-MG Campus Belo Horizonte</footer>
+</body>
+</html>

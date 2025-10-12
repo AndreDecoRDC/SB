@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Editar Perfil — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+    <a href="estudante-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="busca.html">Buscar Monitores</a>
+      <a class="btn" href="aulas-estudante.html">Aulas</a>
+      <a class="btn" href="perfil-estudante.html">Perfil</a>
+            <a class="notif" href="#notifPanel">
+  <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container" style="max-width:600px;">
+    <h2>Editar Perfil</h2>
+    <p class="subtle">Atualize suas informações acadêmicas e de contato.</p>
+
+    <form class="card">
+      <label class="field"><span>Nome completo</span><input class="input" type="text" value="Carla Mendes"></label>
+      <label class="field"><span>Email</span><input class="input" type="email" value="carla@gmail.com" disabled></label>
+      <label class="field"><span>Telefone</span><input class="input" type="tel" value="(31) 98888-8888"></label>
+      <label class="field"><span>Curso</span><input class="input" type="text" value="Informática"></label>
+      <label class="field"><span>Ano/Turma</span><input class="input" type="text" value="2º ano / Turma A"></label>
+              <label class="field">
+            <span>Campus</span>
+            <select class="select">
+            <option>Nova Suíça</option>
+            <option>Nova Gameleira</option>
+        </select>
+        </label>
+      <label class="field"><span>Descrição</span>
+        <textarea class="textarea">Estudante de informática e monitora de matemática.</textarea>
+      </label>
+
+      <div class="toolbar" style="justify-content:center;">
+        <a class="btn" href="estudante-dashboard.html">Salvar alterações</a>
+        <a class="btn ghost" href="estudante-dashboard.html">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+
+<div id="notifPanel" class="notif-panel">
+  <h3>Notificações</h3>
+  <div class="notif-item"> Aula confirmada com <b>Carla Mendes</b> — 15/10/2025 14:00</div>
+  <div class="notif-item"> Nova mensagem do monitor <b>Rafael Costa</b></div>
+  <div class="notif-item"> Lembrete: Avalie o monitor da última aula!</div>
+  <a class="btn ghost notif-close" href="#">Fechar</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Horários — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f9fafb;
+    }
+
+    .header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #fff;
+    }
+
+    .nav {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    main.container {
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .grid-3 {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover { transform: translateY(-3px); }
+
+    .toolbar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="monitor-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="aulas-monitor.html">Aulas</a>
+      <a class="btn" href="horarios.html">Horários</a>
+      <a class="btn" href="perfil-monitor.html">Perfil</a>
+      <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações" style="cursor:pointer;">
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Gerenciar Horários</h2>
+    <p class="subtle">Cadastre seus horários disponíveis e defina a duração média das suas aulas de monitoria.</p>
+
+    <!-- Formulário de cadastro -->
+    <form class="card">
+      <label class="field">
+        <span>Dia da Semana</span>
+        <select class="select">
+          <option>Segunda-feira</option>
+          <option>Terça-feira</option>
+          <option>Quarta-feira</option>
+          <option>Quinta-feira</option>
+          <option>Sexta-feira</option>
+        </select>
+      </label>
+
+      <div class="field">
+        <span>Horário de Início</span>
+        <input class="input" type="time">
+      </div>
+
+      <div class="field">
+        <span>Horário de Término</span>
+        <input class="input" type="time">
+      </div>
+
+      <label class="field">
+        <span>Duração Média da Aula</span>
+        <select class="select">
+          <option>30 minutos</option>
+          <option>45 minutos</option>
+          <option>1 hora</option>
+          <option>1 hora e 30 minutos</option>
+          <option>2 horas</option>
+        </select>
+      </label>
+
+      <div class="toolbar" style="margin-top:1rem;">
+        <a class="btn" href="#">Adicionar</a>
+      </div>
+    </form>
+
+    <!-- Card de horários cadastrados -->
+    <div class="card">
+      <h3>Horários Cadastrados</h3>
+      <ul class="subtle" style="margin-top:0.8rem;line-height:1.6;">
+        <li><b>Segunda-feira:</b> 14:00 — 16:00 · Duração média: 1h</li>
+        <li><b>Quarta-feira:</b> 10:00 — 12:00 · Duração média: 1h 30min</li>
+        <li><b>Sexta-feira:</b> 18:00 — 19:00 · Duração média: 1h</li>
+      </ul>
+      <div class="toolbar" style="margin-top:1rem;">
+        <a class="btn ghost" href="#">Limpar</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+
+  <!-- Painel de notificações -->
+<div id="notifPanel" class="notif-panel">
+  <h3>Notificações</h3>
+  <div class="notif-item"> Aula confirmada com <b>Carla Mendes</b> — 15/10/2025 14:00</div>
+  <div class="notif-item"> Nova mensagem do monitor <b>Rafael Costa</b></div>
+  <div class="notif-item"> Lembrete: Avalie o monitor da última aula!</div>
+  <a class="btn ghost notif-close" href="#">Fechar</a>
+</div>
+  </div>
+</body>
+</html>

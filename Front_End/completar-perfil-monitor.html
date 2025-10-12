@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Completar Perfil — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="brand"><div class="logo">SB</div><strong>StudyBridge</strong></a>
+  </header>
+
+  <main class="container" style="max-width:600px;">
+    <div class="card">
+      <h2>Complete seu Perfil</h2>
+      <p class="subtle">Antes de continuar, preencha suas informações. Elas serão usadas para identificação dentro do CEFET-MG — Campus BH.</p>
+
+      <form>
+       <label class="field"><span>Nome completo</span><input class="input" required placeholder="Seu nome completo"></label>
+        <label class="field"><span>Telefone</span><input class="input" placeholder="(31) 9 9999-9999" required></label>
+        <label class="field"><span>Disciplina</span><input class="input" placeholder="Ex: Física" required></label>
+        <label class="field"><span>Número de Matrícula</span><input class="input" placeholder="20252004212" required></label>
+        <label class="field">
+            <span>Campus</span>
+            <select class="select">
+            <option>Nova Suíça</option>
+            <option>Nova Gameleira</option>
+        </select>
+        </label>
+        <label class="field"><span>Descrição</span>
+        <textarea class="textarea">Estudante de informática e monitora de matemática.</textarea>
+      </label>
+
+        <div class="toolbar" style="justify-content:center;margin-top:16px;">
+          <a class="btn" href="monitor-dashboard.html">Salvar e continuar</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
+</html>

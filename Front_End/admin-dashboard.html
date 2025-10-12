@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel Administrativo — StudyBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .grid-3 {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .card {
+      flex: 1 1 300px;
+      max-width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e3fae;
+      margin: 0.5rem 0;
+    }
+    .subtext {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="admin-dashboard.html" class="brand">
+      <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
+    <nav class="nav">
+      <a class="btn" href="admin-busca.html">Buscar Usuários</a>
+      <a class="btn" href="admin-denuncias.html">Denúncias</a>
+      <a class="btn" href="index.html">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Painel Administrativo</h2>
+    <p class="subtle">Visão geral da atividade na plataforma StudyBridge — CEFET-MG Campus Belo Horizonte.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Usuários Ativos</h3>
+        <p class="number">128</p>
+        <p class="subtext">Estudantes: 90 · Monitores: 34 · Suspensos: 4</p>
+      </div>
+
+      <div class="card">
+        <h3>Aulas Registradas</h3>
+        <p class="number">312</p>
+        <p class="subtext">Marcadas: 58 · Concluídas: 254</p>
+      </div>
+
+      <div class="card">
+        <h3>Denúncias Ativas</h3>
+        <p class="number">7</p>
+        <p class="subtext">Em análise por administradores</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
+</html>
