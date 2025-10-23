@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -8,10 +9,12 @@
 </head>
 <body>
 <header class="header">
-    <a href="index.html" class="brand"><div class="logo">SB</div><strong>StudyBridge</strong></a>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+        <div class="logo">SB</div><strong>StudyBridge</strong>
+    </a>
     <nav class="nav">
-        <a class="btn ghost" href="../../../../../../../../../Downloads/SB-main(3)/SB-main/Front_End/login.html">Entrar</a>
-        <a class="btn" href="../../../../../../../../../Downloads/SB-main(3)/SB-main/Front_End/register.html">Registrar</a>
+        <a class="btn ghost" href="${pageContext.request.contextPath}/login.jsp">Entrar</a>
+        <a class="btn" href="${pageContext.request.contextPath}/register.jsp">Registrar</a>
     </nav>
 </header>
 
@@ -20,8 +23,8 @@
     <h1>Conecte estudantes e monitores<br>do CEFET-MG — Campus Belo Horizonte</h1>
     <p>O StudyBridge é uma plataforma interna que conecta alunos e monitores voluntários do CEFET-MG para reforço e apoio nas disciplinas do ensino médio.</p>
     <div class="toolbar" style="display:flex;justify-content:center;gap:1rem;">
-        <a class="btn" href="../../../../../../../../../Downloads/SB-main(3)/SB-main/Front_End/register.html">Começar agora</a>
-        <a class="btn ghost" href="../../../../../../../../../Downloads/SB-main(3)/SB-main/Front_End/login.html">Já tenho conta</a>
+        <a class="btn" href="${pageContext.request.contextPath}/register.jsp">Começar agora</a>
+        <a class="btn ghost" href="${pageContext.request.contextPath}/login.jsp">Já tenho conta</a>
     </div>
 </section>
 
@@ -42,6 +45,8 @@
     </div>
 </main>
 
-<footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+<footer class="footer">
+    © 2025 StudyBridge — CEFET-MG Campus Belo Horizonte
+</footer>
 </body>
 </html>
