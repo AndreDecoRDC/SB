@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class TestaInsertUsuario {
 
     public static void main(String[] args) {
-        
+
         Usuario novoUsuario = new Usuario();
         novoUsuario.setEmail("teste" + System.currentTimeMillis() + "@gmail.com");
         novoUsuario.setSenhaHash("abc123");

@@ -1,23 +1,23 @@
 package com.studybridge.dao;
 
 import com.studybridge.domain.model.Usuario;
-import java.sql.*; // importa as classes que trabalham com SQL (Connection, PreparedStatement, ResultSet)
+import java.sql.*;
 
 public class UsuarioDAO {
 
     public boolean existePorEmail(String email) throws SQLException {
-        //esse comando SQL procura se já tem alguém com o mesmo e-mail
+        //esse comando SQL procura se já tem alguem com o mesmo email
         String sql = "SELECT 1 FROM usuarios WHERE email = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            //substitui o ? da query pelo valor real do e-mail
+            //substitui o ? da query pelo valor real do email
             ps.setString(1, email);
 
-            // executa o comando e guarda em um result set que é tipo uma tabela temporária
+            //executa o comando e guarda em um result set que é tipo uma tabela temporária
             ResultSet rs = ps.executeQuery();
 
-            // se rs.next() for verdadeiro, quer dizer que achou alguém com esse e-mail
+            //se rs.next() for verdadeiro, quer dizer que achou alguém com esse email
             boolean existe = rs.next();
 
             rs.close();
@@ -47,4 +47,50 @@ public class UsuarioDAO {
             rs.close();
         }
     }
+
+    /*
+    estou planejando fazer do seguinte jeito: Como cada usuário vai ter o seu token específico. Quando a pessoa clicar
+    em um link de confirmação referente ao token dela, a conta referente ao token vai se tornar verificada com as duas funções abaixo
+     */
+
+    public Usuario buscarPorToken(String token) throws SQLException {
+
+        String sql = "SELECT * FROM usuarios WHERE token_verificacao = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, token);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                rs.close();
+                return null;
+            }
+
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("id"));
+            u.setEmail(rs.getString("email"));
+            u.setSenhaHash(rs.getString("senha_hash"));
+            u.setTipoConta(rs.getString("tipo_conta"));
+            u.setVerificado(rs.getBoolean("verificado"));
+            u.setTokenVerificacao(rs.getString("token_verificacao"));
+
+            rs.close();
+            return u;
+        }
+    }
+
+    public void confirmarEmail(String token) throws SQLException {
+        String sql = "UPDATE usuarios SET verificado = 1 WHERE token_verificacao = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, token);
+            ps.executeUpdate();
+        }
+    }
 }
+
