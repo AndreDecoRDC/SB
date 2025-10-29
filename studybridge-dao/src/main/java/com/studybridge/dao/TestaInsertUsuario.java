@@ -9,7 +9,7 @@ public class TestaInsertUsuario {
 
         Usuario novoUsuario = new Usuario();
         novoUsuario.setEmail("teste" + System.currentTimeMillis() + "@gmail.com");
-        novoUsuario.setSenhaHash("abc123");
+        novoUsuario.setSenhaHash("andre123");
         novoUsuario.setTipoConta("Estudante");
         novoUsuario.setVerificado(false);
         novoUsuario.setTokenVerificacao("token-" + System.currentTimeMillis());
@@ -20,7 +20,7 @@ public class TestaInsertUsuario {
             dao.inserir(novoUsuario);
             System.out.println("Usuário inserido com sucesso");
             System.out.println("ID gerado: " + novoUsuario.getId());
-            System.out.println("E-mail: " + novoUsuario.getEmail());
+            System.out.println("Email: " + novoUsuario.getEmail());
         } catch (SQLException e) {
             System.out.println("Erro ao inserir usuário:");
             e.printStackTrace();

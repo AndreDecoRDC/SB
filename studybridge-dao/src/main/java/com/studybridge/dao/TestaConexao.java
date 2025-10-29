@@ -6,7 +6,6 @@ import java.sql.SQLException;
 public class TestaConexao {
 
     public static void main(String[] args) {
-        //Bloco try que fecha automaticamente a conexão no final
         try (Connection conn = ConnectionFactory.getConnection()) {
             System.out.println("Conexão estabelecida com sucesso");
             System.out.println("URL: " + conn.getMetaData().getURL());
