@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>StudyBridge — CEFET-MG Campus BH</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet"href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <header class="header">

@@ -30,7 +30,7 @@ public class EmailService {
 
     public void enviarVerificacao(Usuario usuario) throws MessagingException, java.io.UnsupportedEncodingException {
 
-        String link = "http://localhost:8080/SB/confirmar?token=" + usuario.getTokenVerificacao();
+        String link = "http://localhost:8080/studybridge/confirmar?token=" + usuario.getTokenVerificacao();
 
         //configuraçoes da conexão SMTP
         Properties props = new Properties();
