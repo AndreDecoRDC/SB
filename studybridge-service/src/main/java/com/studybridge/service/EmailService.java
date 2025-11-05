@@ -9,15 +9,12 @@ import java.util.Properties;
 public class EmailService {
 
     /*
-    Essa classe envia emails de verificacao para o usuario depois do cadastro.
+    essa classe envia emails de verificacao para o usuario depois do cadastro.
     vou usar a biblioteca Jakarta Mail para conectar ao servidor SMTP do Gmail
-    e mandar um email HTML com o link de confirmação.
-
-    O metodo enviarVerificacao() recebe um objeto Usuario (com email e token)
-    e gera o link no formato:
-        http://localhost:8080/SB/confirmar?token=XYZ
-
-    Esse link é enviado para o email do usuário, e ao clicar ele confirma a conta.
+    e mandar um email HTML com o link de confirmacao.
+    o metodo enviarVerificacao() recebe um objeto Usuario (com email e token)
+    e gera o link no formato http://localhost:8080/SB/confirmar?token=XYZ
+    esse link vai ser enviado para o email do usuario, e quando clicar ele confirma a conta.
      */
 
     //Email e senha da conta do StudyBridge
@@ -32,7 +29,7 @@ public class EmailService {
 
         String link = "http://localhost:8080/studybridge/confirmar?token=" + usuario.getTokenVerificacao();
 
-        //configuraçoes da conexão SMTP
+        //configuracoes da conexão SMTP
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");              //precisa autenticar
         props.put("mail.smtp.starttls.enable", "true");   //usa criptografia tls

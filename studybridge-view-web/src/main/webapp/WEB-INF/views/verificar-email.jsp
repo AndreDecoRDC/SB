@@ -2,14 +2,14 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Verificação de E-mail — StudyBridge</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
 </header>

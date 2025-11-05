@@ -22,8 +22,12 @@ public class ConfirmarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //pega o token que veio na url
+        //pega o token que veio na url e, caso tente acessar diretamente e redirecionado
         String token = request.getParameter("token");
+        if (token == null || token.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
 
         try {
             //tenta confirmar o usuário com base no token
@@ -33,12 +37,13 @@ public class ConfirmarServlet extends HttpServlet {
             request.setAttribute("tipoConta", tipoConta);
 
             //encaminha pra pagina de confirmacao concluida
-            request.getRequestDispatcher("email-confirmado.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/email-confirmado.jsp").forward(request, response);
 
         } catch (Exception e) {
             //so pra caso de erro
             request.setAttribute("erro", e.getMessage());
-            request.getRequestDispatcher("erro-confirmacao.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/erro-confirmacao.jsp").forward(request, response);
+
         }
     }
 }

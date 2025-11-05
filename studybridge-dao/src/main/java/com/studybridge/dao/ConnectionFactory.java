@@ -20,7 +20,7 @@ public class ConnectionFactory {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    //ou usar DriverManager, que é uma classe da JDBC e retorna um objeto Connection (para poder criar a conexão)
+    //vou usar DriverManager, que é uma classe da JDBC e retorna um objeto Connection (para poder criar a conexão)
 
     public static Connection getConnection() throws SQLException {
         try {
