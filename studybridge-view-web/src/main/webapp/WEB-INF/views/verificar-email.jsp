@@ -23,10 +23,8 @@
         </p>
 
         <div style="margin-top:1.5rem;">
-            <form action="${pageContext.request.contextPath}/reenviar-email" method="post">
-                <input type="hidden" name="email" value="${requestScope.email}">
-                <button type="submit" class="btn ghost">Reenviar e-mail</button>
-            </form>
+            <p class="subtle" style="margin-bottom:0.8rem;">Já verificou?</p>
+            <a class="btn" href="${pageContext.request.contextPath}/login">Ir para o login</a>
         </div>
 
         <p class="subtle" style="margin-top:1rem;">

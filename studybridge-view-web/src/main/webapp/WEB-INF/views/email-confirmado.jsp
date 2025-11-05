@@ -15,7 +15,7 @@
 </header>
 
 <main class="container" style="text-align:center; padding-top:3rem;">
-    <h2>✅ E-mail confirmado com sucesso!</h2>
+    <h2>E-mail confirmado com sucesso!</h2>
     <p style="margin-top:1rem;">Sua conta foi ativada e agora você pode acessar o StudyBridge normalmente.</p>
 
     <% String tipoConta = (String) request.getAttribute("tipoConta");

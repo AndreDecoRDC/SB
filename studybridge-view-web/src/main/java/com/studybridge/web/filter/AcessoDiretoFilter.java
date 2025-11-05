@@ -35,7 +35,8 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/register") ||
                         path.startsWith(req.getContextPath() + "/cadastrar") ||
                         path.startsWith(req.getContextPath() + "/verificar-email") ||
-                        path.startsWith(req.getContextPath() + "/confirmar");
+                        path.startsWith(req.getContextPath() + "/confirmar") ||
+                        path.startsWith(req.getContextPath() + "/login");
 
         if (publica) {
             chain.doFilter(request, response); //deixa passar
