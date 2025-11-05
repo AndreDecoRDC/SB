@@ -1,5 +1,6 @@
 package com.studybridge.domain.model;
 
+import com.studybridge.common.model.DiaSemana;
 import java.time.LocalTime;
 
 public class Horario {
@@ -34,9 +35,3 @@ public class Horario {
         return diaSemana + " - " + horaInicio + " às " + horaFim;
     }
 }
-
-//ia mandar para a Common, porém não está dando (não apareceu a package que criei)
-enum DiaSemana {
-    SEGUNDA, TERCA, QUARTA, QUINTA, SEXTA;
-}
-
