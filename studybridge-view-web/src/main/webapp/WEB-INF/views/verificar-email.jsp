@@ -2,14 +2,14 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Verificação de E-mail — StudyBridge</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
 </header>
@@ -23,10 +23,8 @@
         </p>
 
         <div style="margin-top:1.5rem;">
-            <form action="${pageContext.request.contextPath}/reenviar-email" method="post">
-                <input type="hidden" name="email" value="${requestScope.email}">
-                <button type="submit" class="btn ghost">Reenviar e-mail</button>
-            </form>
+            <p class="subtle" style="margin-bottom:0.8rem;">Já verificou?</p>
+            <a class="btn" href="${pageContext.request.contextPath}/login">Ir para o login</a>
         </div>
 
         <p class="subtle" style="margin-top:1rem;">
