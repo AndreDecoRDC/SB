@@ -1,7 +1,6 @@
 package com.studybridge.service;
 
 import java.util.List;
-import com.studybridge.domain.model.*;
 
 public class Avaliação{
     private List<double> notas;
