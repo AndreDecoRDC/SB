@@ -20,21 +20,32 @@ public class AvaliacaoServlet extends HttpServlet{
         HttpSession session = req.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         if (usuario == null) {
-            resp.sendRedirect("login");
+            resp.sendRedirect("login.jsp");
+        }
+        String tipoConta = usuario.getTipoConta();
+        Avaliacao avaliacaoAtual;
+        String destinoJSP;
+
+        if("monitor".equalsIgnoreCase(tipoConta)){
+            avaliacaoAtual = avaliacaoMonitor;
+            destinoJSP = "/WEB-INF/jsp/aulas-monitor.jsp";
+        }else{
+            avaliacaoAtual = avaliacaoEstudante;
+            destinoJSP="/WEB-INF/jsp/aulas-estudante.jsp";
         }
 
         try{
-            avaliacao.registrarAvaliacoes(nota, comentario);
-            double media = avaliacao.calculoMediaNota();
+            avaliacaoAtual.registrarAvaliacoes(nota, comentario);
+            double media = avaliacaoAtual.calculoMediaNota();
 
             req.setAttribute("media", media);
-            req.setAttribute("comentarios", avaliacao.getComentarios());
-            RequestDispatcher rd = req.getRequestDispatcher("avaliar.jsp");
+            req.setAttribute("comentarios", avaliacaoAtual.getComentarios());
+            RequestDispatcher rd = req.getRequestDispatcher(destinoJSP);
             rd.forward(req, resp);
         }
         catch(IllegalArgumentException e){
             req.setAttribute("erro", e.getMessage());
-            RequestDispatcher rd = req.getRequestDispatcher("avaliar.jsp");
+            RequestDispatcher rd = req.getRequestDispatcher(destinoJSP;
             rd.forward(req, resp);
         }
     }
