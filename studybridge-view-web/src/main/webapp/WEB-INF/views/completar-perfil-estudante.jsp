@@ -9,7 +9,8 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/" class="brand">
+
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
 </header>
