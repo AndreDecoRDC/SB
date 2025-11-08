@@ -1,31 +1,3 @@
-/*
-SCRIPT DE CRIAÇÃO DO BANCO DE DADOS - STUDYBRIDGE
-
-SOBRE:
-Este arquivo cria o banco de dados e as tabelas utilizadas
-pelo sistema StudyBridge. Ele deve ser executado dentro do
-MySQL Workbench (ou outro cliente MySQL) para configurar
-o ambiente local de desenvolvimento.
-
-COMO USAR:
-1️ Abra o MySQL Workbench.
-2️ Conecte-se ao servidor MySQL local (usuário root).
-3️ Copie todo o conteudo deste arquivo
-4️ Cole e execute no editor SQL (ícone de raio).
-5️ Verifique se o banco "studybridge" foi criado na aba Schemas.
-
-LOCAL DE EXECUÇÃO:
-Este script deve ser executado no seu MySQL local.
-A pasta "database" do projeto contém apenas este arquivo
-para facilitar a configuração do ambiente por outros membros
-da equipe.
-
-EQUIPE:
-Todos os integrantes do projeto devem ter o mesmo banco
-criado localmente com este script, garantindo compatibilidade
-entre as camadas DAO e Service.
-*/
-
 CREATE DATABASE IF NOT EXISTS studybridge DEFAULT CHARACTER SET utf8mb4;
 USE studybridge;
 
@@ -36,4 +8,28 @@ CREATE TABLE IF NOT EXISTS usuarios (
     tipo_conta ENUM('Estudante','Monitor') NOT NULL,
     verificado BOOLEAN NOT NULL DEFAULT 0,
     token_verificacao VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS monitores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    disciplina VARCHAR(100) NOT NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+    descricao VARCHAR(1000),
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS horarios_disponiveis (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    monitor_id INT NOT NULL,
+    dia_da_semana ENUM('Segunda-feira', 'Terca-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira') NOT NULL,
+    horario_inicio TIME NOT NULL,
+    horario_termino TIME NOT NULL,
+    duracao_media_aula INT NOT NULL,
+    status ENUM('livre', 'reservado') DEFAULT 'livre',
+    
+    FOREIGN KEY (monitor_id) REFERENCES monitores(id) ON DELETE CASCADE
 );
