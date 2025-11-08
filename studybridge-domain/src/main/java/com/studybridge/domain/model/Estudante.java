@@ -1,7 +1,13 @@
 package com.studybridge.domain.model;
-import java.util.List;
+import com.studybridge.service.Avaliacao;
 
 public class Estudante extends Usuario{
-    private List<Double> notas;
-    private double mediaNotas;
+    private Avaliacao avaliacaoRecebida;
+    public Estudante(String email, String senhaHash){
+        super(email, senhaHash, "Estudante");
+        this.avaliacaoRecebida = new Avaliacao(this);
+    }
+    public Avaliacao getAvaliacaoRecebida() {
+        return avaliacaoRecebida;
+    }
 }

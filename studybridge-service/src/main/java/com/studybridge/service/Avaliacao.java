@@ -1,14 +1,20 @@
 package com.studybridge.service;
 
+import com.studybridge.domain.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Avaliação{
-    private List<double> notas;
-    private List<String> comentarios;
+public class Avaliacao{
+    private Usuario usuarioAvaliado;
+    private List<Double> notas = new ArrayList<>();
+    private List<String> comentarios = new ArrayList<>();
+
+    public Avaliacao(){
+        this.usuarioAvaliado = usuarioAvaliado;
+    }
 
 
-
-    public void registrarAvaliações(double nota, String comentario) throws NotaInvalidaException{
+    public void registrarAvaliacoes(double nota, String comentario) throws NotaInvalidaException{
         if(nota < 1 || nota > 5){
             throws new NotaInvalidaException();
         }
@@ -16,7 +22,6 @@ public class Avaliação{
         comentarios.add(comentario);
     }
     public double calculoMediaNota(){
-        //recebe o array das notas de um usuário e retorna a media do usuario
         if (notas.isEmpty()){
             return 0;
         }
@@ -26,11 +31,19 @@ public class Avaliação{
         }
         return soma / notas.size();
     }
+    public Usuario getUsuarioAvaliado(){
+        return usuarioAvaliado;
+    }
+
     public List<Double> getNotas(){
         return notas;
     }
     public List<String> getComentarios(){
         return comentarios;
+    }
+    @Override
+    public String toString(){
+        return String.format("Média: %.2f (%d avaliações)", calculoMediaNota(), notas.size());
     }
     public void integraçãoBancoDeDados(){
     }
