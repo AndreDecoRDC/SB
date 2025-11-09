@@ -1,32 +1,97 @@
 package com.studybridge.service;
 
+import com.studybridge.dao.HorarioDAO;
+import com.studybridge.dao.JDBCHorarioDAO;
 import com.studybridge.domain.model.Horario;
 import java.util.List;
+import java.sql.SQLException;
+import java.time.LocalTime;
 
 public class GerenciarHorarioService {
-   //receber monitorX
+    private final HorarioDAO horarioDAO;
     
-    private void adicionarHorario(Horario newHorario) {
-        //verificar se não existe newHorario no banco de dados do monitorX (evitar horário duplicado)
-            //se sim, continua; se não, retorna "Horário duplicado"
-            //adicionar o newHorario no banco de dados do monitorX
-            //retornar "Novo horário cadastrado"
-    }       
-    private void removerHorario(Horario remHorario) {
-        //verificar se o remHorário existe no banco de dados do monitorX (try)
-            //se sim, continua; se não, retorna "Horário não cadastrado"
-            //remover o remHorario no monitorX
-        //retornar "Horário removido!"
+    public GerenciarHorarioService() {
+        this.horarioDAO = new JDBCHorarioDAO();
     }
-    private void editarHorario(Horario horarioExistente, Horario newHorario) {
-        //verificar se horarioExistente realmente existe no banco de dados do monitorX
-            //se sim, continua; se não, retorna "Horário inexistente"
-            //substituir no banco de dados o horarioExistente para newHorario
-            //retornar "Horário editado com sucesso"
+    
+    private String adicionarHorario(Horario horario) {
+        try {
+            
+            LocalTime inicio = horario.getHoraInicio();
+            LocalTime termino = horario.getHoraTermino();
+            
+            if (inicio == null || termino == null) {
+                return "Erro. Horário de início ou término inválido.";
+            }
+            if (inicio.equals(termino) || inicio.isAfter(termino)) {
+                return "Erro. Horário de início deve ser antes de término.";
+            }
+            
+            boolean duplicado = horarioDAO.existDuplicado(
+                    horario.getMonitorId(),
+                    horario.getDiaSemana(),
+                    horario.getHoraInicio(),
+                    horario.getHoraTermino()
+            );
+            
+            if (duplicado) {
+                return "Erro. Já existe um horário cadastrado nesse dia/horário.";
+            }
+            
+            Horario inserido = horarioDAO.insertHorario(horario);
+            
+            return "Horário adicionado com sucesso! (id: " + inserido.getId() + ").";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Erro ao adicionar horário: " + e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erro inesperado: " + e.getMessage();
+        }
     }
-    private List<Horario> listarHorario() {
-        //Puxar do banco de dados de monitorX e listar todos os horários disponiveis
-        return null;
+    
+    private String removerHorario(Horario horario) {
+        try {
+            horarioDAO.deleteHorario(horario);
+            return "Horário removido com sucesso!";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Erro ao remover horário: " + e.getMessage();
+        }
+    }
+    private String editarHorario(Horario horario) {
+        try {
+            
+            if (horario.getHoraInicio() == null || horario.getHoraTermino() == null) {
+                return "Erro. Horário inválido.";
+            }
+            if (horario.getHoraInicio().equals(horario.getHoraTermino()) || horario.getHoraInicio().isAfter(horario.getHoraTermino())) {
+                return "Erro. Horário de início deve ser antes de término.";
+            }
+            
+            horarioDAO.updateHorario(horario);
+            return "Horário atualizado com sucesso!";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Erro ao atualizar horário: " + e.getMessage();
+        }
+    }
+    
+    private List<Horario> listarHorario(int monitorId) {
+        try {
+            return horarioDAO.getAllHorarios(monitorId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+    
+    public Horario getHorarioById(int id) throws Exception {
+        try {
+            return horarioDAO.getHorario(id);
+        } catch (SQLException e) {
+            return null;
+        }
     }
     
 }
