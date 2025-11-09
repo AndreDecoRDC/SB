@@ -9,3 +9,12 @@ CREATE TABLE IF NOT EXISTS usuarios (
     verificado BOOLEAN NOT NULL DEFAULT 0,
     token_verificacao VARCHAR(100) UNIQUE
 );
+CREATE TABLE IF NOT EXISTS avaliacoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nota DOUBLE NOT NULL,
+    comentario VARCHAR(255),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);

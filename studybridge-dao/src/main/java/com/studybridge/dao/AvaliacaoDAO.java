@@ -1,5 +1,6 @@
 package com.studybridge.dao;
 
+import
 import com.studybridge.domain.model.Avaliacao;
 import com.studybridge.domain.model.Usuario;
 import java.sql.*;

@@ -1,6 +1,6 @@
 package com.studybridge.domain.model;
 
-import com.studybridge.domain.exception.NotaInvalidaException;
+import com.studybridge.common.exceptions.NotaInvalidaException;
 import java.util.ArrayList;
 import java.util.List;
 

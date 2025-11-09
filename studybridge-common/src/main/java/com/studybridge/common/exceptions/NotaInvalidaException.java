@@ -1,4 +1,4 @@
-package com.studybridge.domain.exception;
+package com.studybridge.common.exceptions;
 
 public class NotaInvalidaException extends Exception{
     public NotaInvalidaException(){

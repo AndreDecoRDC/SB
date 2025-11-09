@@ -1,7 +1,7 @@
 package com.studybridge.service;
 
 import com.studybridge.dao.AvaliacaoDAO;
-import com.studybridge.domain.exception.NotaInvalidaException;
+import com.studybridge.common.exceptions.NotaInvalidaException;
 import com.studybridge.domain.model.Avaliacao;
 import com.studybridge.domain.model.Usuario;
 
