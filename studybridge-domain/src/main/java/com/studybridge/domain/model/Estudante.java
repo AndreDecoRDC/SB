@@ -1,5 +1,5 @@
 package com.studybridge.domain.model;
-import com.studybridge.service.Avaliacao;
+
 
 public class Estudante extends Usuario{
     private Avaliacao avaliacaoRecebida;

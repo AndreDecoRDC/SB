@@ -1,5 +1,4 @@
 package com.studybridge.domain.model;
-import com.studybridge.service.Avaliacao;
 
 public class Monitor extends Usuario{
     private Avaliacao avaliacaoRecebida;

@@ -1,22 +1,28 @@
-package com.studybridge.service;
+package com.studybridge.domain.model;
 
-import com.studybridge.domain.Usuario;
+import com.studybridge.domain.exception.NotaInvalidaException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Avaliacao{
     private Usuario usuarioAvaliado;
-    private List<Double> notas = new ArrayList<>();
-    private List<String> comentarios = new ArrayList<>();
+    private List<Double> notas;
+    private List<String> comentarios;
 
-    public Avaliacao(){
+    public Avaliacao(Usuario usuarioAvaliado){
         this.usuarioAvaliado = usuarioAvaliado;
+        this.notas = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
+    }
+    public Avaliacao(){
+        this.notas = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
     }
 
 
-    public void registrarAvaliacoes(double nota, String comentario) throws NotaInvalidaException{
+    public void registrarAvaliacao(double nota, String comentario) throws NotaInvalidaException{
         if(nota < 1 || nota > 5){
-            throws new NotaInvalidaException();
+            throw new NotaInvalidaException();
         }
         notas.add(nota);
         comentarios.add(comentario);
@@ -45,7 +51,4 @@ public class Avaliacao{
     public String toString(){
         return String.format("Média: %.2f (%d avaliações)", calculoMediaNota(), notas.size());
     }
-    public void integraçãoBancoDeDados(){
-    }
-
 }

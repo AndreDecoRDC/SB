@@ -1,6 +1,6 @@
 package com.studybridge.web.servlet;
 
-import com.studybridge.service.Avaliacao;
+import com.studybridge.service.AvaliacaoService;
 import com.studybridge.domain.model.Usuario;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -10,44 +10,35 @@ import java.io.IOException;
 
 @WebServlet("/avaliar")
 public class AvaliacaoServlet extends HttpServlet{
-    private Avaliacao avaliacaoEstudante =  new Avaliacao();
-    private Avaliacao avaliacaoMonitor =  new Avaliacao();
+    private final AvaliacaoService avaliacaoService = new AvaliacaoService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if(usuario == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
         double nota = Double.parseDouble(req.getParameter("nota"));
         String comentario = req.getParameter("comentario");
-        HttpSession session = req.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuario == null) {
-            resp.sendRedirect("login.jsp");
-        }
-        String tipoConta = usuario.getTipoConta();
-        Avaliacao avaliacaoAtual;
         String destinoJSP;
-
-        if("monitor".equalsIgnoreCase(tipoConta)){
-            avaliacaoAtual = avaliacaoMonitor;
-            destinoJSP = "/WEB-INF/jsp/aulas-monitor.jsp";
+        if("monitor".equalsIgnoreCase(usuario.getTipoConta())){
+            destinoJSP = "aulas-monitor.jsp";
         }else{
-            avaliacaoAtual = avaliacaoEstudante;
-            destinoJSP="/WEB-INF/jsp/aulas-estudante.jsp";
+            destinoJSP = "aulas-estudante.jsp";
         }
-
         try{
-            avaliacaoAtual.registrarAvaliacoes(nota, comentario);
-            double media = avaliacaoAtual.calculoMediaNota();
+            avaliacaoService.registrarAvaliacao(usuario, nota, comentario);
+            double media = avaliacaoService.calcularMedia(usuario);
 
             req.setAttribute("media", media);
-            req.setAttribute("comentarios", avaliacaoAtual.getComentarios());
+            RequestDispatcher rd = req.getRequestDispatcher(destinoJSP);
+            rd.forward(req, resp);
+        }catch(Exception e){
+            req.setAttribute("erro", e.getMessage());
             RequestDispatcher rd = req.getRequestDispatcher(destinoJSP);
             rd.forward(req, resp);
         }
-        catch(IllegalArgumentException e){
-            req.setAttribute("erro", e.getMessage());
-            RequestDispatcher rd = req.getRequestDispatcher(destinoJSP;
-            rd.forward(req, resp);
-        }
     }
-
 }
