@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     horario_inicio TIME NOT NULL,
     horario_termino TIME NOT NULL,
     duracao_media_aula INT NOT NULL,
-    status ENUM('livre', 'reservado') DEFAULT 'livre',
     
     FOREIGN KEY (monitor_id) REFERENCES monitores(id) ON DELETE CASCADE
 );
