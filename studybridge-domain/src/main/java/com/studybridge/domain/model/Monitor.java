@@ -4,7 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Monitor extends Usuario {
-    
-   private List<Horario> horario = new ArrayList<>();
+   private String disciplina;
+   private String campus;
+   private String descricao;
+   private List<Horario> horarios = new ArrayList<>();
    
+   public String getDisciplina() {
+       return disciplina;
+   }
+   public void setDisciplina(String disciplina) {
+       this.disciplina = disciplina;
+   }
+   
+   public String getCampus() {
+       return campus;
+   }
+   public void setCampus(String campus) {
+       this.campus = campus;
+   }
+   
+   public String getDescricao() {
+       return descricao;
+   }
+   public void setDescricao(String descricao) {
+       this.descricao = descricao;
+   }
+   
+   public List<Horario> getHorarios() {
+       return horarios;
+   } 
+   public void setHorarios(List<Horario> horarios) {
+       this.horarios = horarios;
+   }
 }

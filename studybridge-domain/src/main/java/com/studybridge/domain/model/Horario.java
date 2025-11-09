@@ -1,37 +1,69 @@
 package com.studybridge.domain.model;
-
-import com.studybridge.common.model.DiaSemana;
+import com.studybridge.common.model.TransformarMinutosEmHoras;
 import java.time.LocalTime;
 
 public class Horario {
-    private DiaSemana diaSemana;
+    private int id;
+    private int monitorId;
+    private String diaSemana;
     private LocalTime horaInicio;
-    private LocalTime horaFim;
+    private LocalTime horaTermino;
+    private int duracaoMedia;
     
-    public Horario(DiaSemana diaSemana, LocalTime horaInicio, LocalTime horaFim) {
+    public Horario() {}
+    
+    public Horario(int id, int monitorId, String diaSemana, LocalTime horaInicio, LocalTime horaTermino, int duracaoMedia) {
+        this.id = id;
+        this.monitorId = monitorId;
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
-        this.horaFim = horaFim;
+        this.horaTermino = horaTermino;
+        this.duracaoMedia = duracaoMedia;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
     
-    public DiaSemana getDiaSemana() {
+    public int getMonitorId() {
+        return monitorId;
+    }
+    public void setMonitorId(int monitorId) {
+        this.monitorId = monitorId;
+    }
+    
+    public String getDiaSemana() {
         return diaSemana;
     }
+    public void getDiaSemana(String diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+    
     public LocalTime getHoraInicio() {
         return horaInicio;
     }
-    public LocalTime getHoraFim() {
-        return horaFim;
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
     }
-    public void setHoraInicio(LocalTime NewHoraInicio) {
-        this.horaInicio = NewHoraInicio;
+        
+    public LocalTime getHoraTermino() {
+        return horaTermino;
     }
-    public void setHoraFim(LocalTime NewHoraFim) {
-        this.horaFim = NewHoraFim;
+    public void setHoraTermino(LocalTime horaTermino) {
+        this.horaTermino = horaTermino;
+    }
+       
+    public int getDuracaoMedia() {
+        return duracaoMedia;
+    }
+    public void setDuracaoMedia(int duracaoMedia) {
+        this.duracaoMedia = duracaoMedia;
     }
     
     @Override
     public String toString() {
-        return diaSemana + " - " + horaInicio + " às " + horaFim;
+        return diaSemana + ": " + horaInicio + " - " + horaTermino + " · " + "Duração média: " + TransformarMinutosEmHoras.formatarDuracao(duracaoMedia);
     }
 }
