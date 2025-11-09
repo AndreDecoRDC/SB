@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
 </header>
@@ -17,8 +17,7 @@
 <main class="container" style="max-width:450px;">
     <h2>Crie sua conta</h2>
 
-    <!-- Formulário envia para o servlet -->
-    <form class="card" action="${pageContext.request.contextPath}/cadastro" method="post">
+    <form class="card" action="${pageContext.request.contextPath}/cadastrar" method="post">
         <label class="field">
             <span>Email</span>
             <input class="input" name="email" type="email" placeholder="exemplo@gmail.com" required>
@@ -47,15 +46,10 @@
         </div>
     </form>
 
-    <%
-        String mensagem = (String) request.getAttribute("mensagem");
-        if (mensagem != null) {
-    %>
-    <p style="color:#dc2626;text-align:center;margin-top:1rem;"><%= mensagem %></p>
-    <%
-        }
-    %>
-
+    <% String erro = (String) request.getAttribute("erro");
+        if (erro != null) { %>
+    <p style="color:red; text-align:center; margin-top:1rem;"><%= erro %></p>
+    <% } %>
 </main>
 
 <footer class="footer">
