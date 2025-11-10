@@ -27,6 +27,12 @@ public class Aula {
         this.data_aula = data_aula;
     }
 
+    public Aula(String disciplina, String descricao, LocalDateTime data_aula){
+        this();
+        this.disciplina = disciplina;
+        this.descricao = descricao;
+        this.data_aula = data_aula;
+    }
     public Integer getId() {
         return id;
     }

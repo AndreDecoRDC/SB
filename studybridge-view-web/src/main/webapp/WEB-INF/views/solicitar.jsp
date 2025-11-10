@@ -23,12 +23,12 @@
         <form action="${pageContext.request.contextPath}/solicitarAula" method="post">
             <label class="field">
                 <span>Disciplina</span>
-                <input class="input" name="disciplina" value="Matemática" readonly />
+                <input class="input" name="disciplina" value="Matemática" required />
             </label>
 
             <label class="field">
                 <span>Data e horário sugeridos</span>
-                <input class="input" name="dataHora" placeholder="Ex: 15/10/2025 14:00" required />
+                <input class="text" name="dataHora" placeholder="Ex: 15/10/2025 14:00" required />
             </label>
 
             <label class="field">
@@ -42,6 +42,10 @@
             </div>
         </form>
     </div>
+    <% String erro = (String) request.getAttribute("erro");
+        if (erro != null) { %>
+    <p style="color:red; text-align:center; margin-top:1rem;"><%= erro %></p>
+    <% } %>
 </main>
 
 <footer class="footer">© 2025 StudyBridge. Todos os direitos reservados.</footer>
