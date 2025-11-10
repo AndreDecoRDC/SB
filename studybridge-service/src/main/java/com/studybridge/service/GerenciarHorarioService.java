@@ -14,7 +14,7 @@ public class GerenciarHorarioService {
         this.horarioDAO = new JDBCHorarioDAO();
     }
     
-    private String adicionarHorario(Horario horario) {
+    public String adicionarHorario(Horario horario) {
         try {
             
             LocalTime inicio = horario.getHoraInicio();
@@ -50,7 +50,7 @@ public class GerenciarHorarioService {
         }
     }
     
-    private String removerHorario(Horario horario) {
+    public String removerHorario(Horario horario) {
         try {
             horarioDAO.deleteHorario(horario);
             return "Horário removido com sucesso!";
@@ -59,7 +59,7 @@ public class GerenciarHorarioService {
             return "Erro ao remover horário: " + e.getMessage();
         }
     }
-    private String editarHorario(Horario horario) {
+    public String editarHorario(Horario horario) {
         try {
             
             if (horario.getHoraInicio() == null || horario.getHoraTermino() == null) {
@@ -77,7 +77,7 @@ public class GerenciarHorarioService {
         }
     }
     
-    private List<Horario> listarHorario(int monitorId) {
+    public List<Horario> listarHorario(int monitorId) {
         try {
             return horarioDAO.getAllHorarios(monitorId);
         } catch (SQLException e) {

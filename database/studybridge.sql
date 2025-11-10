@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS monitores (
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     monitor_id INT NOT NULL,
-    dia_da_semana ENUM('Segunda-feira', 'Terca-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira') NOT NULL,
+    dia_da_semana ENUM('Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira') NOT NULL,
     horario_inicio TIME NOT NULL,
     horario_termino TIME NOT NULL,
     duracao_media_aula INT NOT NULL,

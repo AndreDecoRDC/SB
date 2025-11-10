@@ -13,7 +13,7 @@ public class JDBCHorarioDAO implements HorarioDAO{
     @Override
     public Horario insertHorario(Horario horario) throws SQLException {
         String sql = "INSERT INTO horarios_disponiveis "  + 
-               "(monitor_id, dia_da_semana, horario_inicio, horario_termino, duracao_media_aula)"  + 
+               "(monitor_id, dia_da_semana, horario_inicio, horario_termino, duracao_media_aula) "  + 
                "VALUES (?,?,?,?,?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -34,8 +34,9 @@ public class JDBCHorarioDAO implements HorarioDAO{
                     horario.setId(keys.getInt(1));
                 }
             }
+            return horario;
         }         
-        return horario;
+        
     }
 
     @Override
