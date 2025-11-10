@@ -24,7 +24,6 @@ public class AcessoDiretoFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
         String path = req.getRequestURI();
 
         boolean publica =
@@ -32,16 +31,22 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/css/") ||
                         path.startsWith(req.getContextPath() + "/images/") ||
                         path.startsWith(req.getContextPath() + "/js/") ||
+
+                        //fluxo de cadastro
                         path.startsWith(req.getContextPath() + "/register") ||
                         path.startsWith(req.getContextPath() + "/cadastrar") ||
+                        //acessadas apenas internamente ou via link de email
                         path.startsWith(req.getContextPath() + "/verificar-email") ||
                         path.startsWith(req.getContextPath() + "/confirmar") ||
-                        path.startsWith(req.getContextPath() + "/login");
+
+                        //fluxo de login
+                        path.startsWith(req.getContextPath() + "/login") ||
+                        path.startsWith(req.getContextPath() + "/autenticar") ||
+                        path.startsWith(req.getContextPath() + "/verificar-login");
 
         if (publica) {
             chain.doFilter(request, response); //deixa passar
         } else {
-            //bloqueia o resto
             res.sendRedirect(req.getContextPath() + "/");
         }
     }
