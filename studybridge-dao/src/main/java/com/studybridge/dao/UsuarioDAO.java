@@ -92,5 +92,89 @@ public class UsuarioDAO {
             ps.executeUpdate();
         }
     }
-}
 
+    //busca o usuario com base no email, usado no login pra validar senha
+    public Usuario buscarPorEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM usuarios WHERE email = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            //se nao achou ninguem com esse email retorna null
+            if (!rs.next()) {
+                rs.close();
+                return null;
+            }
+
+            //cria o objeto usuario com as informacoes do banco
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("id"));
+            u.setEmail(rs.getString("email"));
+            u.setSenhaHash(rs.getString("senha_hash"));
+            u.setTipoConta(rs.getString("tipo_conta"));
+            u.setVerificado(rs.getBoolean("verificado"));
+            u.setTokenVerificacao(rs.getString("token_verificacao"));
+            u.setCodigo2FA(rs.getString("codigo_2fa"));
+
+            //converte o campo datetime pra LocalDateTime do Java
+            Timestamp ts = rs.getTimestamp("expiracao_2fa");
+            if (ts != null) {
+                u.setExpiracao2FA(ts.toLocalDateTime());
+            }
+
+            rs.close();
+            return u;
+        }
+    }
+
+    //salva o codigo 2FA e define a validade de 5 minutos no banco
+    public void salvarCodigo2FA(int idUsuario, String codigo) throws SQLException {
+        String sql = "UPDATE usuarios SET codigo_2fa = ?, expiracao_2fa = NOW() + INTERVAL 5 MINUTE WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            //define o codigo gerado e o id do usuario que está tentando logar
+            ps.setString(1, codigo);
+            ps.setInt(2, idUsuario);
+
+            //executa a atualizacao
+            ps.executeUpdate();
+        }
+    }
+
+    //verifica se o codigo 2FA informado esta correto e ainda nao expirou
+    public boolean validarCodigo2FA(int idUsuario, String codigo) throws SQLException {
+        String sql = "SELECT 1 FROM usuarios WHERE id = ? AND codigo_2fa = ? AND expiracao_2fa > NOW()";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idUsuario);
+            ps.setString(2, codigo);
+
+            ResultSet rs = ps.executeQuery();
+
+            //se retornar algo, quer dizer que o codigo é valido e nao expirou
+            boolean valido = rs.next();
+
+            rs.close();
+            return valido;
+        }
+    }
+
+    //limpa o codigo e a expiracao depois que o usuario termina o login com sucesso
+    public void limparCodigo2FA(int idUsuario) throws SQLException {
+        String sql = "UPDATE usuarios SET codigo_2fa = NULL, expiracao_2fa = NULL WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            //define o id do usuario e executa o update
+            ps.setInt(1, idUsuario);
+            ps.executeUpdate();
+        }
+    }
+}
