@@ -6,6 +6,7 @@ import com.studybridge.domain.model.Horario;
 import java.util.List;
 import java.sql.SQLException;
 import java.time.LocalTime;
+import java.time.Duration;
 
 public class GerenciarHorarioService {
     private final HorarioDAO horarioDAO;
@@ -15,10 +16,15 @@ public class GerenciarHorarioService {
     }
     
     public String adicionarHorario(Horario horario) {
-        try {
+        
             
+            int duracaoMedia = horario.getDuracaoMedia();
             LocalTime inicio = horario.getHoraInicio();
             LocalTime termino = horario.getHoraTermino();
+            
+            Duration duracao = Duration.between(inicio, termino);                                  
+            
+        try {
             
             if (inicio == null || termino == null) {
                 return "Erro. Horário de início ou término inválido.";
@@ -26,7 +32,15 @@ public class GerenciarHorarioService {
             if (inicio.equals(termino) || inicio.isAfter(termino)) {
                 return "Erro. Horário de início deve ser antes de término.";
             }
+
+             if (duracao.toMinutes() < 15) {
+                return "Erro. Seu tempo de aula deve ter duração de pelo menos 15 minutos.";
+            }
             
+            if (duracao.toMinutes() !=  duracaoMedia) {
+                return "Erro. A duração média deve condizer com os horários de inicio e término.";
+            }
+
             boolean duplicado = horarioDAO.existDuplicado(
                     horario.getMonitorId(),
                     horario.getDiaSemana(),
@@ -40,7 +54,7 @@ public class GerenciarHorarioService {
             
             Horario inserido = horarioDAO.insertHorario(horario);
             
-            return "Horário adicionado com sucesso! (id: " + inserido.getId() + ").";
+            return "Horário adicionado com sucesso!";
         } catch (SQLException e) {
             e.printStackTrace();
             return "Erro ao adicionar horário: " + e.getMessage();

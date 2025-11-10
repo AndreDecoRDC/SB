@@ -21,8 +21,10 @@
     <nav class="nav">
         <a class="btn" href="#">Aulas</a>
         <a class="btn" href="${pageContext.request.contextPath}/horarios">Horários</a>
-        <a class="btn" href="#">Perfil</a>
-         <img src="Web Pages/Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações" style="cursor:pointer;">
+        <a class="btn" href="#">Perfil</a> 
+        <img src="${pageContext.request.contextPath}/imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" 
+             alt="Notificações" width="24" height="24">
+
         <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
     </nav>
 </header>
@@ -32,7 +34,7 @@
     <p style="text-align:center;">Cadastre seus horários disponíveis e defina a duração média das suas aulas de monitoria.</p>
 
     <c:if test="${not empty erro}">
-        <div class="alert error">${erro}</div>
+        <div class="alert error" style="color: red">${erro}</div>
     </c:if>
     <c:if test="${not empty sucesso}">
         <div class="alert success">${sucesso}</div>
@@ -66,12 +68,14 @@
         </label>
 
         <div class="toolbar" style="display:flex; justify-content:center; gap:1rem; margin-top:1.2rem;">
-            <button type="submit" class="btn">Adicionar</button>
+            <button type="submit" class="btn ghost">Adicionar</button>
+            <button type="button" class="btn ghost" onclick="limparCampos()">Limpar</button>
         </div>
+
     </form>
 
     <div class="card" style="margin-top:2rem;">
-        <h3>Horários Cadastrados</h3>
+        <h3>Horários Cadastrados</h3>             
         <ul class="subtle" style="margin-top:0.8rem; line-height:1.6;">
             <c:forEach var="h" items="${horarios}">
                 <li><b>${h.diaSemana}:</b> ${h.horaInicio} — ${h.horaTermino} · Duração média: ${h.duracaoMedia} min</li>
@@ -80,8 +84,10 @@
                 <li>Nenhum horário cadastrado ainda.</li>
             </c:if>
                 <div class="toolbar" style="display:flex; justify-content:center; gap:1rem; margin-top:1.2rem;">
-                    <button type="button" class="btn ghost" onclick="limparCampos()">Limpar</button>
-                </div>
+                    <a href="${pageContext.request.contextPath}/editar-horarios" class="btn ghost">
+                        Editar
+                    </a>
+                </div> 
         </ul>
     </div>
 </main>
