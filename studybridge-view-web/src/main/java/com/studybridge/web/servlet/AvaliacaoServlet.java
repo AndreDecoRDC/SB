@@ -17,16 +17,17 @@ public class AvaliacaoServlet extends HttpServlet{
         HttpSession session = req.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null) {
-            resp.sendRedirect("login.jsp");
+            RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp");
+            rd.forward(req, resp);
             return;
         }
         double nota = Double.parseDouble(req.getParameter("nota"));
         String comentario = req.getParameter("comentario");
         String destinoJSP;
         if("monitor".equalsIgnoreCase(usuario.getTipoConta())){
-            destinoJSP = "aulas-monitor.jsp";
+            destinoJSP = "/WEB-INF/views/aulas-monitor.jsp";
         }else{
-            destinoJSP = "aulas-estudante.jsp";
+            destinoJSP = "/WEB-INF/views/aulas-estudante.jsp";
         }
         try{
             avaliacaoService.registrarAvaliacao(usuario, nota, comentario);
@@ -40,5 +41,32 @@ public class AvaliacaoServlet extends HttpServlet{
             RequestDispatcher rd = req.getRequestDispatcher(destinoJSP);
             rd.forward(req, resp);
         }
+    }
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+
+        String destinoJSP;
+        if ("monitor".equalsIgnoreCase(usuario.getTipoConta())) {
+            destinoJSP = "/WEB-INF/views/aulas-monitor.jsp";
+        } else {
+            destinoJSP = "/WEB-INF/views/aulas-estudante.jsp";
+        }
+
+        try {
+            double media = avaliacaoService.calcularMedia(usuario);
+            req.setAttribute("media", media);
+        } catch (Exception e) {
+            req.setAttribute("erro", e.getMessage());
+        }
+
+        RequestDispatcher rd = req.getRequestDispatcher(destinoJSP);
+        rd.forward(req, resp);
     }
 }

@@ -56,7 +56,7 @@
     <div id="avaliar1" class="modal">
         <div class="modal-content">
             <h3>Avaliar Monitor</h3>
-            <form action="avaliar" method="post">
+            <form action="${pageContext.request.contextPath}/avaliar" method="post">
                 <div class="stars">
                     <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
                     <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>

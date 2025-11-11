@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Aulas — Monitor | StudyBridge</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
     <style>
         .aulas-container {
             display: flex;
@@ -155,7 +155,7 @@
 <div id="avaliarAluno1" class="modal">
     <div class="modal-content">
         <h3>Avaliar Estudante</h3>
-        <form action="AvaliacaoServlet" method="post">
+        <form action="${pageContext.request.contextPath}/avaliar" method="post">
             <input type="hidden" name="tipoConta" value="monitor">
             <input type="hidden" name="idAluno" value="1">
             <div class="stars10">
