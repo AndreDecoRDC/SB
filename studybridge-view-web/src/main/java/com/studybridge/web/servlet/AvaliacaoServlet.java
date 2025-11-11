@@ -17,9 +17,13 @@ public class AvaliacaoServlet extends HttpServlet{
         HttpSession session = req.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null) {
-            RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp");
+            /*RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp"); Código será utilizado quando for possível criar usuários
             rd.forward(req, resp);
-            return;
+            return;*/
+            usuario = new Usuario();
+            usuario.setId(1);
+            usuario.setTipoConta("estudante");
+            session.setAttribute("usuario", usuario);
         }
         double nota = Double.parseDouble(req.getParameter("nota"));
         String comentario = req.getParameter("comentario");
@@ -31,6 +35,7 @@ public class AvaliacaoServlet extends HttpServlet{
         }
         try{
             avaliacaoService.registrarAvaliacao(usuario, nota, comentario);
+            System.out.println("Avaliacao registrada com sucesso no banco de dados");
             double media = avaliacaoService.calcularMedia(usuario);
 
             req.setAttribute("media", media);
