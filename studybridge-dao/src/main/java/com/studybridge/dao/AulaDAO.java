@@ -21,9 +21,9 @@ public class AulaDAO {
             ps.setString(4, aula.getDescricao());
             ps.setString(5, aula.getStatus() != null ? aula.getStatus() : "PENDENTE");
             ps.setTimestamp(6, aula.getData_aula() != null ? Timestamp.valueOf(aula.getData_aula()) : null);
-            System.out.println("[DEBUG] Inserindo aula: " + aula.getDisciplina() + " — " + aula.getDescricao() + " — " + aula.getData_aula());
+
             ps.executeUpdate();
-            System.out.println("Deu Certo!");
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     aula.setId(rs.getInt(1));
