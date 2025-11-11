@@ -1,4 +1,4 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.action;
 
 import com.studybridge.domain.model.Horario;
 import com.studybridge.service.GerenciarHorarioService;
@@ -7,8 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/remover-horario")
-public class RemoverHorarioServlet extends HttpServlet {
+@WebServlet("/confirmar-remocao")
+public class ConfirmarRemocaoServlet extends HttpServlet {
     private final GerenciarHorarioService service = new GerenciarHorarioService();
 
     @Override
@@ -16,13 +16,11 @@ public class RemoverHorarioServlet extends HttpServlet {
         String idHorario = req.getParameter("id");
         try {
             int id = Integer.parseInt(idHorario);
-            Horario horario = service.getHorarioById(id);
-            service.removerHorario(horario);
-            
-            
-            resp.sendRedirect(req.getContextPath() + "/editar-horarios");
+            Horario h = service.getHorarioById(id);
+            req.setAttribute("horario", h);
+            req.getRequestDispatcher("/WEB-INF/views/confirmar-remocao.jsp").forward(req, resp);
         } catch (Exception e) {
-            req.setAttribute("erro", "Erro ao remover: " + e.getMessage());
+            req.setAttribute("erro", "Erro ao carregar horário: " + e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/editar-horarios.jsp").forward(req, resp);
         }
     }

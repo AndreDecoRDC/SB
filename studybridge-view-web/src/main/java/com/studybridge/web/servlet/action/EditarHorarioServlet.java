@@ -1,4 +1,4 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.action;
 
 import com.studybridge.domain.model.Horario;
 import com.studybridge.service.GerenciarHorarioService;

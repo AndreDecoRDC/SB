@@ -1,4 +1,4 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.action;
 
 import com.studybridge.service.AulaService;
 import jakarta.servlet.ServletException;
@@ -8,9 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @WebServlet("/solicitarAula")
 public class SolicitarAulaServlet extends HttpServlet {
