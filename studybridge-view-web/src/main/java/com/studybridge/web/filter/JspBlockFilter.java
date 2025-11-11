@@ -12,6 +12,7 @@ se alguem tentar abrir um jsp direto, o filtro manda 404
 isso impede acesso direto aos arquivos de pagina
 so os servlets podem abrir os jsp com forward
 */
+
 @WebFilter("*.jsp")
 public class JspBlockFilter implements Filter {
 
