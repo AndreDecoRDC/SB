@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     verificado BOOLEAN NOT NULL DEFAULT 0,
     token_verificacao VARCHAR(100) UNIQUE
 );
-CREATE TABLE solicitacoes_aula (
+CREATE TABLE IF NOT EXISTS solicitacoes_aula (
    id INT AUTO_INCREMENT PRIMARY KEY,
    id_estudante INT NOT NULL,
    id_monitor INT NULL,
@@ -30,3 +30,8 @@ CREATE TABLE solicitacoes_aula (
        ON DELETE SET NULL
        ON UPDATE CASCADE
 );
+
+USE studybridge;
+SELECT disciplina, data_aula, descricao
+FROM solicitacoes_aula
+ORDER BY id DESC;
