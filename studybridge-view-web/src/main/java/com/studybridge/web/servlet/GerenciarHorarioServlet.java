@@ -76,6 +76,22 @@ public class GerenciarHorarioServlet extends HttpServlet {
             novo.setHoraTermino(termino);
             novo.setDuracaoMedia(duracao);
 
+            List<Horario> existentes = service.listarHorario(monitorId);
+
+            boolean conflito = existentes.stream().anyMatch(h
+                    -> h.getDiaSemana().equals(diaSemana)
+                    && ((inicio.isBefore(h.getHoraTermino()) && termino.isAfter(h.getHoraInicio()))
+                    )
+            );
+
+            if (conflito) {
+                req.setAttribute("erro", "Erro. Este horário entra em conflito com outro já cadastrado.");
+                req.setAttribute("horarios", existentes);
+                req.getRequestDispatcher("/WEB-INF/views/horarios.jsp").forward(req, resp);
+                return;
+            }
+
+
             String mensagem = service.adicionarHorario(novo);
 
             if (mensagem.startsWith("Erro")) {

@@ -84,8 +84,8 @@
                 <li>Nenhum horário cadastrado ainda.</li>
             </c:if>
                 <div class="toolbar" style="display:flex; justify-content:center; gap:1rem; margin-top:1.2rem;">
-                    <a href="${pageContext.request.contextPath}/editar-horarios" class="btn ghost">
-                        Editar
+                    <a href="${pageContext.request.contextPath}/editar-horarios" class="btn">
+                        ✎ 
                     </a>
                 </div> 
         </ul>
