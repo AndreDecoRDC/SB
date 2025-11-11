@@ -1,9 +1,10 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.page;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /*
