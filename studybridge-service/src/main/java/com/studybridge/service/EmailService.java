@@ -6,58 +6,34 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/*
+reestruturei a classe pra evitar redundancia e seguir os principios de poo
+ */
+
 public class EmailService {
 
-    /*
-    essa classe envia emails de verificacao para o usuario depois do cadastro.
-    vou usar a biblioteca Jakarta Mail para conectar ao servidor SMTP do Gmail
-    e mandar um email HTML com o link de confirmacao.
-    o metodo enviarVerificacao() recebe um objeto Usuario (com email e token)
-    e gera o link no formato http://localhost:8080/SB/confirmar?token=XYZ
-    esse link vai ser enviado para o email do usuario, e quando clicar ele confirma a conta.
-     */
-
-    //Email e senha da conta do StudyBridge
     private static final String REMETENTE = "studybridgecft@gmail.com";
     private static final String SENHA = "eqtu ylhn qloi iddx ";
-
-    //configuraçoes do servidor SMTP (Gmail)
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
-    public void enviarVerificacao(Usuario usuario) throws MessagingException, java.io.UnsupportedEncodingException {
-
-        String link = "http://localhost:8080/studybridge/confirmar?token=" + usuario.getTokenVerificacao();
-
-        //configuracoes da conexão SMTP
+    private Session criarSessao() {
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");              //precisa autenticar
-        props.put("mail.smtp.starttls.enable", "true");   //usa criptografia tls
-        props.put("mail.smtp.host", SMTP_HOST);           //servidor smtp
-        props.put("mail.smtp.port", SMTP_PORT);           //porta 587 tls
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", SMTP_HOST);
+        props.put("mail.smtp.port", SMTP_PORT);
 
-        //cria a sessão autenticada com usuario e senha
-        Session session = Session.getInstance(props, new Authenticator() {
+        return Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(REMETENTE, SENHA);
             }
         });
+    }
 
-        //cria a mensagem de email
-        Message mensagem = new MimeMessage(session);
-
-        //define o remetente com nome
-        mensagem.setFrom(new InternetAddress(REMETENTE, "StudyBridge"));
-
-        //define o destinatario
-        mensagem.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse(usuario.getEmail()));
-
-        //define o assunto
-        mensagem.setSubject("Confirmação de email - StudyBridge");
-
-        //corpo html do email
+    public void enviarVerificacao(Usuario usuario) throws MessagingException, java.io.UnsupportedEncodingException {
+        String link = "http://localhost:8080/studybridge/confirmar?token=" + usuario.getTokenVerificacao();
         String corpo = """
             <html>
               <body style="font-family: Arial, sans-serif;">
@@ -70,12 +46,39 @@ public class EmailService {
             </html>
             """.formatted(link, link);
 
-        //define o conteudo da mensagem como html
-        mensagem.setContent(corpo, "text/html; charset=utf-8");
+        enviarEmail(usuario.getEmail(), "Confirmação de email - StudyBridge", corpo);
+    }
 
-        //manda o email
+    public void enviarCodigo2FA(String emailDestino, String codigo)
+            throws MessagingException, java.io.UnsupportedEncodingException {
+
+        String corpo = """
+            <html>
+              <body style="font-family: Arial, sans-serif;">
+                <h2>Seu código de verificação - StudyBridge</h2>
+                <p>Olá!</p>
+                <p>Seu código de verificação é:</p>
+                <h3 style="color:#3366cc;">%s</h3>
+                <p>Ele expira em 5 minutos.</p>
+                <hr>
+                <p>Se você não tentou fazer login, ignore este e-mail.</p>
+              </body>
+            </html>
+            """.formatted(codigo);
+
+        enviarEmail(emailDestino, "Código de verificação - StudyBridge", corpo);
+    }
+
+    private void enviarEmail(String destinatario, String assunto, String corpoHtml)
+            throws MessagingException, java.io.UnsupportedEncodingException {
+
+        Session session = criarSessao();
+        Message mensagem = new MimeMessage(session);
+        mensagem.setFrom(new InternetAddress(REMETENTE, "StudyBridge"));
+        mensagem.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+        mensagem.setSubject(assunto);
+        mensagem.setContent(corpoHtml, "text/html; charset=utf-8");
         Transport.send(mensagem);
-
-        System.out.println("Email de verificação enviado para " + usuario.getEmail());
+        System.out.println("Email enviado para " + destinatario + " com assunto: " + assunto);
     }
 }
