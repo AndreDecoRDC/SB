@@ -15,6 +15,7 @@ filtro que impede o usuario de acessar paginas diretamente pelas urls
 so deixa passar as rotas publicas (index, cadastro, confirmação etc)
 tudo o que for fora do fluxo e redirecionado para o index
 */
+
 @WebFilter("/*")
 public class AcessoDiretoFilter implements Filter {
 
@@ -40,7 +41,13 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/aulas-estudante") ||
                         path.startsWith(req.getContextPath() + "/aulas-monitor") ||
                         path.startsWith(req.getContextPath() + "/avaliar");
-
+                        path.startsWith(req.getContextPath() + "/solicitar") ||
+                        path.startsWith(req.getContextPath() + "/horarios") ||
+                        path.startsWith(req.getContextPath() + "/editar-horarios") ||     
+                        path.startsWith(req.getContextPath() + "/confirmar-remocao") || 
+                        path.startsWith(req.getContextPath() + "/remover-horario") ||     
+                        path.startsWith(req.getContextPath() + "/editar-horario") ||
+                        path.startsWith(req.getContextPath() + "/login");
 
         if (publica) {
             chain.doFilter(request, response); //deixa passar

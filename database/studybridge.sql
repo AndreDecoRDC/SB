@@ -18,3 +18,53 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS monitores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    disciplina VARCHAR(100) NOT NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+    descricao VARCHAR(1000),
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    );
+
+CREATE TABLE IF NOT EXISTS horarios_disponiveis (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    monitor_id INT NOT NULL,
+    dia_da_semana ENUM('Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira') NOT NULL,
+    horario_inicio TIME NOT NULL,
+    horario_termino TIME NOT NULL,
+    duracao_media_aula INT NOT NULL,
+
+    FOREIGN KEY (monitor_id) REFERENCES monitores(id) ON DELETE CASCADE
+    );
+
+CREATE TABLE IF NOT EXISTS solicitacoes_aula (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   id_estudante INT NOT NULL,
+   id_monitor INT NULL,
+   disciplina VARCHAR(100) NOT NULL,
+   descricao TEXT,
+   data_solicitacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   status ENUM('PENDENTE', 'ACEITA', 'RECUSADA', 'CANCELADA', 'CONCLUIDA') NOT NULL DEFAULT 'PENDENTE',
+   data_aula DATETIME NULL,
+   local VARCHAR(200) NULL,
+
+   CONSTRAINT fk_solicitacao_estudante FOREIGN KEY (id_estudante)
+       REFERENCES usuarios(id)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE,
+
+   CONSTRAINT fk_solicitacao_monitor FOREIGN KEY (id_monitor)
+       REFERENCES usuarios(id)
+       ON DELETE SET NULL
+       ON UPDATE CASCADE
+);
+
+USE studybridge;
+SELECT disciplina, data_aula, descricao
+FROM solicitacoes_aula
+ORDER BY id DESC;
