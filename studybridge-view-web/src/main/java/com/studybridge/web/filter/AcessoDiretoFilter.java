@@ -37,6 +37,10 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/cadastrar") ||
                         path.startsWith(req.getContextPath() + "/verificar-email") ||
                         path.startsWith(req.getContextPath() + "/confirmar") ||
+                        path.startsWith(req.getContextPath() + "/login") ||
+                        path.startsWith(req.getContextPath() + "/aulas-estudante") ||
+                        path.startsWith(req.getContextPath() + "/aulas-monitor") ||
+                        path.startsWith(req.getContextPath() + "/avaliar");
                         path.startsWith(req.getContextPath() + "/solicitar") ||
                         path.startsWith(req.getContextPath() + "/horarios") ||
                         path.startsWith(req.getContextPath() + "/editar-horarios") ||     
