@@ -57,9 +57,9 @@ public class VerificarLoginServlet extends HttpServlet {
             request.getSession().removeAttribute("emailLogin");
 
             switch (usuario.getTipoConta()) {
-                case "Estudante" -> response.sendRedirect(request.getContextPath() + "/dashboard-estudante");
-                case "Monitor" -> response.sendRedirect(request.getContextPath() + "/dashboard-monitor");
-                case "Administrador" -> response.sendRedirect(request.getContextPath() + "/dashboard-admin");
+                case "Estudante" -> response.sendRedirect(request.getContextPath() + "/estudante-dashboard");
+                case "Monitor" -> response.sendRedirect(request.getContextPath() + "/monitor-dashboard");
+                case "Administrador" -> response.sendRedirect(request.getContextPath() + "/admin-dashboard");
                 default -> throw new Exception("Tipo de conta inválido.");
             }
 

@@ -40,7 +40,7 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/login") ||
                         path.startsWith(req.getContextPath() + "/aulas-estudante") ||
                         path.startsWith(req.getContextPath() + "/aulas-monitor") ||
-                        path.startsWith(req.getContextPath() + "/avaliar");
+                        path.startsWith(req.getContextPath() + "/avaliar") ||
                         path.startsWith(req.getContextPath() + "/solicitar") ||
                         path.startsWith(req.getContextPath() + "/horarios") ||
                         path.startsWith(req.getContextPath() + "/editar-horarios") ||     
@@ -48,8 +48,10 @@ public class AcessoDiretoFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/remover-horario") ||     
                         path.startsWith(req.getContextPath() + "/editar-horario") ||
                         path.startsWith(req.getContextPath() + "/autenticar") ||
-                        path.startsWith(req.getContextPath() + "/verificar-login") ||
-                        path.startsWith(req.getContextPath() + "/login");
+                        path.startsWith(req.getContextPath() + "/estudante-dashboard") ||
+                        path.startsWith(req.getContextPath() + "/monitor-dashboard") ||
+                        path.startsWith(req.getContextPath() + "/admin-dashboard") ||
+                        path.startsWith(req.getContextPath() + "/verificar-login");
 
 
         if (publica) {
