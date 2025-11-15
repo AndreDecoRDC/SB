@@ -15,6 +15,7 @@ e cada tipo de conta só acessa a sua própria dashboard
 
 */
 
+
 @WebFilter("/*")
 public class SessionFilter implements Filter {
 
@@ -52,23 +53,24 @@ public class SessionFilter implements Filter {
         }
 
         Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioLogado");
-
-        if(usuario == null) {
+        if (usuario == null) {
             res.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
-        if(path.contains("/estudante-dashboard") && !usuario.getTipoConta().equals("Estudante")) {
+        String tipo = usuario.getTipoConta();
+
+        if (path.contains("/estudante/") && !tipo.equals("Estudante")) {
             res.sendError(403);
             return;
         }
 
-        if(path.contains("/monitor-dashboard") && !usuario.getTipoConta().equals("Monitor")) {
+        if (path.contains("/monitor/") && !tipo.equals("Monitor")) {
             res.sendError(403);
             return;
         }
 
-        if(path.contains("/admin-dashboard") && !usuario.getTipoConta().equals("Administrador")) {
+        if (path.contains("/admin/") && !tipo.equals("Administrador")) {
             res.sendError(403);
             return;
         }

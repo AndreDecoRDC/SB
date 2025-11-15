@@ -84,7 +84,7 @@
 </head>
 <body>
 <header class="header">
-    <a href="monitor-dashboard.jsp" class="brand">
+    <a href="monitor/monitor-dashboard.jsp" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">

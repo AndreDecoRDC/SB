@@ -7,13 +7,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet("/admin-dashboard")
+
+@WebServlet("/admin/dashboard")
 public class AdminDashboardPageServlet extends PageServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        render(req, res, "admin-dashboard");
+        render(req, res, "admin/admin-dashboard");
     }
 }
