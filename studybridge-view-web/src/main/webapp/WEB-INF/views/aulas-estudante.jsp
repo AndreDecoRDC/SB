@@ -17,7 +17,7 @@
             <a class="btn" href="aulas-estudante.html">Aulas</a>
             <a class="btn" href="perfil-estudante.html">Perfil</a>
             <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>
-            <a class="btn" href="index.html">Sair</a>
+            <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
         </nav>
     </header>
 

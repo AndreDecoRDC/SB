@@ -10,32 +10,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/verificar-login")
+@WebServlet("/verificar-login-action")
 public class VerificarLoginServlet extends HttpServlet {
 
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/views/verificar-login.jsp").forward(request, response);
-    }
+        String email = (String) req.getSession().getAttribute("emailLogin");
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        //pega o email salvo na sessao na etapa anterior
-        String email = (String) request.getSession().getAttribute("emailLogin");
-
-        //se tentar acessar sem passar pelo login volta pro inicio
         if (email == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            res.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
-        String codigo = request.getParameter("codigo");
+        String codigo = req.getParameter("codigo");
 
         try {
             Usuario usuario = usuarioDAO.buscarPorEmail(email);
@@ -44,29 +35,26 @@ public class VerificarLoginServlet extends HttpServlet {
                 throw new Exception("Usuário não encontrado.");
             }
 
-            boolean valido = usuarioDAO.validarCodigo2FA(usuario.getId(), codigo);
-
-            if (!valido) {
+            if (!usuarioDAO.validarCodigo2FA(usuario.getId(), codigo)) {
                 throw new Exception("Código inválido ou expirado.");
             }
 
             usuarioDAO.limparCodigo2FA(usuario.getId());
 
-            request.getSession().setAttribute("usuarioLogado", usuario);
+            req.getSession().setAttribute("usuarioLogado", usuario);
 
-            request.getSession().removeAttribute("emailLogin");
+            req.getSession().removeAttribute("emailLogin");
 
             switch (usuario.getTipoConta()) {
-                case "Estudante" -> response.sendRedirect(request.getContextPath() + "/estudante-dashboard");
-                case "Monitor" -> response.sendRedirect(request.getContextPath() + "/monitor-dashboard");
-                case "Administrador" -> response.sendRedirect(request.getContextPath() + "/admin-dashboard");
+                case "Estudante" -> res.sendRedirect(req.getContextPath() + "/estudante-dashboard");
+                case "Monitor" -> res.sendRedirect(req.getContextPath() + "/monitor-dashboard");
+                case "Administrador" -> res.sendRedirect(req.getContextPath() + "/admin-dashboard");
                 default -> throw new Exception("Tipo de conta inválido.");
             }
 
         } catch (Exception e) {
-
-            request.setAttribute("erro", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/verificar-login.jsp").forward(request, response);
+            req.setAttribute("erro", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/verificar-login.jsp").forward(req, res);
         }
     }
 }

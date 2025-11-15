@@ -23,7 +23,7 @@
         <h2 class="card-title">Digite o código</h2>
         <p class="subtle">Enviamos um código de 6 dígitos para seu e-mail.</p>
 
-        <form method="post" action="${pageContext.request.contextPath}/verificar-login">
+        <form method="post" action="${pageContext.request.contextPath}/verificar-login-action">
 
             <label class="field">
                 <span>Código de verificação</span>

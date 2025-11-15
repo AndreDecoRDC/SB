@@ -5,12 +5,14 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /*
-protege as páginas privadas
+protege as paginas privadas
 somente usuarios logados podem acessar suas dashboards
 e cada tipo de conta só acessa a sua própria dashboard
+
 */
 
 @WebFilter("/*")
@@ -25,7 +27,6 @@ public class SessionFilter implements Filter {
 
         String path = req.getRequestURI();
 
-        //paginas publicas = liberadas
         boolean publica =
                 path.equals(req.getContextPath() + "/") ||
                         path.startsWith(req.getContextPath() + "/css/") ||
@@ -37,40 +38,41 @@ public class SessionFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/autenticar") ||
                         path.startsWith(req.getContextPath() + "/verificar-login") ||
                         path.startsWith(req.getContextPath() + "/verificar-email") ||
-                        path.startsWith(req.getContextPath() + "/confirmar");
+                        path.startsWith(req.getContextPath() + "/confirmar") ||
+                        path.startsWith(req.getContextPath() + "/logout");
 
-        //se for pública, libera
         if (publica) {
+
+            if (!path.contains("/verificar-login")) {
+                req.getSession().removeAttribute("emailLogin");
+            }
+
             chain.doFilter(request, response);
             return;
         }
 
-        //verifica sessao para o resto
         Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioLogado");
 
-        if (usuario == null) {
-            //não está logado volta pro início
+        if(usuario == null) {
             res.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
-        //verificacoes por tipo de conta
-        if (path.contains("/estudante-dashboard") && !usuario.getTipoConta().equals("Estudante")) {
+        if(path.contains("/estudante-dashboard") && !usuario.getTipoConta().equals("Estudante")) {
             res.sendError(403);
             return;
         }
 
-        if (path.contains("/monitor-dashboard") && !usuario.getTipoConta().equals("Monitor")) {
+        if(path.contains("/monitor-dashboard") && !usuario.getTipoConta().equals("Monitor")) {
             res.sendError(403);
             return;
         }
 
-        if (path.contains("/admin-dashboard") && !usuario.getTipoConta().equals("Administrador")) {
+        if(path.contains("/admin-dashboard") && !usuario.getTipoConta().equals("Administrador")) {
             res.sendError(403);
             return;
         }
 
-        //passou em todas as verificações
         chain.doFilter(request, response);
     }
 }

@@ -94,7 +94,7 @@
         <a class="notif" href="#notifPanel">
             <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
         </a>
-        <a class="btn" href="index.jsp">Sair</a>
+        <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
 
