@@ -20,7 +20,20 @@ CREATE TABLE IF NOT EXISTS monitores (
     descricao VARCHAR(1000),
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-    );
+);
+
+CREATE TABLE IF NOT EXISTS estudantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    curso VARCHAR(100) NOT NULL,
+    ano_turma VARCHAR(100) NOT NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+    descricao VARCHAR(1000),
+    
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCATE
+);
 
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     id INT AUTO_INCREMENT PRIMARY KEY,

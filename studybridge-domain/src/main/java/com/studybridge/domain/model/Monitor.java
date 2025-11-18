@@ -4,10 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Monitor extends Usuario {
+   private String nome;
+   private String telefone;
    private String disciplina;
    private String campus;
    private String descricao;
    private List<Horario> horarios = new ArrayList<>();
+   
+   public String getNome() {
+       return nome;
+   }
+   public void setNome(String nome) {
+       this.nome = nome;
+   }
+   
+   public String getTelefone() {
+       return telefone;
+   }
+   public void setTelefone(String telefone) {
+       this.telefone = telefone;
+   }
    
    public String getDisciplina() {
        return disciplina;
