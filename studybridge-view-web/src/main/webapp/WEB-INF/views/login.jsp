@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/index.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
 </header>
@@ -17,20 +17,32 @@
 <main class="container" style="max-width:420px;">
     <h2>Entrar</h2>
     <p class="subtle">Acesse com seu e-mail</p>
-    <form class="card">
+
+    <form class="card" method="post" action="${pageContext.request.contextPath}/autenticar">
+
         <label class="field">
             <span>Email</span>
-            <input class="input" type="email" placeholder="exemplo@gmail.com">
+            <input class="input" type="email" name="email"
+                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>"
+                   placeholder="exemplo@gmail.com" required>
         </label>
 
         <label class="field">
             <span>Senha</span>
-            <input class="input" type="password" placeholder="Digite sua senha">
+            <input class="input" type="password" name="senha"
+                   value="<%= request.getAttribute("senha") != null ? request.getAttribute("senha") : "" %>"
+                   placeholder="Digite sua senha" required>
         </label>
 
         <div class="toolbar">
-            <a class="btn" href="${pageContext.request.contextPath}/verificar-login.jsp">Entrar</a>
+            <button class="btn" type="submit">Entrar</button>
         </div>
+
+        <% if (request.getAttribute("erro") != null) { %>
+        <p style="color:#c62828; margin-top:1rem; text-align:center;">
+            <%= request.getAttribute("erro") %>
+        </p>
+        <% } %>
 
         <p class="subtle">
             Esqueceu sua senha?
@@ -41,6 +53,7 @@
             Não tem uma conta?
             <a href="${pageContext.request.contextPath}/register">Cadastrar</a>
         </p>
+
     </form>
 </main>
 

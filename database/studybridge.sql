@@ -5,10 +5,13 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha_hash VARCHAR(255) NOT NULL,
-    tipo_conta ENUM('Estudante','Monitor') NOT NULL,
+    tipo_conta ENUM('Estudante','Monitor','Administrador') NOT NULL,
     verificado BOOLEAN NOT NULL DEFAULT 0,
-    token_verificacao VARCHAR(100) UNIQUE
+    token_verificacao VARCHAR(100) UNIQUE,
+    codigo_2fa VARCHAR(6),
+    expiracao_2fa DATETIME
 );
+
 CREATE TABLE IF NOT EXISTS avaliacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -67,4 +70,9 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
 USE studybridge;
 SELECT disciplina, data_aula, descricao
 FROM solicitacoes_aula
+ORDER BY id DESC;
+
+USE studybridge;
+SELECT id, email, tipo_conta, verificado, token_verificacao, codigo_2fa, expiracao_2fa
+FROM usuarios
 ORDER BY id DESC;

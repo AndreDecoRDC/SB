@@ -2,7 +2,7 @@ package com.studybridge.service;
 
 import com.studybridge.dao.UsuarioDAO;
 import com.studybridge.domain.model.Usuario;
-
+import com.studybridge.service.util.HashUtil;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ public class CadastroService {
         if (usuarioDAO.existePorEmail(email))
             throw new Exception("Email já cadastrado");
 
-        String senhaHash = gerarHash(senha);
+        String senhaHash = HashUtil.gerarHash(senha);
 
         Usuario novoUsuario = new Usuario(email, senhaHash, tipoConta);
 
@@ -64,20 +64,5 @@ public class CadastroService {
         } catch (SQLException e) {
             throw new Exception("Erro ao confirmar email no banco", e);
         }
-    }
-
-    /*
-    importei a java.security.MessageDigest que tem metodo pra criptografar com base em um algoritmo específico
-    nesse caso usei o algoritmo SHA-256, que gera um hash fixo a partir da senha digitada
-    o digest() transforma a senha em um array de bytes, e depois converto esses bytes para hexadecimal
-    usando o HexFormat.of().formatHex().
-    esse valor é o hash da senha, que é o que vai ser salvo no banco no lugar da senha original
-    assim, mesmo que alguém veja o banco, não consegue descobrir a senha verdadeira
-    resumindo: gerarHash() pega a senha normal, aplica SHA-256, devolve uma versão segura em formato de texto
-    */
-    private String gerarHash(String senha) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = md.digest(senha.getBytes(StandardCharsets.UTF_8));
-        return HexFormat.of().formatHex(hashBytes);
     }
 }
