@@ -30,7 +30,7 @@
         <a class="btn" href="#">Aulas</a>
         <a class="btn" href="${pageContext.request.contextPath}/horarios">Horários</a>
         <a class="btn" href="#">Perfil</a>
-        <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
+        <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
 
