@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class AulaService {
 
@@ -41,4 +42,39 @@ public class AulaService {
             throw new Exception("Erro ao salvar solicitação  no banco", e);
         }
     }
+    
+    public List<Aula> listarAulasDoEstudante(int idEstudante) throws Exception {
+        try {
+            return aulaDAO.listarPorEstudante(idEstudante);
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar aulas.", e);
+        }
+    }
+    
+    public List<Aula> listarAulasDoMonitor(int idMonitor) throws Exception {
+        try {
+            return aulaDAO.listarPorMonitor(idMonitor);
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar aulas do monitor.", e);
+        }
+    }
+    
+    //estudante faz isso
+    public void cancelarAula(int idAula) throws Exception {
+        try {
+            aulaDAO.cancelar(idAula);
+        } catch (SQLException e) {
+            throw new Exception("Erro ao cancelar aula.", e);
+        }
+    }
+    
+    //monitor faz isso
+    public void recusarAula(int idAula) throws Exception {
+        try {
+            aulaDAO.recusar(idAula);
+        } catch (SQLException e) {
+            throw new Exception("Erro ao recusar aula.", e);
+        }
+    }
+
 }
