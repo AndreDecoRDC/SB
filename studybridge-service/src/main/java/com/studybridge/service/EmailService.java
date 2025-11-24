@@ -4,11 +4,13 @@ import com.studybridge.domain.model.Usuario;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 /*
 reestruturei a classe pra evitar redundancia e seguir os principios de poo
- */
+*/
 
 public class EmailService {
 
@@ -69,8 +71,30 @@ public class EmailService {
         enviarEmail(emailDestino, "Código de verificação - StudyBridge", corpo);
     }
 
+    public void enviarLinkRedefinicao(String emailDestino, String token)
+            throws MessagingException, UnsupportedEncodingException {
+
+        String link = "http://localhost:8080/studybridge/redefinir-senha?token=" + token;
+
+        String corpo = """
+        <html>
+          <body style="font-family: Arial, sans-serif;">
+            <h2>Redefinição de senha - StudyBridge</h2>
+            <p>Você solicitou redefinir sua senha.</p>
+            <p>Clique no link abaixo para continuar:</p>
+            <p><a href="%s" target="_blank">%s</a></p>
+            <hr>
+            <p>Se você não solicitou isso, simplesmente ignore este e-mail.</p>
+          </body>
+        </html>
+        """.formatted(link, link);
+
+        enviarEmail(emailDestino, "Redefinição de senha - StudyBridge", corpo);
+    }
+
+
     private void enviarEmail(String destinatario, String assunto, String corpoHtml)
-            throws MessagingException, java.io.UnsupportedEncodingException {
+            throws MessagingException, UnsupportedEncodingException {
 
         Session session = criarSessao();
         Message mensagem = new MimeMessage(session);
