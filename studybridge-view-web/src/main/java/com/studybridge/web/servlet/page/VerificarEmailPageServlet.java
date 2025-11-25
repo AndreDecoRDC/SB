@@ -1,8 +1,7 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.page;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,20 +15,14 @@ serve pra manter o fluxo certo do cadastro e impedir acesso direto a tela
 */
 
 @WebServlet("/verificar-email")
-public class VerificarEmailPageServlet extends HttpServlet {
+public class VerificarEmailPageServlet extends PageServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        String email = request.getParameter("email");
-        request.setAttribute("email", email);
+        String email = req.getParameter("email");
+        req.setAttribute("email", email);
 
-        if (email == null || email.isBlank()) {
-            //redireciona pro início se a pessoa tentou entrar pela url
-            response.sendRedirect(request.getContextPath() + "/");
-            return;
-        }
-
-        request.getRequestDispatcher("/WEB-INF/views/verificar-email.jsp").forward(request, response);
+        render(req, res, "verificar-email");
     }
 }

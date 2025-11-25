@@ -1,10 +1,10 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.page;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 /*
@@ -13,11 +13,12 @@ ele so mostra a pagina inicial index.jsp usando forward
 isso existe pra controlar o acesso ao jsp que fica dentro do web-inf
 */
 @WebServlet("")
-public class HomeServlet extends HttpServlet {
+public class HomePageServlet extends PageServlet {
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        //pra mandar o usuario direto pro index
-        request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+
+        render(req, res, "index");
     }
 }

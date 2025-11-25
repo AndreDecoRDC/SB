@@ -1,4 +1,4 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.action;
 
 import com.studybridge.service.CadastroService;
 import jakarta.servlet.ServletException;
@@ -49,6 +49,11 @@ public class CadastroServlet extends HttpServlet {
 
         } catch (Exception e) {
             //se der errado, retorna o erro e volta para a página de cadastro
+            request.setAttribute("email", email);
+            request.setAttribute("senha", senha);
+            request.setAttribute("confirmarSenha", confirmar);
+            request.setAttribute("tipoConta", tipo);
+
             request.setAttribute("erro", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
         }
