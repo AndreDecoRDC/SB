@@ -18,6 +18,13 @@
     <h2>Entrar</h2>
     <p class="subtle">Acesse com seu e-mail</p>
 
+    <%-- MENSAGEM DE SUCESSO DEPOIS DA REDEFINIÇÃO --%>
+    <% if ("1".equals(request.getParameter("senhaRedefinida"))) { %>
+    <p class="success" style="text-align:center; margin-bottom:1rem;">
+        Sua senha foi redefinida com sucesso! Faça login para continuar.
+    </p>
+    <% } %>
+
     <form class="card" method="post" action="${pageContext.request.contextPath}/autenticar">
 
         <label class="field">
@@ -38,6 +45,7 @@
             <button class="btn" type="submit">Entrar</button>
         </div>
 
+        <%-- ERRO DO LOGIN --%>
         <% if (request.getAttribute("erro") != null) { %>
         <p style="color:#c62828; margin-top:1rem; text-align:center;">
             <%= request.getAttribute("erro") %>
@@ -46,7 +54,7 @@
 
         <p class="subtle">
             Esqueceu sua senha?
-            <a href="${pageContext.request.contextPath}/recuperar.jsp">Redefinir</a>
+            <a href="${pageContext.request.contextPath}/redefinir-senha">Redefinir</a>
         </p>
 
         <p class="subtle">

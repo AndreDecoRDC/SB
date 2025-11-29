@@ -33,7 +33,11 @@ public class SessionFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/verificar-login") ||
                         path.startsWith(req.getContextPath() + "/verificar-email") ||
                         path.startsWith(req.getContextPath() + "/confirmar") ||
-                        path.startsWith(req.getContextPath() + "/logout");
+                        path.startsWith(req.getContextPath() + "/logout") ||
+                        path.startsWith(req.getContextPath() + "/redefinir-senha") ||
+                        path.startsWith(req.getContextPath() + "/redefinir-senha-action") ||
+                        path.startsWith(req.getContextPath() + "/nova-senha") ||
+                        path.startsWith(req.getContextPath() + "/nova-senha-action");
 
         if (publica) {
 

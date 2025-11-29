@@ -74,7 +74,7 @@ public class EmailService {
     public void enviarLinkRedefinicao(String emailDestino, String token)
             throws MessagingException, UnsupportedEncodingException {
 
-        String link = "http://localhost:8080/studybridge/redefinir-senha?token=" + token;
+        String link = "http://localhost:8080/studybridge/nova-senha?token=" + token;
 
         String corpo = """
         <html>

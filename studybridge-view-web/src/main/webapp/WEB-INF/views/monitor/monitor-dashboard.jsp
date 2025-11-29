@@ -12,7 +12,7 @@
 <body>
 
 <header class="header">
-    <a href="${pageContext.request.contextPath}/monitor-dashboard" class="brand">
+    <a href="${pageContext.request.contextPath}/monitor/dashboard" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
