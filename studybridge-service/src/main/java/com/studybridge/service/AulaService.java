@@ -43,7 +43,7 @@ public class AulaService {
         }
     }
     
-    public List<Aula> listarAulasDoEstudante(int idEstudante) throws Exception {
+    public List<Aula> listarAulasDoEstudante(Integer idEstudante) throws Exception {
         try {
             return aulaDAO.listarPorEstudante(idEstudante);
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class AulaService {
         }
     }
     
-    public List<Aula> listarAulasDoMonitor(int idMonitor) throws Exception {
+    public List<Aula> listarAulasDoMonitor(Integer idMonitor) throws Exception {
         try {
             return aulaDAO.listarPorMonitor(idMonitor);
         } catch (SQLException e) {
