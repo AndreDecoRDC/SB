@@ -13,6 +13,6 @@ public class SolicitarAulaPageServlet extends PageServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        render(req, res, "solicitar");
+        render(req, res, "register");
     }
 }

@@ -13,5 +13,6 @@
         <module name="studybridge-dao" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="25" />
   </component>
 </project>
