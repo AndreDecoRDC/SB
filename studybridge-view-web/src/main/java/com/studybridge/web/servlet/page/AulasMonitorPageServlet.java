@@ -1,15 +1,15 @@
 package com.studybridge.web.servlet.page;
 
-import com.studybridge.domain.model.Usuario;
 import com.studybridge.service.AulaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
-@WebServlet("/monitor/dashboard")
-public class MonitorDashboardPageServlet extends PageServlet {
+@WebServlet("/monitor/aulas")
+public class AulasMonitorPageServlet extends PageServlet {
 
     private final AulaService aulaService = new AulaService();
 
@@ -18,22 +18,13 @@ public class MonitorDashboardPageServlet extends PageServlet {
             throws ServletException, IOException {
 
         try {
-
-            Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioLogado");
-
-            if (usuario == null) {
-                res.sendRedirect(req.getContextPath() + "/login");
-                return;
-            }
-
-            String emailMonitor = usuario.getEmail();
-
-            req.setAttribute("proximaAula", aulaService.getProximaAula(emailMonitor));
-
+            req.setAttribute("solicitacoesPendentes", aulaService.listarSolicitacoesPendentes());
+            req.setAttribute("aulasAceitas", aulaService.listarAceitas());
         } catch (Exception e) {
             req.setAttribute("erro", e.getMessage());
         }
 
-        render(req, res, "monitor/dashboard");
+        render(req, res, "monitor/aulas-monitor");
     }
 }
+

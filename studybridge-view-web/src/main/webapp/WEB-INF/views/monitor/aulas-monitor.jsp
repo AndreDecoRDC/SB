@@ -1,3 +1,5 @@
+<%@ page import="com.studybridge.domain.model.Aula" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="pt-BR">
@@ -84,19 +86,21 @@
 </head>
 <body>
 <header class="header">
-    <a href="monitor/monitor-dashboard.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/monitor/dashboard" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
+
     <nav class="nav">
-        <a class="btn" href="aulas-monitor.jsp">Aulas</a>
-        <a class="btn" href="horarios.jsp">Horários</a>
-        <a class="btn" href="perfil-monitor.jsp">Perfil</a>
+        <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas">Aulas</a>
+        <a class="btn" href="${pageContext.request.contextPath}/monitor/horarios">Horários</a>
+        <a class="btn" href="${pageContext.request.contextPath}/monitor/perfil">Perfil</a>
         <a class="notif" href="#notifPanel">
             <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
         </a>
         <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
+
 
 <main class="container">
     <h2>Minhas Aulas</h2>
@@ -105,37 +109,96 @@
         <div class="aulas-section">
             <h3>Solicitações Pendentes</h3>
             <table>
-                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th><th></th></tr></thead>
+                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th><th>Denúncias</th></tr></thead>
                 <tbody>
+                <%
+                    List<Aula> pendentes = (List<Aula>) request.getAttribute("solicitacoesPendentes");
+                    if (pendentes == null || pendentes.isEmpty()) {
+                %>
                 <tr>
-                    <td><a href="#perfilModalMaria" class="nome-link">Maria Souza</a></td>
-                    <td>Física</td>
-                    <td>18/10/2025</td>
-                    <td><span class="status wait">Pendente</span></td>
-                    <td>
-                        <a class="btn light" href="#detalhesAulaMaria">Detalhes</a>
-                        <a class="btn" href="#">Confirmar</a>
+                    <td colspan="6" style="text-align:center; padding:1rem; color:#777;">
+                        Nenhuma solicitação pendente no momento.
                     </td>
-                    <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
                 </tr>
+                <%
+                } else {
+                    for (Aula s : pendentes) {
+                %>
+                <tr>
+                    <td><span class="nome-link"><%= s.getId_estudante() %></span></td>
+                    <td><%= s.getDisciplina() %></td>
+                    <td><%= s.getData_aula() != null ? s.getData_aula().toString() : "—" %></td>
+                    <td><span class="status wait"><%= s.getStatus() %></span></td>
+
+                    <td>
+                        <button type="button" class="btn confirmar" onclick="abrirModal(<%= s.getId() %>, `<%= s.getDescricao() %>`);">Confirmar</button>
+
+                    </td>
+
+                    <td>
+                        <a href="#denunciaModal">
+                            <img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"/>
+                        </a>
+                    </td>
+                </tr>
+                <%
+                        }
+                    }
+                %>
                 </tbody>
+
             </table>
         </div>
 
         <div class="aulas-section">
-            <h3>Aulas Concluídas</h3>
+            <h3>Aulas Aceitas</h3>
             <table>
-                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Média</th><th>Ações</th><th></th></tr></thead>
+                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Status</th><th></th><th>Ações</th></tr></thead>
                 <tbody>
+                <%
+                    List<Aula> aceitas = (List<Aula>) request.getAttribute("aulasAceitas");
+                    if (aceitas == null || aceitas.isEmpty()) {
+                %>
                 <tr>
-                    <td><a href="#perfilModalJoao" class="nome-link">João Pedro</a></td>
-                    <td>Matemática</td>
-                    <td>20/10/2025</td>
-                    <td>⭐ 4.3</td>
-                    <td><a class="btn light" href="#avaliarAluno1">Avaliar</a></td>
-                    <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
+                    <td colspan="5" style="text-align:center; padding:1rem; color:#777;">
+                        Nenhuma aula aceita ainda.
+                    </td>
                 </tr>
+                <%
+                } else {
+                    for (Aula a : aceitas) {
+                %>
+                <tr>
+                    <td><%= a.getId_estudante() %></td>
+                    <td><%= a.getDisciplina() %></td>
+                    <td><%= a.getData_aula() != null ? a.getData_aula().toString() : "—" %></td>
+                    <td><span class="status ok"><%= a.getStatus() %></span></td>
+
+                    <td>
+                    <td>
+                    <button type="button" class="btn light"
+                            onclick="abrirModalDetalhes(`<%= a.getDescricao() %>`, '<%= a.getDisciplina() %>', '<%= a.getId_estudante() %>', '<%= a.getData_aula() %>')">
+                        Detalhes
+                    </button>
+
+
+                    <form method="post" action="${pageContext.request.contextPath}/monitor/deletar-aula"
+                              style="display:inline;">
+                            <input type="hidden" name="id" value="<%= a.getId() %>">
+                            <button class="btn" style="background:#c62828; color:white; padding:4px 10px;">
+                                X
+                            </button>
+                        </form>
+                    </td>
+
+                </tr>
+
+                <%
+                        }
+                    }
+                %>
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -239,6 +302,74 @@
         <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
     </div>
 </div>
+<div id="modalDetalhes" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Detalhes da Aula</h3>
+
+        <p><b>Aluno:</b> <span id="detalhesAluno"></span></p>
+        <p><b>Disciplina:</b> <span id="detalhesDisciplina"></span></p>
+        <p><b>Data da Aula:</b> <span id="detalhesData"></span></p>
+        <p><b>Mensagem enviada:</b></p>
+        <p id="detalhesDescricao" style="margin:10px 0;"></p>
+
+        <div class="toolbar">
+            <button class="btn light" onclick="fecharDetalhes()">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalConfirmar" class="modal" style="display:none;">
+    <div class="modal-content">
+
+        <h3>Confirmar Solicitação</h3>
+
+        <p><b>Mensagem do aluno:</b></p>
+        <p id="descricaoModal" style="margin:10px 0;"></p>
+
+        <form id="formAceitar" method="post"
+              action="${pageContext.request.contextPath}/monitor/aceitar-solicitacao">
+            <input type="hidden" name="id" id="idAulaAceitar">
+            <button class="btn" type="submit">Aceitar</button>
+        </form>
+
+        <form id="formRecusar" method="post"
+              action="${pageContext.request.contextPath}/monitor/recusar-solicitacao">
+            <input type="hidden" name="id" id="idAulaRecusar">
+            <button class="btn ghost" type="submit" style="margin-top:10px;">Recusar</button>
+        </form>
+
+        <div class="toolbar">
+            <button class="btn light" style="margin-top:10px;" onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModal(id, descricao) {
+        document.getElementById('idAulaAceitar').value = id;
+        document.getElementById('idAulaRecusar').value = id;
+        document.getElementById('descricaoModal').textContent = descricao;
+        document.getElementById('modalConfirmar').style.display = 'block';
+    }
+
+    function fecharModal() {
+        document.getElementById('modalConfirmar').style.display = 'none';
+
+    }
+        function abrirModalDetalhes(descricao, disciplina, aluno, data) {
+        document.getElementById("detalhesDescricao").textContent = descricao;
+        document.getElementById("detalhesDisciplina").textContent = disciplina;
+        document.getElementById("detalhesAluno").textContent = aluno;
+        document.getElementById("detalhesData").textContent = data;
+
+        document.getElementById("modalDetalhes").style.display = "block";
+    }
+
+        function fecharDetalhes() {
+        document.getElementById("modalDetalhes").style.display = "none";
+    }
+
+</script>
 
 <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
 </body>

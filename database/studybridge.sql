@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS horarios_disponiveis (
 
 CREATE TABLE IF NOT EXISTS solicitacoes_aula (
                                                  id INT AUTO_INCREMENT PRIMARY KEY,
-                                                 id_estudante INT NOT NULL,
-                                                 id_monitor INT NULL,
+                                                 id_estudante VARCHAR(30) NOT NULL,
+                                                 id_monitor VARCHAR(30) NULL,
                                                  disciplina VARCHAR(100) NOT NULL,
     descricao TEXT,
     data_solicitacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
