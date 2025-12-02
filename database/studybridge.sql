@@ -66,6 +66,18 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
        ON DELETE SET NULL
        ON UPDATE CASCADE
 );
+CREATE TABLE IF NOT EXISTS denuncias(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_denunciante_id  INT NOT NULL,
+    usuario_denunciado_id INT NOT NULL,
+    motivo VARCHAR(50) NOT NULL,
+    descricao TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
+    CONSTRAINT fk_denuncia_denunciante
+        FOREIGN KEY(usuario_denunciante_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    CONSTRAINT fk_denuncia_denunciado
+        FOREIGN KEY(usuario_denunciado_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
 
 USE studybridge;
 SELECT disciplina, data_aula, descricao

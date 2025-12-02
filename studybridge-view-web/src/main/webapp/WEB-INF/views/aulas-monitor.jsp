@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!doctype html>
+< !DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Aulas — Monitor | StudyBridge</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aulas — Estudante | StudyBridge</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
     <style>
         .aulas-container {
@@ -39,36 +39,25 @@
             border-bottom: 1px solid #e5e7eb;
             text-align: center;
         }
-        th {
-            background: #f3f4f6;
-            color: #374151;
-        }
-        .status.ok {
-            color: #16a34a;
-            font-weight: 600;
-        }
-        .status.wait {
-            color: #ca8a04;
-            font-weight: 600;
-        }
+        th { background: #f3f4f6; color: #374151; }
+        .status.ok { color: #16a34a; font-weight: 600; }
+        .status.wait { color: #ca8a04; font-weight: 600; }
+
         .nome-link {
             color: #1e3fae;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
         }
-        .nome-link:hover {
-            text-decoration: underline;
-        }
+        .nome-link:hover { text-decoration: underline; }
+
         .stars10 {
             display: flex;
             flex-direction: row-reverse;
             justify-content: center;
             gap: 0.1rem;
         }
-        .stars10 input {
-            display: none;
-        }
+        .stars10 input { display: none; }
         .stars10 label {
             font-size: 1.5rem;
             color: #d1d5db;
@@ -84,23 +73,22 @@
 </head>
 <body>
 <header class="header">
-    <a href="monitor/monitor-dashboard.jsp" class="brand">
+    <a href="estudante-dashboard.html" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
-        <a class="btn" href="aulas-monitor.jsp">Aulas</a>
-        <a class="btn" href="horarios.jsp">Horários</a>
-        <a class="btn" href="perfil-monitor.jsp">Perfil</a>
-        <a class="notif" href="#notifPanel">
-            <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
-        </a>
+        <a class="btn" href="busca.html">Buscar Monitores</a>
+        <a class="btn" href="aulas-estudante.html">Aulas</a>
+        <a class="btn" href="perfil-estudante.html">Perfil</a>
+        <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>
         <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
 
 <main class="container">
-    <h2>Minhas Aulas</h2>
-    <p class="subtle">Gerencie solicitações, confirme aulas e veja o perfil dos alunos.</p>
+    <h2>Suas Aulas</h2>
+    <p class="subtle">Veja suas aulas, detalhes e avaliações de monitores.</p>
+
     <div class="aulas-container">
         <div class="aulas-section">
             <h3>Solicitações Pendentes</h3>
@@ -116,24 +104,48 @@
                         <a class="btn light" href="#detalhesAulaMaria">Detalhes</a>
                         <a class="btn" href="#">Confirmar</a>
                     </td>
-                    <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
+                    <td>
+                        <a class="btn-denunciar"
+                           href="#denunciaModal"
+                           data-denunciado-id="${aula.monitor.id}"
+                           data-aula-id="${aula.id}">
+                            <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
+        <div class="aulas-container">
         <div class="aulas-section">
             <h3>Aulas Concluídas</h3>
             <table>
-                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Média</th><th>Ações</th><th></th></tr></thead>
+                <thead>
+                <tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Avaliação</th><th>Ações</th></tr>
+                </thead>
                 <tbody>
                 <tr>
-                    <td><a href="#perfilModalJoao" class="nome-link">João Pedro</a></td>
+                    <td>João Pedro</td>
                     <td>Matemática</td>
-                    <td>20/10/2025</td>
-                    <td>⭐ 4.3</td>
-                    <td><a class="btn light" href="#avaliarAluno1">Avaliar</a></td>
-                    <td><a href="#denunciaModal"><img src="Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar"></a></td>
+                    <td>02/10/2025</td>
+                    <td>
+                        <% Double media = (Double) request.getAttribute("media");
+                            if (media != null) { %>
+                        ⭐ <%= String.format("%.1f", media) %>
+                        <% } else { %>
+                        —
+                        <% } %>
+                    </td>
+                    <td><a class="btn light" href="#avaliar1">Avaliar</a></td>
+                    <td>
+                        <a class="btn-denunciar"
+                           href="#denunciaModal"
+                           data-denunciado-id="${aula.monitor.id}"
+                           data-aula-id="${aula.id}">
+                            <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -141,102 +153,41 @@
     </div>
 </main>
 
-<div id="detalhesAulaMaria" class="modal">
+<div id="avaliar1" class="modal">
     <div class="modal-content">
-        <h3>Detalhes da Solicitação</h3>
-        <p><strong>Aluno:</strong> Maria Souza</p>
-        <p><strong>Disciplina:</strong> Física</p>
-        <p><strong>Data e horário:</strong> 18/10/2025 às 14:00</p>
-        <p><strong>Mensagem enviada:</strong> “Mensagem genérica do aluno descrevendo o motivo da solicitação.”</p>
-        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
-    </div>
-</div>
-
-<div id="avaliarAluno1" class="modal">
-    <div class="modal-content">
-        <h3>Avaliar Estudante</h3>
+        <h3>Avaliar Monitor</h3>
         <form action="${pageContext.request.contextPath}/avaliar" method="post">
-            <input type="hidden" name="tipoConta" value="monitor">
-            <input type="hidden" name="idAluno" value="1">
-            <div class="stars10">
-                <input type="radio" id="t5" name="nota" value="5"><label for="t5">★</label>
-                <input type="radio" id="t4" name="nota" value="4"><label for="t4">★</label>
-                <input type="radio" id="t3" name="nota" value="3"><label for="t3">★</label>
-                <input type="radio" id="t2" name="nota" value="2"><label for="t2">★</label>
-                <input type="radio" id="t1" name="nota" value="1"><label for="t1">★</label>
+            <div class="stars">
+                <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
+                <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
             </div>
-            <label class="field">
-                <span>Comentário</span>
-                <textarea class="textarea" name="comentario" placeholder="Como foi a participação do aluno?"></textarea>
+
+            <label class="field"><span>Comentário</span>
+                <textarea class="textarea" name="comentario" placeholder="Como foi sua experiência com o monitor?" required></textarea>
             </label>
+
             <div class="toolbar">
-                <button type="submit" class="btn">Enviar Avaliação</button>
+                <button class="btn" type="submit">Enviar Avaliação</button>
                 <a class="btn ghost" href="#">Cancelar</a>
             </div>
         </form>
-    </div>
-</div>
 
-<div id="denunciaModal" class="modal">
-    <div class="modal-content">
-        <h3>Enviar Denúncia</h3>
-        <form>
-            <label class="field">
-                <span>Motivo</span>
-                <select class="select">
-                    <option>Falta sem aviso</option>
-                    <option>Comportamento inadequado</option>
-                    <option>Assédio / Discurso ofensivo</option>
-                    <option>Outro</option>
-                </select>
-            </label>
-            <label class="field">
-                <span>Descrição</span>
-                <textarea class="textarea" placeholder="Descreva o ocorrido..."></textarea>
-            </label>
-            <div class="toolbar">
-                <a class="btn" href="#">Enviar</a>
-                <a class="btn ghost" href="#">Cancelar</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="perfilModalJoao" class="modal">
-    <div class="modal-content perfil-modal">
-        <h3>Perfil de João Pedro</h3>
-        <div class="perfil-info">
-            <p><span>Curso:</span> Informática</p>
-            <p><b>Telefone de contato:</b> (99)9999-9999</p>
-            <p><span>Nota média:</span> ⭐ 4.8</p>
-            <p><span>Descrição:</span> Aluno dedicado</p>
+        <%
+            java.util.List<String> comentarios = (java.util.List<String>) request.getAttribute("comentarios");
+            if (comentarios != null && !comentarios.isEmpty()) {
+        %>
+        <div class="comentarios">
+            <h4>Comentários enviados:</h4>
+            <ul>
+                <% for (String c : comentarios) { %>
+                <li><%= c %></li>
+                <% } %>
+            </ul>
         </div>
-        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
-    </div>
-</div>
-
-<div id="perfilModalMaria" class="modal">
-    <div class="modal-content perfil-modal">
-        <h3>Perfil de Maria Souza</h3>
-        <div class="perfil-info">
-            <p><span>Curso:</span> Informática</p>
-            <p><b>Telefone de contato:</b> (99)9999-9999</p>
-            <p><span>Nota média:</span> ⭐ 4.8</p>
-            <p><span>Descrição:</span> Aluna dedicada</p>
-        </div>
-        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
-    </div>
-</div>
-
-<div id="notifPanel" class="modal">
-    <div class="modal-content">
-        <h3>Notificações</h3>
-        <ul>
-            <li>Aula confirmada com <b>Maria Souza</b> — 18/10/2025 às 14:00</li>
-            <li>Nova mensagem de <b>João Pedro</b></li>
-            <li>⭐ Lembrete: Avalie o estudante da última aula</li>
-        </ul>
-        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+        <% } %>
     </div>
 </div>
 

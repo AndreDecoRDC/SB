@@ -1,8 +1,5 @@
 package com.studybridge.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Denuncia {
     public enum MotivoDenuncia{
         FALTA_SEM_AVISO,
@@ -16,12 +13,12 @@ public class Denuncia {
         FINALIZADA,
         ARQUIVADA
     }
+    private int id;
     private Usuario usuarioDenunciado;
     private Usuario usuarioDenunciante;
     private MotivoDenuncia motivoDenuncia;
     private String descricao;
     private StatusDenuncia status;
-    private List<Denuncia> denunciasRecebidas;
 
     public Denuncia(Usuario usuarioDenunciante, Usuario usuarioDenunciado, MotivoDenuncia mootivoDenuncia, String descricao) {
         this.usuarioDenunciante = usuarioDenunciante;
@@ -29,9 +26,19 @@ public class Denuncia {
         this.motivoDenuncia = mootivoDenuncia;
         this.descricao = descricao == null ? "" : descricao;
         this.status = StatusDenuncia.PENDENTE;
-        this.denunciasRecebidas = new ArrayList<Denuncia>();
+    }
+    public Denuncia( int id, Usuario usuarioDenunciante, Usuario usuarioDenunciado, MotivoDenuncia mootivoDenuncia, String descricao) {
+        this.id = id;
+        this.usuarioDenunciante = usuarioDenunciante;
+        this.usuarioDenunciado = usuarioDenunciado;
+        this.motivoDenuncia = mootivoDenuncia;
+        this.descricao = descricao == null ? "" : descricao;
+        this.status = StatusDenuncia.PENDENTE;
     }
 
+    public int getId() {
+        return id;
+    }
     public Usuario getUsuarioDenunciante() {
         return usuarioDenunciante;
     }
@@ -46,5 +53,8 @@ public class Denuncia {
     }
     public StatusDenuncia getStatus() {
         return status;
+    }
+    public void setStatus(StatusDenuncia status) {
+        this.status = status;
     }
 }

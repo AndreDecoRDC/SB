@@ -1,4 +1,4 @@
-package com.studybridge.web.servlet;
+package com.studybridge.web.servlet.page;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
