@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="pt-BR">
     <head>
@@ -7,6 +8,66 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Aulas — Estudante | StudyBridge</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
+
+        <style>
+            .aulas-container {
+                display: grid;
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+            @media (min-width: 950px) {
+                .aulas-container {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            .aulas-section {
+                flex: 1;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                padding: 2rem;
+                max-width: 100%;
+                min-height: 520px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.95rem;
+            }
+            th, td {
+                padding: 0.75rem 0.6rem;
+                border-bottom: 1px solid #e5e7eb;
+                text-align: center;
+            }
+            th {
+                background: #f3f4f6;
+                color: #374151;
+            }
+            .status.ok {
+                color: #16a34a;
+                font-weight: 600;
+            }
+            .status.wait {
+                color: #f59e0b;
+                font-weight: 600;
+            }
+            .status.fail {
+                color: #dc2626;
+                font-weight: 600;
+            }
+            .nome-link {
+                color: #1e3fae;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+            }
+            .nome-link:hover {
+                text-decoration: underline;
+            }
+            td:last-child {
+                padding-right: 0;
+            }
+        </style>
     </head>
     <body>
         <header class="header">
@@ -26,29 +87,59 @@
             <p class="subtle">Veja suas aulas, detalhes e avaliações de monitores.</p>
 
             <div class="aulas-container">
+
                 <div class="aulas-section">
-                    <h3>Aulas Futuras</h3>
+                    <h3>Aulas Pendentes e Aceitas</h3>
                     <table>
                         <thead><tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
                         <tbody>
+
                             <c:forEach var="a" items="${aulas}">
-                                <c:if test="${a.status == 'ACEITA' || a.status == 'PENDENTE'}">
+
+                                <c:if test="${a.status == 'PENDENTE' || a.status == 'ACEITA'}">
                                     <tr>
-                                        <td>Monitor #${a.id_monitor}</td>
+                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
                                         <td>${a.disciplina}</td>
-                                        <td><c:out value="${a.data_aula}" /></td>
+                                        <td>
+                                            <c:out value="${a.dataAulaFormatada}" />
+                                        </td>
                                         <td><span class="${a.status == 'ACEITA' ? 'status ok' : 'status wait'}">${a.status}</span></td>
                                         <td>
-                                            <a class="btn light" href="${pageContext.request.contextPath}/detalhes-aula?idAula=${a.id}">Detalhes</a>
 
+                                            <a class="btn light" href="${pageContext.request.contextPath}/detalhes-aula?idAula=${a.id}">Detalhes</a>
                                             <a class="btn ghost" href="${pageContext.request.contextPath}/estudante/aula/confirmar-page?idAula=${a.id}">Cancelar</a>
                                         </td>
                                     </tr>
                                 </c:if>
                             </c:forEach>
-
                             <c:if test="${empty aulas}">
                                 <tr><td colspan="5" style="text-align:center;">Nenhuma aula encontrada.</td></tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="aulas-section">
+                    <h3>Aulas Canceladas e Recusadas</h3>
+                    <table>
+                        <thead><tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+                        <tbody>
+                            <c:forEach var="a" items="${aulas}">
+                                <c:if test="${a.status == 'CANCELADA' ||  a.status == 'RECUSADA'}">
+                                    <tr>
+                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>${a.disciplina}</td>
+                                        <td>
+                                            <c:out value="${a.dataAulaFormatada}" />
+                                        </td>
+                                        <td><span class="status fail">${a.status}</span></td>
+                                        <td>
+                                            <a class="btn light" href="${pageContext.request.contextPath}/detalhes-aula?idAula=${a.id}">Detalhes</a>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${empty aulas}">
+                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula aceita encontrada.</td></tr>
                             </c:if>
                         </tbody>
                     </table>
@@ -62,9 +153,11 @@
                             <c:forEach var="a" items="${aulas}">
                                 <c:if test="${a.status == 'CONCLUIDA'}">
                                     <tr>
-                                        <td>Monitor #${a.id_monitor}</td>
+                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
                                         <td>${a.disciplina}</td>
-                                        <td><c:out value="${a.data_aula}" /></td>
+                                        <td>
+                                            ${a.dataAulaFormatada}
+                                        </td>
                                         <td>—</td>
                                         <td><a class="btn light" href="${pageContext.request.contextPath}/avaliar?idAula=${a.id}">Avaliar</a></td>
                                     </tr>

@@ -2,6 +2,7 @@ package com.studybridge.web.servlet.page;
 
 import com.studybridge.service.AulaService;
 import com.studybridge.domain.model.Aula;
+import com.studybridge.domain.model.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("aulas-monitor")
+@WebServlet("/aulas-monitor")
 public class AulasMonitorPageServlet extends HttpServlet {
 
     private final AulaService aulaService = new AulaService();
@@ -22,14 +23,29 @@ public class AulasMonitorPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        HttpSession session = req.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario == null) {
+            resp.sendRedirect(req.getContextPath() + "/index");
+            return;
+        }
+
+        if (!"monitor".equals(usuario.getTipoConta())) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
+        Integer idUsuario = usuario.getId();
+
         try {
-            HttpSession session = req.getSession();
-            Integer idMonitor = (Integer) session.getAttribute("idUsuario");
+            Integer idMonitor = usuario.getId();
 
             List<Aula> aulas = aulaService.listarAulasDoMonitor(idMonitor);
 
             req.setAttribute("aulas", aulas);
-            req.getRequestDispatcher("/WEB-INF/aulas-monitor.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/aulas-monitor.jsp")
+               .forward(req, resp);
 
         } catch (Exception e) {
             throw new ServletException("Erro ao carregar aulas do monitor", e);

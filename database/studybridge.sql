@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS estudantes (
     campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
     descricao VARCHAR(1000),
     
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCATE
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
@@ -67,6 +67,32 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
        ON DELETE SET NULL
        ON UPDATE CASCADE
 );
+
+SELECT 
+    sa.*,
+    m.nome AS nome_monitor_associado
+FROM 
+    solicitacoes_aula sa
+JOIN
+    usuarios u ON sa.id_monitor = u.id
+JOIN 
+    monitores m ON u.id = m.usuario_id
+WHERE 
+    sa.id_estudante = ?
+;
+
+SELECT 
+    sa.*,
+    e.nome AS nome_estudante_associado
+FROM 
+    solicitacoes_aula sa
+JOIN
+    usuarios u ON sa.id_estudante = u.id
+JOIN 
+    estudantes e ON u.id = e.usuario_id
+WHERE 
+    sa.id_monitor = ?
+;
 
 USE studybridge;
 SELECT disciplina, data_aula, descricao

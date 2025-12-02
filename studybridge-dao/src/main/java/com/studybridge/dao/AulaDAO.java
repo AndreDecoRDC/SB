@@ -35,7 +35,7 @@ public class AulaDAO {
     }
     
     public List<Aula> listarPorEstudante(int idEstudante) throws SQLException {
-        String sql = "SELECT * FROM solicitacoes_aula WHERE id_estudante = ? ORDER BY data_aula";
+        String sql = "SELECT sa.*, m.nome AS nome_monitor_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_monitor = u.id JOIN monitores m ON u.id = m.usuario_id WHERE sa.id_estudante = ?";
 
         List<Aula> aulas = new ArrayList<>();
 
@@ -52,9 +52,9 @@ public class AulaDAO {
         }
         return aulas;
     }
-    
+
     public List<Aula> listarPorMonitor(int idMonitor) throws SQLException {
-        String sql = "SELECT * FROM solicitacoes_aula WHERE id_monitor = ? ORDER BY data_aula";
+        String sql = "SELECT sa.*, e.nome AS nome_estudante_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_estudante = u.id JOIN estudantes e ON u.id = e.usuario_id WHERE sa.id_monitor = ?";
 
         List<Aula> aulas = new ArrayList<>();
 
@@ -71,29 +71,85 @@ public class AulaDAO {
         }
         return aulas;
     }
-    
+
     //estudante cancela aula
     public void cancelar(int idAula) throws SQLException {
-    String sql = "UPDATE solicitacoes_aula SET status = 'CANCELADA' WHERE id = ?";
+        String sql = "UPDATE solicitacoes_aula SET status = 'CANCELADA' WHERE id = ?";
 
-    try (Connection conn = ConnectionFactory.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setInt(1, idAula);
-        ps.executeUpdate();
-    }
-}
-    
-    //monitor recusa aula
-    public void recusar(int idAula) throws SQLException {
-        String sql = "UPDATE solicitacoes_aula SET status = 'RECUSADA' WHERE id = ?";
-
-        try (Connection conn = ConnectionFactory.getConnection(); 
-            PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idAula);
             ps.executeUpdate();
         }
+    }
+
+    //monitor recusa aula
+    public void recusar(int idAula) throws SQLException {
+        String sql = "UPDATE solicitacoes_aula SET status = 'RECUSADA' WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idAula);
+            ps.executeUpdate();
+        }
+    }
+
+    public Aula buscarPorId(int idAula) throws SQLException {
+        String sql = """
+        SELECT
+            sa.*,
+            COALESCE(m.nome, e.nome) AS nome_usuario_associado,
+            COALESCE(sa.id_monitor, sa.id_estudante) AS id_usuario_associado
+        FROM solicitacoes_aula sa
+        LEFT JOIN usuarios u_monitor ON sa.id_monitor = u_monitor.id
+        LEFT JOIN monitores m ON u_monitor.id = m.usuario_id
+        LEFT JOIN usuarios u_estudante ON sa.id_estudante = u_estudante.id
+        LEFT JOIN estudantes e ON u_estudante.id = e.usuario_id
+        WHERE sa.id = ?
+    """;
+
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idAula);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Aula aula = new Aula();
+                    aula.setId(rs.getInt("id"));
+                    aula.setId_estudante(rs.getInt("id_estudante"));
+                    aula.setId_monitor(rs.getInt("id_monitor"));
+                    aula.setDisciplina(rs.getString("disciplina"));
+                    aula.setDescricao(rs.getString("descricao"));
+                    aula.setStatus(rs.getString("status"));
+
+                    Timestamp tsSol = rs.getTimestamp("data_solicitacao");
+                    if (tsSol != null) {
+                        aula.setData_solicitacao(tsSol.toLocalDateTime());
+                    }
+
+                    Timestamp tsAula = rs.getTimestamp("data_aula");
+                    if (tsAula != null) {
+                        aula.setData_aula(tsAula.toLocalDateTime());
+                    }
+
+                    String nomeAssociado = rs.getString("nome_usuario_associado");
+                    if (nomeAssociado != null && !nomeAssociado.isEmpty()) {
+                        aula.setNomeUsuarioAssociado(nomeAssociado);
+                    } else {
+                        aula.setNomeUsuarioAssociado("Nome Indisponível");
+                    }
+
+                    Integer idAssociado = rs.getInt("id_usuario_associado");
+                    if (rs.wasNull()) {
+                        idAssociado = null;
+                    }
+                    aula.setIdUsuarioAssociado(idAssociado);
+
+                    return aula;
+                }
+            }
+        }
+        return null;
     }
 
     private Aula mapAula(ResultSet rs) throws SQLException {
@@ -113,6 +169,23 @@ public class AulaDAO {
         Timestamp tsAula = rs.getTimestamp("data_aula");
         if (tsAula != null) {
             aula.setData_aula(tsAula.toLocalDateTime());
+        }
+        String nomeAssociado = null;
+
+        try {
+            nomeAssociado = rs.getString("nome_monitor_associado");
+        } catch (SQLException e) {
+        }
+        if (nomeAssociado == null || nomeAssociado.isEmpty()) {
+            try {
+                nomeAssociado = rs.getString("nome_estudante_associado");
+            } catch (SQLException e) {
+            }
+        }
+        if (nomeAssociado != null && !nomeAssociado.isEmpty()) {
+            aula.setNomeUsuarioAssociado(nomeAssociado);
+        } else {
+            aula.setNomeUsuarioAssociado("Nome Indisponível");
         }
 
         return aula;
