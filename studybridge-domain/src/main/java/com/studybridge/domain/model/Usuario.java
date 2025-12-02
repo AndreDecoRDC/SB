@@ -1,5 +1,6 @@
 package com.studybridge.domain.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Usuario {
@@ -9,6 +10,8 @@ public class Usuario {
     private String tipoConta;
     private boolean verificado;
     private String tokenVerificacao;
+    private String codigo2FA;
+    private LocalDateTime expiracao2FA;
 
     public Usuario() {
         this.verificado = false;
@@ -39,4 +42,10 @@ public class Usuario {
 
     public String getTokenVerificacao() { return tokenVerificacao; }
     public void setTokenVerificacao(String tokenVerificacao) { this.tokenVerificacao = tokenVerificacao; }
+
+    public String getCodigo2FA() { return codigo2FA; }
+    public void setCodigo2FA(String codigo2FA) { this.codigo2FA = codigo2FA; }
+
+    public LocalDateTime getExpiracao2FA() { return expiracao2FA; }
+    public void setExpiracao2FA(LocalDateTime expiracao2FA) { this.expiracao2FA = expiracao2FA; }
 }

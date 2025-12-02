@@ -78,6 +78,8 @@
                 <a class="btn" href="${pageContext.request.contextPath}/busca">Buscar Monitores</a>
                 <a class="btn" href="${pageContext.request.contextPath}/aulas">Aulas</a>
                 <a class="btn" href="${pageContext.request.contextPath}/perfil-estudante">Perfil</a>
+                <%-- Mantive o botão de notificação da main --%>
+                <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>
                 <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
             </nav>
         </header>
@@ -118,6 +120,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="aulas-section">
                     <h3>Aulas Canceladas e Recusadas</h3>
                     <table>
@@ -163,11 +166,53 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
+                            <c:if test="${empty aulas}">
+                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula concluída encontrada.</td></tr>
+                            </c:if>
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </main>
+
+        <div id="avaliar1" class="modal">
+            <div class="modal-content">
+                <h3>Avaliar Monitor</h3>
+                <form action="${pageContext.request.contextPath}/avaliar" method="post">
+                    <div class="stars">
+                        <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
+                    </div>
+
+                    <label class="field"><span>Comentário</span>
+                        <textarea class="textarea" name="comentario" placeholder="Como foi sua experiência com o monitor?" required></textarea>
+                    </label>
+
+                    <div class="toolbar">
+                        <button class="btn" type="submit">Enviar Avaliação</button>
+                        <a class="btn ghost" href="#">Cancelar</a>
+                    </div>
+                </form>
+
+                <%     
+                    java.util.List<String> comentarios = (java.util.List<String>) request.getAttribute("comentarios");
+                    if (comentarios != null && !comentarios.isEmpty()) {
+                %>
+                <div class="comentarios">
+                    <h4>Comentários enviados:</h4>
+                    <ul>
+                        <% for (String c : comentarios) { %>
+                        <li><%= c %></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <% } %>
+            </div>
+        </div> 
 
         <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
     </body>

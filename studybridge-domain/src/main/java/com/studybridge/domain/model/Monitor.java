@@ -1,5 +1,5 @@
 package com.studybridge.domain.model;
-
+    
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +10,15 @@ public class Monitor extends Usuario {
    private String campus;
    private String descricao;
    private List<Horario> horarios = new ArrayList<>();
+   private Avaliacao avaliacaoRecebida;
+
+   public Monitor(String email, String senhaHash){
+        super(email, senhaHash, "Monitor");
+        this.avaliacaoRecebida = new Avaliacao(this);
+   }
+   public Avaliacao getAvaliacaoRecebida() {
+        return avaliacaoRecebida;
+   }
    
    public String getNome() {
        return nome;

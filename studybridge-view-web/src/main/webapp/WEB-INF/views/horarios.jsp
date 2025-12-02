@@ -25,7 +25,7 @@
         <img src="${pageContext.request.contextPath}/imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" 
              alt="Notificações" width="24" height="24">
 
-        <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
+        <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
 

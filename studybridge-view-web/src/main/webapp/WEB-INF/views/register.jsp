@@ -20,22 +20,22 @@
     <form class="card" action="${pageContext.request.contextPath}/cadastrar" method="post">
         <label class="field">
             <span>Email</span>
-            <input class="input" name="email" type="email" placeholder="exemplo@gmail.com" required>
+            <input class="input" name="email" type="email" placeholder="exemplo@gmail.com" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" required>
         </label>
 
         <label class="field">
             <span>Senha</span>
-            <input class="input" name="senha" type="password" placeholder="••••••••" required>
+            <input class="input" name="senha" type="password" placeholder="••••••••" value="<%= request.getAttribute("senha") != null ? request.getAttribute("senha") : "" %>" required>
         </label>
 
         <label class="field">
             <span>Confirmar Senha</span>
-            <input class="input" name="confirmarSenha" type="password" placeholder="••••••••" required>
+            <input class="input" name="confirmarSenha" type="password" placeholder="••••••••" value="<%= request.getAttribute("confirmarSenha") != null ? request.getAttribute("confirmarSenha") : "" %>" required>
         </label>
 
         <label class="field">
             <span>Tipo de conta</span>
-            <select class="select" name="tipoConta" required>
+            <select class="select" name="tipoConta"  value="<%= request.getAttribute("tipoConta") != null ? request.getAttribute("tipoConta") : "" %>"required>
                 <option value="Estudante">Estudante</option>
                 <option value="Monitor">Monitor</option>
             </select>
