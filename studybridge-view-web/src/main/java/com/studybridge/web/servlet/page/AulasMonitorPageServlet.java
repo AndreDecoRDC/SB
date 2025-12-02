@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/aulas-monitor")
+@WebServlet("/monitor/aulas-monitor")
 public class AulasMonitorPageServlet extends HttpServlet {
 
     private final AulaService aulaService = new AulaService();
@@ -44,7 +44,7 @@ public class AulasMonitorPageServlet extends HttpServlet {
             List<Aula> aulas = aulaService.listarAulasDoMonitor(idMonitor);
 
             req.setAttribute("aulas", aulas);
-            req.getRequestDispatcher("/WEB-INF/views/aulas-monitor.jsp")
+            req.getRequestDispatcher("/WEB-INF/views/monitor/aulas-monitor.jsp")
                .forward(req, resp);
 
         } catch (Exception e) {

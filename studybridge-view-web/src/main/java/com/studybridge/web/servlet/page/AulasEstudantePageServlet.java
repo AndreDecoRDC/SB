@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/aulas-estudante")
+@WebServlet("/estudante/aulas-estudante")
 public class AulasEstudantePageServlet extends HttpServlet {
 
     private final AulaService aulaService = new AulaService();
@@ -44,7 +44,7 @@ public class AulasEstudantePageServlet extends HttpServlet {
             List<Aula> aulas = aulaService.listarAulasDoEstudante(idEstudante);
 
             req.setAttribute("aulas", aulas);
-            req.getRequestDispatcher("/WEB-INF/views/aulas-estudante.jsp")
+            req.getRequestDispatcher("/WEB-INF/views/estudante/aulas-estudante.jsp")
                 .forward(req, resp);
 
         } catch (Exception e) {
