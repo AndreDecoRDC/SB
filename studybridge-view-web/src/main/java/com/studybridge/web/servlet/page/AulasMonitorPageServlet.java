@@ -24,31 +24,26 @@ public class AulasMonitorPageServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         if (usuario == null) {
-            resp.sendRedirect(req.getContextPath() + "/index");
-            return;
+            throw new ServletException("Usuário não está logado ou sessão foi perdida.");
         }
 
-        if (!"monitor".equals(usuario.getTipoConta())) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
+        if (!"Monitor".equals(usuario.getTipoConta())) {
+            throw new ServletException("Acesso permitido somente para monitores.");
         }
 
-        Integer idUsuario = usuario.getId();
+        Integer idMonitor = usuario.getId();
 
         try {
-            Integer idMonitor = usuario.getId();
-
             List<Aula> aulas = aulaService.listarAulasDoMonitor(idMonitor);
-
             req.setAttribute("aulas", aulas);
             req.getRequestDispatcher("/WEB-INF/views/monitor/aulas-monitor.jsp")
-               .forward(req, resp);
+                    .forward(req, resp);
 
         } catch (Exception e) {
-            throw new ServletException("Erro ao carregar aulas do monitor", e);
+            throw new ServletException("Erro ao carregar aulas do monitor.", e);
         }
     }
 }

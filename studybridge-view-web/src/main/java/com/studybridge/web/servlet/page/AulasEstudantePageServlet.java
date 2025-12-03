@@ -24,28 +24,23 @@ public class AulasEstudantePageServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         if (usuario == null) {
-            resp.sendRedirect(req.getContextPath() + "/index");
-            return;
+            throw new ServletException("Usuário não está logado.");
         }
 
-        if (!"estudante".equals(usuario.getTipoConta())) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
+        if (!"Estudante".equals(usuario.getTipoConta())) {
+            throw new ServletException("Acesso permitido somente para estudantes.");
         }
 
-        Integer idUsuario = usuario.getId();
+        Integer idEstudante = usuario.getId();
 
         try {
-            Integer idEstudante = usuario.getId(); 
-
             List<Aula> aulas = aulaService.listarAulasDoEstudante(idEstudante);
-
             req.setAttribute("aulas", aulas);
             req.getRequestDispatcher("/WEB-INF/views/estudante/aulas-estudante.jsp")
-                .forward(req, resp);
+                    .forward(req, resp);
 
         } catch (Exception e) {
             throw new ServletException("Erro ao carregar aulas do estudante.", e);
