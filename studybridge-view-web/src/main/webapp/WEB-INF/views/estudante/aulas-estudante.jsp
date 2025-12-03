@@ -111,7 +111,7 @@
                     </td>
                     <td>
                         <a class="btn-denunciar"
-                           href="#denunciaModal"
+                           href="#"
                            data-denunciado-id="${aula.monitor.id}"
                            data-aula-id="${aula.id}">
                             <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
@@ -121,7 +121,7 @@
                 </tbody>
             </table>
         </div>
-    <div class="aulas-container">
+
         <div class="aulas-section">
             <h3>Histórico</h3>
             <table>
@@ -143,25 +143,28 @@
                     </td>
                     <td>
                         <a class="btn light" href="#avaliar1">Avaliar</a>
+                    </td>
                     <td>
                         <a class="btn-denunciar"
-                           href="#denunciaModal"
+                           href="#"
                            data-denunciado-id="${aula.monitor.id}"
                            data-aula-id="${aula.id}">
                             <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
                         </a>
                     </td>
-                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-    </div>
-</main>
+    </div> </main>
+
 <div id="avaliar1" class="modal">
     <div class="modal-content">
         <h3>Avaliar Monitor</h3>
         <form action="${pageContext.request.contextPath}/avaliar" method="post">
+            <input type="hidden" name="idMonitor" id="idMonitorAvaliar" value="">
+            <input type="hidden" name="idAula" id="idAulaAvaliar" value="">
+
             <div class="stars">
                 <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
                 <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
@@ -181,12 +184,14 @@
         </form>
     </div>
 </div>
+
 <div id="denunciarMonitor" class="modal">
     <div class="modal-content">
         <h3>Registrar Denúncia</h3>
 
         <form action="${pageContext.request.contextPath}/denuncias" method="post">
-            <input type="hidden" name="denunciadoId" value="${param.denunciadoId}">
+            <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="${param.denunciadoId}">
+            <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
 
             <label class="field"><span>Motivo</span>
                 <select name="motivo" class="select" required>
@@ -214,7 +219,7 @@
         <p class="success" id="mensagemSucesso">Denúncia enviada com sucesso!</p>
 
         <%session.removeAttribute("denunciaSucesso");
-            }
+        }
         %>
     </div>
 </div>
@@ -233,11 +238,13 @@
 
     const botoesDenunciar = document.querySelectorAll('.btn-denunciar');
     botoesDenunciar.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             const idDenunciado = btn.dataset.denunciadoId;
             const idAula = btn.dataset.aulaId;
             document.getElementById('idDenunciadoDenuncia').value = idDenunciado;
             document.getElementById('idAulaDenuncia').value = idAula;
+            window.location.hash = 'denunciarMonitor';
         });
     });
 

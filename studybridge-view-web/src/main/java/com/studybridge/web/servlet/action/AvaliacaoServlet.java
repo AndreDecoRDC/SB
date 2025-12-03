@@ -17,21 +17,17 @@ public class AvaliacaoServlet extends HttpServlet{
         HttpSession session = req.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if(usuario == null) {
-            /*RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp"); Código será utilizado quando for possível criar usuários
+            RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp");
             rd.forward(req, resp);
-            return;*/
-            usuario = new Usuario();
-            usuario.setId(1);
-            usuario.setTipoConta("estudante");
-            session.setAttribute("usuario", usuario);
+            return;
         }
         double nota = Double.parseDouble(req.getParameter("nota"));
         String comentario = req.getParameter("comentario");
         String destinoJSP;
         if("monitor".equalsIgnoreCase(usuario.getTipoConta())){
-            destinoJSP = "/WEB-INF/views/aulas-monitor.jsp";
+            destinoJSP = "/WEB-INF/views/monitor/aulas-monitor.jsp";
         }else{
-            destinoJSP = "/WEB-INF/views/aulas-estudante.jsp";
+            destinoJSP = "/WEB-INF/views/estudante/aulas-estudante.jsp";
         }
         try{
             avaliacaoService.registrarAvaliacao(usuario, nota, comentario);
@@ -53,19 +49,15 @@ public class AvaliacaoServlet extends HttpServlet{
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         if (usuario == null) {
-            /*resp.sendRedirect("login.jsp");
-            return;*/
-            usuario = new Usuario();
-            usuario.setId(1);
-            usuario.setTipoConta("estudante");
-            session.setAttribute("usuario", usuario);
+            resp.sendRedirect("login.jsp");
+            return;
         }
 
         String destinoJSP;
         if ("monitor".equalsIgnoreCase(usuario.getTipoConta())) {
-            destinoJSP = "/WEB-INF/views/aulas-monitor.jsp";
+            destinoJSP = "/WEB-INF/views/monitor/aulas-monitor.jsp";
         } else {
-            destinoJSP = "/WEB-INF/views/aulas-estudante.jsp";
+            destinoJSP = "/WEB-INF/views/estudante/aulas-estudante.jsp";
         }
 
         try {

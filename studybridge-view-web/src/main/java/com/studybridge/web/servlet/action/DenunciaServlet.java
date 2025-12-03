@@ -29,12 +29,8 @@ public class DenunciaServlet extends HttpServlet {
         HttpSession session = req.getSession();
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         if(usuarioLogado == null) {
-            //resp.sendRedirect("/login.jsp");
-            //return;
-            usuarioLogado = new Usuario();
-            usuarioLogado.setId(1);
-            usuarioLogado.setTipoConta("estudante");
-            session.setAttribute("usuario", usuarioLogado);
+            resp.sendRedirect("/login.jsp");
+            return;
         }
 
         try{
@@ -67,19 +63,15 @@ public class DenunciaServlet extends HttpServlet {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
         if(usuarioLogado == null){
-            //resp.sendRedirect("/WEB-INF/views/monitor/login.jsp");
-            //return;
-            usuarioLogado = new Usuario();
-            usuarioLogado.setId(1);
-            usuarioLogado.setTipoConta("estudante");
-            session.setAttribute("usuario", usuarioLogado);
+            resp.sendRedirect("/WEB-INF/views/monitor/login.jsp");
+            return;
         }
         String destinoJSP;
         if("monitor".equalsIgnoreCase(usuarioLogado.getTipoConta())){
             destinoJSP = "/WEB-INF/views/monitor/aulas-monitor.jsp";
         }
         else{
-            destinoJSP = "/WEB-INF/views/monitor/aulas-estudante.jsp";
+            destinoJSP = "/WEB-INF/views/estudante/aulas-estudante.jsp";
         }
         try{
             List<Denuncia> denuncias = denunciaService.listarDenuncias();
