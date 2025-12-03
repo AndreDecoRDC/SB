@@ -35,7 +35,7 @@ public class AulaDAO {
     }
     
     public List<Aula> listarPorEstudante(int idEstudante) throws SQLException {
-        String sql = "SELECT sa.*, m.nome AS nome_monitor_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_monitor = u.id JOIN monitores m ON u.id = m.usuario_id WHERE sa.id_estudante = ?";
+        String sql = "SELECT sa.*, m.nome AS nome_usuario_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_monitor = u.id JOIN monitores m ON u.id = m.usuario_id WHERE sa.id_estudante = ?";
 
         List<Aula> aulas = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class AulaDAO {
     }
 
     public List<Aula> listarPorMonitor(int idMonitor) throws SQLException {
-        String sql = "SELECT sa.*, e.nome AS nome_estudante_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_estudante = u.id JOIN estudantes e ON u.id = e.usuario_id WHERE sa.id_monitor = ?";
+        String sql = "SELECT sa.*, e.nome AS nome_usuario_associado FROM solicitacoes_aula sa JOIN usuarios u ON sa.id_estudante = u.id JOIN estudantes e ON u.id = e.usuario_id WHERE sa.id_monitor = ?";
 
         List<Aula> aulas = new ArrayList<>();
 
@@ -170,24 +170,14 @@ public class AulaDAO {
         if (tsAula != null) {
             aula.setData_aula(tsAula.toLocalDateTime());
         }
-        String nomeAssociado = null;
-
-        try {
-            nomeAssociado = rs.getString("nome_monitor_associado");
-        } catch (SQLException e) {
-        }
-        if (nomeAssociado == null || nomeAssociado.isEmpty()) {
-            try {
-                nomeAssociado = rs.getString("nome_estudante_associado");
-            } catch (SQLException e) {
-            }
-        }
+        String nomeAssociado = rs.getString("nome_usuario_associado");
+        
         if (nomeAssociado != null && !nomeAssociado.isEmpty()) {
             aula.setNomeUsuarioAssociado(nomeAssociado);
         } else {
             aula.setNomeUsuarioAssociado("Nome Indisponível");
         }
-
+        
         return aula;
     }
 
