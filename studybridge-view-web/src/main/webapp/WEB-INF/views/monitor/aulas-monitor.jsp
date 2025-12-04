@@ -67,7 +67,7 @@
             td:last-child {
                 padding-right: 0;
             }
-             .stars10 {
+            .stars10 {
                 display: flex;
                 flex-direction: row-reverse;
                 justify-content: center;
@@ -93,6 +93,45 @@
         </style>
 
     </head>
+
+    <script>
+        function abrirModalCancelamento(idAula, disciplina, dataAula, urlAction) {
+            document.getElementById('modalDisciplina').innerText = disciplina;
+            document.getElementById('modalDataAula').innerText = dataAula;
+            
+            document.getElementById('inputModalIdAula').value = idAula;
+
+            document.getElementById('formCancelamento').action = urlAction;
+
+            const modal = document.getElementById('confirmarCancelamento');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const fecharBotoes = document.querySelectorAll('.fechar-modal');
+        const modal = document.getElementById('confirmarCancelamento');
+
+        fecharBotoes.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        if (modal) {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
+    </script>
+
     <body>
         <header class="header">
             <a href="${pageContext.request.contextPath}/monitor-dashboard" class="brand">
@@ -142,20 +181,20 @@
                                                         <input type="hidden" name="idAula" value="${a.id}" />
                                                         <button class="btn ghost" type="submit">Confirmar</button>
                                                     </form>
-                                                    <a class="btn ghost" href="${pageContext.request.contextPath}/monitor/aula/recusar-page?idAula=${a.id}">Recusar</a>
+                                                    <a class="btn ghost" href="#">Recusar</a>
                                                 </c:when>
                                                 <c:when test="${a.status == 'ACEITA'}">
                                                     <a class="btn" href="${pageContext.request.contextPath}/monitor/aula/concluir?idAula=${a.id}">Concluir</a>
-                                                    <a class="btn ghost" href="${pageContext.request.contextPath}/monitor/aula/cancelar-page?idAula=${a.id}">Cancelar</a>
+                                                    <button class="btn ghost" 
+                                                            onclick="abrirModalCancelamento('${a.id}', '${a.disciplina}', '${a.dataAulaFormatada}', '${pageContext.request.contextPath}/monitor/aula/cancelar')">
+                                                        Cancelar
+                                                    </button>
                                                 </c:when>
                                             </c:choose>
                                         </td>
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${not encontrouAtivas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma solicitação ou aula agendada.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -180,9 +219,6 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${not encontrouInativas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula recusada ou cancelada.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -207,9 +243,6 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${not encontrouConcluidas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula concluída.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -247,6 +280,7 @@
                     <div class="toolbar">
                         <button type="submit" class="btn">Enviar Avaliação</button>
                         <a class="btn ghost" href="#">Cancelar</a>
+
                     </div>
                 </form>
             </div>
@@ -314,7 +348,26 @@
                 <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
             </div>
         </div>
+        
+        <div id="confirmarCancelamento" class="modal">
+            <div class="modal-content">
+                <h3>Confirmar Cancelamento</h3>
+                <p>Você está prestes a cancelar a aula:</p>
+                <ul>
+                    <li><b>Disciplina:</b> <span id="modalDisciplina"></span></li>
+                    <li><b>Data:</b> <span id="modalDataAula"></span></li>
+                </ul>
 
-        <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+                <form id="formCancelamento" action="#" method="post">
+                    <input type="hidden" name="idAula" id="inputModalIdAula" value="" /> 
+                    <div class="toolbar" style="justify-content:center;">
+                        <button class="btn" type="submit">Sim, cancelar aula</button>
+                        <a class="btn ghost fechar-modal" href="#">Voltar</a> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>      
     </body>
 </html>

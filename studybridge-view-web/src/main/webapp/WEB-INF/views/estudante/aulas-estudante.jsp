@@ -69,6 +69,44 @@
             }
         </style>
     </head>
+    <script>
+        function abrirModalCancelamento(idAula, disciplina, dataAula, urlAction) {
+            document.getElementById('modalDisciplina').innerText = disciplina;
+            document.getElementById('modalDataAula').innerText = dataAula;
+            
+            document.getElementById('inputModalIdAula').value = idAula;
+
+            document.getElementById('formCancelamento').action = urlAction;
+
+            const modal = document.getElementById('confirmarCancelamento');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const fecharBotoes = document.querySelectorAll('.fechar-modal');
+            const modal = document.getElementById('confirmarCancelamento');
+
+            fecharBotoes.forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            if (modal) {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
     <body>
         <header class="header">
             <a href="${pageContext.request.contextPath}/" class="brand">
@@ -76,9 +114,8 @@
             </a>
             <nav class="nav">
                 <a class="btn" href="${pageContext.request.contextPath}/busca">Buscar Monitores</a>
-                <a class="btn" href="${pageContext.request.contextPath}/aulas">Aulas</a>
+                <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas-estudante">Aulas</a>
                 <a class="btn" href="${pageContext.request.contextPath}/perfil-estudante">Perfil</a>
-                <%-- Mantive o botão de notificação da main --%>
                 <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>
                 <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
             </nav>
@@ -109,14 +146,15 @@
                                         <td>
 
                                             <a class="btn light" href="${pageContext.request.contextPath}/detalhes-aula?idAula=${a.id}">Detalhes</a>
-                                            <a class="btn ghost" href="${pageContext.request.contextPath}/estudante/aula/confirmar-page?idAula=${a.id}">Cancelar</a>
+                                            <button class="btn ghost" 
+
+                                                    onclick="abrirModalCancelamento('${a.id}', '${a.disciplina}', '${a.dataAulaFormatada}', '${pageContext.request.contextPath}/estudante/aula/cancelar')">
+                                                Cancelar
+                                            </button>
                                         </td>
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${empty aulas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula encontrada.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -141,9 +179,6 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${empty aulas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula aceita encontrada.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -166,9 +201,6 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${empty aulas}">
-                                <tr><td colspan="5" style="text-align:center;">Nenhuma aula concluída encontrada.</td></tr>
-                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -176,44 +208,63 @@
             </div>
         </main>
 
-        <div id="avaliar1" class="modal">
-            <div class="modal-content">
-                <h3>Avaliar Monitor</h3>
-                <form action="${pageContext.request.contextPath}/avaliar" method="post">
-                    <div class="stars">
-                        <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
-                        <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
-                        <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
-                        <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
-                        <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
+                <div id="avaliar1" class="modal">
+                    <div class="modal-content">
+                        <h3>Avaliar Monitor</h3>
+                        <form action="${pageContext.request.contextPath}/avaliar" method="post">
+                            <div class="stars">
+                                <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
+                                <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
+                                <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
+                                <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
+                                <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
+                            </div>
+
+                            <label class="field"><span>Comentário</span>
+                                <textarea class="textarea" name="comentario" placeholder="Como foi sua experiência com o monitor?" required></textarea>
+                            </label>
+
+                            <div class="toolbar">
+                                <button class="btn" type="submit">Enviar Avaliação</button>
+                                <a class="btn ghost" href="#">Cancelar</a>
+                            </div>
+                        </form>
+
+                        <%
+                            java.util.List<String> comentarios = (java.util.List<String>) request.getAttribute("comentarios");
+                            if (comentarios != null && !comentarios.isEmpty()) {
+                        %>
+                        <div class="comentarios">
+                            <h4>Comentários enviados:</h4>
+                            <ul>
+                                <% for (String c : comentarios) {%>
+                                <li><%= c%></li>
+                                    <% } %>
+                            </ul>
+                        </div>
+                        <% }%>
                     </div>
+                </div> 
+                    
+                <div id="confirmarCancelamento" class="modal">
+                    <div class="modal-content">
+                        <h3>Confirmar Cancelamento</h3>
+                        <p>Você está prestes a cancelar a aula:</p>
+                        <ul>
+                            <li><b>Disciplina:</b> <span id="modalDisciplina"></span></li>
+                            <li><b>Data:</b> <span id="modalDataAula"></span></li>
+                        </ul>
 
-                    <label class="field"><span>Comentário</span>
-                        <textarea class="textarea" name="comentario" placeholder="Como foi sua experiência com o monitor?" required></textarea>
-                    </label>
-
-                    <div class="toolbar">
-                        <button class="btn" type="submit">Enviar Avaliação</button>
-                        <a class="btn ghost" href="#">Cancelar</a>
+                        <form id="formCancelamento" action="#" method="post">
+                            <input type="hidden" name="idAula" id="inputModalIdAula" value="" /> 
+                            <div class="toolbar" style="justify-content:center;">
+                                <button class="btn" type="submit">Sim, cancelar aula</button>
+                                <a class="btn ghost fechar-modal" href="#">Voltar</a> 
+                            </div>
+                        </form>
                     </div>
-                </form>
-
-                <%     
-                    java.util.List<String> comentarios = (java.util.List<String>) request.getAttribute("comentarios");
-                    if (comentarios != null && !comentarios.isEmpty()) {
-                %>
-                <div class="comentarios">
-                    <h4>Comentários enviados:</h4>
-                    <ul>
-                        <% for (String c : comentarios) { %>
-                        <li><%= c %></li>
-                        <% } %>
-                    </ul>
                 </div>
-                <% } %>
-            </div>
-        </div> 
-
-        <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+                    
+                    <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
     </body>
 </html>

@@ -17,7 +17,7 @@
     </a>
     <nav class="nav">
         <a class="btn" href="#">Buscar Monitores</a>
-        <a class="btn" href="#">Aulas</a>
+        <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas-estudante">Aulas</a>
         <a class="btn" href="#">Perfil</a>
         <a class="notif" href="#">
             <img src="${pageContext.request.contextPath}/images/notifications.svg" alt="Notificações">

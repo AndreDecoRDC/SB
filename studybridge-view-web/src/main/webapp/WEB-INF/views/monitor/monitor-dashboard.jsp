@@ -16,7 +16,7 @@
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
-        <a class="btn" href="#">Aulas</a>
+        <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas-monitor">Aulas</a>
         <a class="btn" href="#">Horários</a>
         <a class="btn" href="#">Perfil</a>
         <a class="notif" href="#">
