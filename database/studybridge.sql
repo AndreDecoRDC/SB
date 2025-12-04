@@ -25,12 +25,12 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
     );
 
 CREATE TABLE IF NOT EXISTS monitores (
-                                         id INT AUTO_INCREMENT PRIMARY KEY,
-                                         usuario_id INT NOT NULL,
-                                         nome VARCHAR(255) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    disciplina VARCHAR(100) NOT NULL,
-    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+	nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    disciplina VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
     descricao VARCHAR(1000),
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
@@ -39,11 +39,11 @@ CREATE TABLE IF NOT EXISTS monitores (
 CREATE TABLE IF NOT EXISTS estudantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    nome VARCHAR(255) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    curso VARCHAR(100) NOT NULL,
-    ano_turma VARCHAR(100) NOT NULL,
-    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+    nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    curso VARCHAR(100) NULL,
+    ano_turma VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
     descricao VARCHAR(1000),
     
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
@@ -84,26 +84,23 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
 
 SELECT 
     sa.*,
-    m.nome AS nome_monitor_associado
+    m.nome AS nome_usuario_associado
 FROM 
     solicitacoes_aula sa
-JOIN
-    usuarios u ON sa.id_monitor = u.id
 JOIN 
-    monitores m ON u.id = m.usuario_id
+    monitores m ON sa.id_monitor = m.usuario_id
 WHERE 
     sa.id_estudante = ?
 ;
 
 SELECT 
     sa.*,
-    e.nome AS nome_estudante_associado
+    e.nome AS nome_usuario_associado, 
+    sa.id_estudante AS id_usuario_associado
 FROM 
     solicitacoes_aula sa
 JOIN
-    usuarios u ON sa.id_estudante = u.id
-JOIN 
-    estudantes e ON u.id = e.usuario_id
+    estudantes e ON sa.id_estudante = e.usuario_id 
 WHERE 
     sa.id_monitor = ?
 ;

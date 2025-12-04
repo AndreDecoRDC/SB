@@ -1,5 +1,7 @@
 package com.studybridge.service;
 
+import com.studybridge.dao.EstudanteDAO;
+import com.studybridge.dao.MonitorDAO;
 import com.studybridge.dao.UsuarioDAO;
 import com.studybridge.domain.model.Usuario;
 import com.studybridge.service.util.HashUtil;
@@ -14,8 +16,11 @@ public class CadastroService {
 
     private final EmailService emailService = new EmailService();
 
+    private final MonitorDAO monitorDAO = new MonitorDAO();
+    private final EstudanteDAO estudanteDAO = new EstudanteDAO();
+    
     public void cadastrar(String email, String senha, String confirmarSenha, String tipoConta) throws Exception {
-
+ 
         if (email == null || email.isBlank())
             throw new Exception("Informe um email");
 
@@ -40,6 +45,15 @@ public class CadastroService {
 
         try {
             usuarioDAO.inserir(novoUsuario);
+            int novoUsuarioId = novoUsuario.getId();
+            
+            if ("Estudante".equals(tipoConta)) {
+                estudanteDAO.inserir(novoUsuarioId);
+            }
+            else if ("Monitor".equals(tipoConta)) {
+                monitorDAO.inserir(novoUsuarioId);
+            }
+            
         } catch (SQLException e) {
             throw new Exception("Erro ao salvar usuário no banco", e);
         }
