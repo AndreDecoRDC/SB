@@ -25,16 +25,29 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
     );
 
 CREATE TABLE IF NOT EXISTS monitores (
-                                         id INT AUTO_INCREMENT PRIMARY KEY,
-                                         usuario_id INT NOT NULL,
-                                         nome VARCHAR(255) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    disciplina VARCHAR(100) NOT NULL,
-    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+	nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    disciplina VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
     descricao VARCHAR(1000),
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-    );
+);
+
+CREATE TABLE IF NOT EXISTS estudantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    curso VARCHAR(100) NULL,
+    ano_turma VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
+    descricao VARCHAR(1000),
+    
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
                                                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -68,6 +81,29 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
     ON DELETE SET NULL
     ON UPDATE CASCADE
     );
+
+SELECT 
+    sa.*,
+    m.nome AS nome_usuario_associado
+FROM 
+    solicitacoes_aula sa
+JOIN 
+    monitores m ON sa.id_monitor = m.usuario_id
+WHERE 
+    sa.id_estudante = ?
+;
+
+SELECT 
+    sa.*,
+    e.nome AS nome_usuario_associado, 
+    sa.id_estudante AS id_usuario_associado
+FROM 
+    solicitacoes_aula sa
+JOIN
+    estudantes e ON sa.id_estudante = e.usuario_id 
+WHERE 
+    sa.id_monitor = ?
+;
 
 USE studybridge;
 SELECT disciplina, data_aula, descricao

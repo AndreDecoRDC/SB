@@ -44,28 +44,25 @@
         <label class="field">
             <span>Dia da Semana</span>
             <select name="diaSemana" class="select" required>
-                <option>Segunda-feira</option>
-                <option>Terça-feira</option>
-                <option>Quarta-feira</option>
-                <option>Quinta-feira</option>
-                <option>Sexta-feira</option>
+                <option ${diaSemana == 'Segunda-feira' ? 'selected' : ''}>Segunda-feira</option>
+                <option ${diaSemana == 'Terça-feira' ? 'selected' : ''}>Terça-feira</option>
+                <option ${diaSemana == 'Quarta-feira' ? 'selected' : ''}>Quarta-feira</option>
+                <option ${diaSemana == 'Quinta-feira' ? 'selected' : ''}>Quinta-feira</option>
+                <option ${diaSemana == 'Sexta-feira' ? 'selected' : ''}>Sexta-feira</option>
             </select>
+
         </label>
 
         <label class="field">
             <span>Horário de Início</span>
-            <input type="time" name="horaInicio" class="input" required>
+            <input type="time" name="horaInicio" class="input" value="${horaInicio}" required>
         </label>
 
         <label class="field">
             <span>Horário de Término</span>
-            <input type="time" name="horaTermino" class="input" required>
+            <input type="time" name="horaTermino" class="input" value="${horaTermino}" required>
         </label>
 
-        <label class="field">
-            <span>Duração Média (minutos)</span>
-            <input type="number" name="duracaoMedia" class="input" min="15" max="180" required>
-        </label>
 
         <div class="toolbar" style="display:flex; justify-content:center; gap:1rem; margin-top:1.2rem;">
             <button type="submit" class="btn ghost">Adicionar</button>
@@ -78,7 +75,7 @@
         <h3>Horários Cadastrados</h3>             
         <ul class="subtle" style="margin-top:0.8rem; line-height:1.6;">
             <c:forEach var="h" items="${horarios}">
-                <li><b>${h.diaSemana}:</b> ${h.horaInicio} — ${h.horaTermino} · Duração média: ${h.duracaoMedia} min</li>
+                <li><b>${h.diaSemana}:</b> ${h.horaInicio} — ${h.horaTermino} · ${h.duracaoMedia} min</li>
             </c:forEach>
             <c:if test="${empty horarios}">
                 <li>Nenhum horário cadastrado ainda.</li>

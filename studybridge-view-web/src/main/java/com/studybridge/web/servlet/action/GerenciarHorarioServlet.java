@@ -66,7 +66,7 @@ public class GerenciarHorarioServlet extends HttpServlet {
             String diaSemana = req.getParameter("diaSemana");
             LocalTime inicio = LocalTime.parse(req.getParameter("horaInicio"));
             LocalTime termino = LocalTime.parse(req.getParameter("horaTermino"));
-            int duracao = Integer.parseInt(req.getParameter("duracaoMedia"));
+            int duracao = (int) java.time.Duration.between(inicio, termino).toMinutes();
 
             Horario novo = new Horario();
             novo.setMonitorId(monitorId);
@@ -85,6 +85,9 @@ public class GerenciarHorarioServlet extends HttpServlet {
 
             if (conflito) {
                 req.setAttribute("erro", "Erro. Este horário entra em conflito com outro já cadastrado.");
+                req.setAttribute("diaSemana", diaSemana);
+                req.setAttribute("horaInicio", req.getParameter("horaInicio"));
+                req.setAttribute("horaTermino", req.getParameter("horaTermino"));
                 req.setAttribute("horarios", existentes);
                 req.getRequestDispatcher("/WEB-INF/views/horarios.jsp").forward(req, resp);
                 return;
@@ -95,6 +98,9 @@ public class GerenciarHorarioServlet extends HttpServlet {
 
             if (mensagem.startsWith("Erro")) {
                 req.setAttribute("erro", mensagem);
+                req.setAttribute("diaSemana", diaSemana);
+                req.setAttribute("horaInicio", req.getParameter("horaInicio"));
+                req.setAttribute("horaTermino", req.getParameter("horaTermino"));
             } else {
                 req.setAttribute("sucesso", mensagem);
             }

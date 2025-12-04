@@ -36,10 +36,6 @@ public class GerenciarHorarioService {
              if (duracao.toMinutes() < 15) {
                 return "Erro. Seu tempo de aula deve ter duração de pelo menos 15 minutos.";
             }
-            
-            if (duracao.toMinutes() !=  duracaoMedia) {
-                return "Erro. A duração média deve condizer com os horários de inicio e término.";
-            }
 
             boolean duplicado = horarioDAO.existDuplicado(
                     horario.getMonitorId(),

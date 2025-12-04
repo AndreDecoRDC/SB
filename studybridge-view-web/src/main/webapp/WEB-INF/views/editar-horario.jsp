@@ -75,10 +75,6 @@
             <input type="time" name="horaTermino" class="input" value="${horario.horaTermino}" required>
         </label>
 
-        <label class="field">
-            <span>Duração Média (minutos)</span>
-            <input type="number" name="duracaoMedia" class="input" min="15" max="180" value="${horario.duracaoMedia}" required>
-        </label>
 
         <div class="toolbar" style="display:flex; justify-content:center; gap:1rem; margin-top:1.2rem;">
             <button type="submit" class="btn">Salvar Alterações</button>
