@@ -8,6 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/*
+protege as paginas privadas
+somente usuarios logados podem acessar suas dashboards
+e cada tipo de conta só acessa a sua própria dashboard
+
+*/
+
 
 @WebFilter("/*")
 public class SessionFilter implements Filter {
