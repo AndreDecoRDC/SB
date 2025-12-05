@@ -12,11 +12,11 @@
 <body>
 
 <header class="header">
-    <a href="${pageContext.request.contextPath}/monitor-dashboard" class="brand">
+    <a href="${pageContext.request.contextPath}/monitor/dashboard" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
-        <a class="btn" href="#">Aulas</a>
+        <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas-monitor">Aulas</a>
         <a class="btn" href="#">Horários</a>
         <a class="btn" href="#">Perfil</a>
         <a class="notif" href="#">
@@ -36,7 +36,7 @@
             <h3>Próxima Aula</h3>
             <p><b>Com Maria Souza</b> — Física</p>
             <p>18/10/2025 às 15:00</p>
-            <a class="btn" href="#">Ver aulas</a>
+            <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas-monitor">Ver aulas</a>
         </div>
 
         <div class="card">

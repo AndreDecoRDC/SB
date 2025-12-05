@@ -9,8 +9,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
     verificado BOOLEAN NOT NULL DEFAULT 0,
     token_verificacao VARCHAR(100) UNIQUE,
     codigo_2fa VARCHAR(6),
-    expiracao_2fa DATETIME
-);
+    expiracao_2fa DATETIME,
+    token_redefinicao VARCHAR(100),
+    expiracao_redefinicao DATETIME
+    );
 
 CREATE TABLE IF NOT EXISTS avaliacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,19 +22,32 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-);
+    );
 
 CREATE TABLE IF NOT EXISTS monitores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+	id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    nome VARCHAR(255) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    disciplina VARCHAR(100) NOT NULL,
-    campus ENUM('Nova Suica', 'Nova Gameleira') NOT NULL,
+	nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    disciplina VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
     descricao VARCHAR(1000),
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-    );
+);
+
+CREATE TABLE IF NOT EXISTS estudantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nome VARCHAR(255) NULL,
+    telefone VARCHAR(20) NULL,
+    curso VARCHAR(100) NULL,
+    ano_turma VARCHAR(100) NULL,
+    campus ENUM('Nova Suica', 'Nova Gameleira') NULL,
+    descricao VARCHAR(1000),
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -78,6 +93,34 @@ CREATE TABLE IF NOT EXISTS denuncias(
     CONSTRAINT fk_denuncia_denunciado
         FOREIGN KEY(usuario_denunciado_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+    CONSTRAINT fk_solicitacao_monitor FOREIGN KEY (id_monitor)
+    REFERENCES usuarios(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+    );
+
+SELECT
+    sa.*,
+    m.nome AS nome_usuario_associado
+FROM
+    solicitacoes_aula sa
+JOIN
+    monitores m ON sa.id_monitor = m.usuario_id
+WHERE
+    sa.id_estudante = ?
+;
+
+SELECT
+    sa.*,
+    e.nome AS nome_usuario_associado,
+    sa.id_estudante AS id_usuario_associado
+FROM
+    solicitacoes_aula sa
+JOIN
+    estudantes e ON sa.id_estudante = e.usuario_id
+WHERE
+    sa.id_monitor = ?
+;
 
 USE studybridge;
 SELECT disciplina, data_aula, descricao

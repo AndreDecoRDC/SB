@@ -44,8 +44,6 @@ public class SessionFilter implements Filter {
                         path.startsWith(req.getContextPath() + "/redefinir-senha") ||
                         path.startsWith(req.getContextPath() + "/redefinir-senha-action") ||
                         path.startsWith(req.getContextPath() + "/nova-senha") ||
-                        path.startsWith(req.getContextPath() + "/aulas-monitor") ||
-                        path.startsWith(req.getContextPath() + "/aulas-estudante") ||
                         path.startsWith(req.getContextPath() + "/nova-senha-action");
 
         if (publica) {

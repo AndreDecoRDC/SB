@@ -177,4 +177,74 @@ public class UsuarioDAO {
             ps.executeUpdate();
         }
     }
+
+    //salva um token unico para redefinir senha e define validade
+    public void salvarTokenRedefinicao(int id, String token) throws SQLException {
+
+        String sql = "UPDATE usuarios SET token_redefinicao = ?, expiracao_redefinicao = NOW() + INTERVAL 30 MINUTE WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, token);
+            ps.setInt(2, id);
+
+            //executa o update no banco
+            ps.executeUpdate();
+        }
+    }
+
+    //busca o usuario a partir do token de redefinição, usado para validar o link
+    public Usuario buscarPorTokenRedefinicao(String token) throws SQLException {
+
+        String sql = "SELECT * FROM usuarios WHERE token_redefinicao = ? AND expiracao_redefinicao > NOW()";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, token);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) return null;
+
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("id"));
+            u.setEmail(rs.getString("email"));
+            u.setSenhaHash(rs.getString("senha_hash"));
+            u.setTipoConta(rs.getString("tipo_conta"));
+
+            rs.close();
+            return u;
+        }
+    }
+
+    //atualiza a senha hash do usuario depois que ele confirma a redefinição
+    public void atualizarSenhaHash(int id, String novaHash) throws SQLException {
+        String sql = "UPDATE usuarios SET senha_hash = ? WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, novaHash);
+            ps.setInt(2, id);
+
+
+            ps.executeUpdate();
+        }
+    }
+
+    //limpa o token de redefinicao e a data de expiração depois de usar
+    public void limparTokenRedefinicao(int id) throws SQLException {
+
+        String sql = "UPDATE usuarios SET token_redefinicao = NULL, expiracao_redefinicao = NULL WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        }
+    }
 }

@@ -43,7 +43,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws S
         String diaSemana = req.getParameter("diaSemana");
         LocalTime inicio = LocalTime.parse(req.getParameter("horaInicio"));
         LocalTime termino = LocalTime.parse(req.getParameter("horaTermino"));
-        int duracao = Integer.parseInt(req.getParameter("duracaoMedia"));
+        int duracao = (int) java.time.Duration.between(inicio, termino).toMinutes();
 
         Horario horario = service.getHorarioById(id);
         horario.setDiaSemana(diaSemana);
@@ -65,14 +65,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws S
             req.getRequestDispatcher("/WEB-INF/views/editar-horario.jsp").forward(req, resp);
             return;
         }
-
-        if (tempo.toMinutes() != duracao) {
-            req.setAttribute("erro", "Erro. A duração média deve condizer com os horários de início e término.");
-            req.setAttribute("horario", horario);
-            req.getRequestDispatcher("/WEB-INF/views/editar-horario.jsp").forward(req, resp);
-            return;
-        }
-
+        
         boolean duplicado = service.listarHorario(horario.getMonitorId()).stream()
                 .anyMatch(h -> !Objects.equals(h.getId(), id)
                         && h.getDiaSemana().equals(diaSemana)

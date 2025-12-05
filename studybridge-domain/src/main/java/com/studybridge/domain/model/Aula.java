@@ -2,6 +2,7 @@ package com.studybridge.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID.*;
+import java.time.format.DateTimeFormatter;
 
 public class Aula {
     private Integer id;
@@ -12,6 +13,9 @@ public class Aula {
     private LocalDateTime data_solicitacao;
     private String status;
     private LocalDateTime data_aula;
+    private String dataAulaFormatada;
+    private String nomeUsuarioAssociado;  
+    private Integer idUsuarioAssociado;
 
     public Aula(){
         this.status = "PENDENTE";
@@ -95,6 +99,30 @@ public class Aula {
 
     public void setData_aula(LocalDateTime data_aula) {
         this.data_aula = data_aula;
+    }
+
+    public String getDataAulaFormatada() {
+        return dataAulaFormatada;
+    }
+
+    public void setDataAulaFormatada(String dataAulaFormatada) {
+        this.dataAulaFormatada = dataAulaFormatada;
+    }
+
+    public void setNomeUsuarioAssociado(String nomeUsuarioAssociado) {
+        this.nomeUsuarioAssociado = nomeUsuarioAssociado;
+    }
+
+    public String getNomeUsuarioAssociado() {
+        return nomeUsuarioAssociado;
+    }
+    
+    public Integer getIdUsuarioAssociado() {
+        return idUsuarioAssociado;
+    }
+
+    public void setIdUsuarioAssociado(Integer idUsuarioAssociado) {
+        this.idUsuarioAssociado = idUsuarioAssociado;
     }
 
 }

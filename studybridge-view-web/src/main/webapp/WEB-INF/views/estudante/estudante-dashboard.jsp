@@ -12,12 +12,12 @@
 <body>
 
 <header class="header">
-    <a href="${pageContext.request.contextPath}/estudante-dashboard" class="brand">
+    <a href="${pageContext.request.contextPath}/estudante/dashboard" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
         <a class="btn" href="#">Buscar Monitores</a>
-        <a class="btn" href="#">Aulas</a>
+        <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas-estudante">Aulas</a>
         <a class="btn" href="#">Perfil</a>
         <a class="notif" href="#">
             <img src="${pageContext.request.contextPath}/images/notifications.svg" alt="Notificações">
@@ -36,7 +36,7 @@
             <h3>Próxima Aula</h3>
             <p><b>Matemática com Carla Mendes</b></p>
             <p>15/10/2025 às 14:00</p>
-            <a class="btn" href="#">Ver aulas marcadas</a>
+            <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas-estudante">Ver aulas marcadas</a>
         </div>
 
         <div class="card">
