@@ -2,56 +2,53 @@ package com.studybridge.dao;
 
 import com.studybridge.domain.model.Usuario;
 import java.sql.*;
+import java.util.UUID;
 
 public class UsuarioDAO {
 
     public boolean existePorEmail(String email) throws SQLException {
-        //esse comando SQL procura se já tem alguem com o mesmo email
         String sql = "SELECT 1 FROM usuarios WHERE email = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            //substitui o ? da query pelo valor real do email
+
             ps.setString(1, email);
-
-            //executa o comando e guarda em um result set que é tipo uma tabela temporária
             ResultSet rs = ps.executeQuery();
-
-            //se rs.next() for verdadeiro, quer dizer que achou alguém com esse email
             boolean existe = rs.next();
-
             rs.close();
             return existe;
         }
     }
 
-    public void inserir(Usuario usuario) throws SQLException {
-        //comando do SQL pra inserir
-        String sql = "INSERT INTO usuarios (email, senha_hash, tipo_conta, verificado, token_verificacao) VALUES (?, ?, ?, ?, ?)";
+    public int inserir(Usuario usuario) throws SQLException {
+
+        String sql = """
+            INSERT INTO usuarios (email, senha_hash, tipo_conta, token_verificacao)
+            VALUES (?, ?, ?, ?)
+        """;
+
+        String token = UUID.randomUUID().toString();
+        usuario.setTokenVerificacao(token);
 
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { //o segundo parametro pede pro JDBC devolver o id gerado
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, usuario.getEmail());
             ps.setString(2, usuario.getSenhaHash());
             ps.setString(3, usuario.getTipoConta());
-            ps.setBoolean(4, usuario.isVerificado());
-            ps.setString(5, usuario.getTokenVerificacao());
+            ps.setString(4, token);
 
             ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys(); //obtém o id gerado do banco
-            if (rs.next()) {
-                usuario.setId(rs.getInt(1)); //guarda esse id dentro do objeto, pq cada objeto usuario tem que ter seu id para localizacao depois
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
-            rs.close();
         }
-    }
 
-    /*
-    estou planejando fazer do seguinte jeito: Como cada usuário vai ter o seu token específico. Quando a pessoa clicar
-    em um link de confirmação referente ao token dela, a conta referente ao token vai se tornar verificada com as duas funções abaixo
-     */
+        throw new SQLException("Falha ao obter ID do usuário");
+    }
 
     public Usuario buscarPorToken(String token) throws SQLException {
 
@@ -61,7 +58,6 @@ public class UsuarioDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, token);
-
             ResultSet rs = ps.executeQuery();
 
             if (!rs.next()) {
@@ -83,7 +79,12 @@ public class UsuarioDAO {
     }
 
     public void confirmarEmail(String token) throws SQLException {
-        String sql = "UPDATE usuarios SET verificado = 1 WHERE token_verificacao = ?";
+
+        String sql = """
+            UPDATE usuarios
+            SET verificado = 1, token_verificacao = NULL
+            WHERE token_verificacao = ?
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -93,22 +94,21 @@ public class UsuarioDAO {
         }
     }
 
-    //busca o usuario com base no email, usado no login pra validar senha
     public Usuario buscarPorEmail(String email) throws SQLException {
+
         String sql = "SELECT * FROM usuarios WHERE email = ?";
+
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
-            //se nao achou ninguem com esse email retorna null
             if (!rs.next()) {
                 rs.close();
                 return null;
             }
 
-            //cria o objeto usuario com as informacoes do banco
             Usuario u = new Usuario();
             u.setId(rs.getInt("id"));
             u.setEmail(rs.getString("email"));
@@ -118,7 +118,6 @@ public class UsuarioDAO {
             u.setTokenVerificacao(rs.getString("token_verificacao"));
             u.setCodigo2FA(rs.getString("codigo_2fa"));
 
-            //converte o campo datetime pra LocalDateTime do Java
             Timestamp ts = rs.getTimestamp("expiracao_2fa");
             if (ts != null) {
                 u.setExpiracao2FA(ts.toLocalDateTime());
@@ -129,81 +128,79 @@ public class UsuarioDAO {
         }
     }
 
-    //salva o codigo 2FA e define a validade de 5 minutos no banco
     public void salvarCodigo2FA(int idUsuario, String codigo) throws SQLException {
-        String sql = "UPDATE usuarios SET codigo_2fa = ?, expiracao_2fa = NOW() + INTERVAL 5 MINUTE WHERE id = ?";
+        String sql = """
+            UPDATE usuarios
+            SET codigo_2fa = ?, expiracao_2fa = NOW() + INTERVAL 5 MINUTE
+            WHERE id = ?
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            //define o codigo gerado e o id do usuario que está tentando logar
             ps.setString(1, codigo);
             ps.setInt(2, idUsuario);
-
-            //executa a atualizacao
             ps.executeUpdate();
         }
     }
 
-    //verifica se o codigo 2FA informado esta correto e ainda nao expirou
     public boolean validarCodigo2FA(int idUsuario, String codigo) throws SQLException {
-        String sql = "SELECT 1 FROM usuarios WHERE id = ? AND codigo_2fa = ? AND expiracao_2fa > NOW()";
+        String sql = """
+            SELECT 1 FROM usuarios
+            WHERE id = ? AND codigo_2fa = ? AND expiracao_2fa > NOW()
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idUsuario);
             ps.setString(2, codigo);
-
             ResultSet rs = ps.executeQuery();
-
-            //se retornar algo, quer dizer que o codigo é valido e nao expirou
             boolean valido = rs.next();
-
             rs.close();
             return valido;
         }
     }
 
-    //limpa o codigo e a expiracao depois que o usuario termina o login com sucesso
     public void limparCodigo2FA(int idUsuario) throws SQLException {
         String sql = "UPDATE usuarios SET codigo_2fa = NULL, expiracao_2fa = NULL WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            //define o id do usuario e executa o update
             ps.setInt(1, idUsuario);
             ps.executeUpdate();
         }
     }
 
-    //salva um token unico para redefinir senha e define validade
     public void salvarTokenRedefinicao(int id, String token) throws SQLException {
 
-        String sql = "UPDATE usuarios SET token_redefinicao = ?, expiracao_redefinicao = NOW() + INTERVAL 30 MINUTE WHERE id = ?";
+        String sql = """
+            UPDATE usuarios
+            SET token_redefinicao = ?, expiracao_redefinicao = NOW() + INTERVAL 30 MINUTE
+            WHERE id = ?
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, token);
             ps.setInt(2, id);
-
-            //executa o update no banco
             ps.executeUpdate();
         }
     }
 
-    //busca o usuario a partir do token de redefinição, usado para validar o link
     public Usuario buscarPorTokenRedefinicao(String token) throws SQLException {
 
-        String sql = "SELECT * FROM usuarios WHERE token_redefinicao = ? AND expiracao_redefinicao > NOW()";
+        String sql = """
+            SELECT * FROM usuarios
+            WHERE token_redefinicao = ? AND expiracao_redefinicao > NOW()
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, token);
-
             ResultSet rs = ps.executeQuery();
 
             if (!rs.next()) return null;
@@ -219,7 +216,6 @@ public class UsuarioDAO {
         }
     }
 
-    //atualiza a senha hash do usuario depois que ele confirma a redefinição
     public void atualizarSenhaHash(int id, String novaHash) throws SQLException {
         String sql = "UPDATE usuarios SET senha_hash = ? WHERE id = ?";
 
@@ -228,13 +224,10 @@ public class UsuarioDAO {
 
             ps.setString(1, novaHash);
             ps.setInt(2, id);
-
-
             ps.executeUpdate();
         }
     }
 
-    //limpa o token de redefinicao e a data de expiração depois de usar
     public void limparTokenRedefinicao(int id) throws SQLException {
 
         String sql = "UPDATE usuarios SET token_redefinicao = NULL, expiracao_redefinicao = NULL WHERE id = ?";
@@ -243,7 +236,6 @@ public class UsuarioDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-
             ps.executeUpdate();
         }
     }

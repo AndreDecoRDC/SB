@@ -1,13 +1,13 @@
 package com.studybridge.dao;
 
 import com.studybridge.domain.model.Monitor;
-
 import java.sql.*;
 
 public class MonitorDAO {
 
     public void inserir(int idUsuario) throws SQLException {
         String sql = "INSERT INTO monitores (usuario_id) VALUES (?)";
+
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -29,9 +29,7 @@ public class MonitorDAO {
             ps.setInt(1, usuarioId);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) {
-                    return null;
-                }
+                if (!rs.next()) return null;
 
                 Monitor m = new Monitor();
                 m.setNome(rs.getString("nome"));
@@ -39,7 +37,6 @@ public class MonitorDAO {
                 m.setDisciplina(rs.getString("disciplina"));
                 m.setCampus(rs.getString("campus"));
                 m.setDescricao(rs.getString("descricao"));
-
                 return m;
             }
         }
@@ -61,7 +58,6 @@ public class MonitorDAO {
             ps.setString(4, m.getCampus());
             ps.setString(5, m.getDescricao());
             ps.setInt(6, usuarioId);
-
             ps.executeUpdate();
         }
     }

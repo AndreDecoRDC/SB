@@ -1,15 +1,16 @@
 package com.studybridge.dao;
 
 import com.studybridge.domain.model.Estudante;
-
 import java.sql.*;
 
 public class EstudanteDAO {
 
     public void inserir(int idUsuario) throws SQLException {
         String sql = "INSERT INTO estudantes (usuario_id) VALUES (?)";
+
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, idUsuario);
             ps.executeUpdate();
         }
@@ -28,9 +29,7 @@ public class EstudanteDAO {
             ps.setInt(1, usuarioId);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) {
-                    return null; // teoricamente não deveria acontecer, mas é bom tratar
-                }
+                if (!rs.next()) return null;
 
                 Estudante e = new Estudante();
                 e.setNome(rs.getString("nome"));
@@ -61,7 +60,6 @@ public class EstudanteDAO {
             ps.setString(5, e.getCampus());
             ps.setString(6, e.getDescricao());
             ps.setInt(7, usuarioId);
-
             ps.executeUpdate();
         }
     }
