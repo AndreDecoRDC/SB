@@ -30,6 +30,18 @@
     <h2>Perfil</h2>
     <p class="subtle">Edite suas informações pessoais.</p>
 
+    <%
+        String msgSucesso = (String) session.getAttribute("msgSucesso");
+        if (msgSucesso != null) {
+    %>
+    <div class="alert success">
+        <%= msgSucesso %>
+    </div>
+    <%
+            session.removeAttribute("msgSucesso"); // remove após mostrar
+        }
+    %>
+
     <form class="card" method="post"
           action="${pageContext.request.contextPath}/salvar-perfil-estudante">
 
