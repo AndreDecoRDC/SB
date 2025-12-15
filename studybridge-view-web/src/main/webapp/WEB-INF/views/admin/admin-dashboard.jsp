@@ -30,19 +30,26 @@
 
         <div class="card">
             <h3>Usuários Ativos</h3>
-            <p class="number">128</p>
-            <p class="subtext">Estudantes: 90 · Monitores: 34 · Suspensos: 4</p>
+            <p class="number">${totalAtivos}</p>
+            <p class="subtext">
+                Estudantes: ${estudantesAtivos} · 
+                Monitores: ${monitoresAtivos} · 
+                Suspensos: ${suspensos}
+            </p>
         </div>
 
         <div class="card">
             <h3>Aulas Registradas</h3>
-            <p class="number">312</p>
-            <p class="subtext">Marcadas: 58 · Concluídas: 254</p>
+            <p class="number">${totalAulas}</p>
+            <p class="subtext">
+                Marcadas: ${aulasMarcadas} · 
+                Concluídas: ${aulasConcluidas}
+            </p>
         </div>
 
         <div class="card">
             <h3>Denúncias Ativas</h3>
-            <p class="number">7</p>
+            <p class="number">${denunciasAtivas}</p>
             <p class="subtext">Em análise</p>
         </div>
 
