@@ -12,6 +12,7 @@ public class Usuario {
     private String tokenVerificacao;
     private String codigo2FA;
     private LocalDateTime expiracao2FA;
+    private boolean ativa;
 
     public Usuario() {
         this.verificado = false;
@@ -23,6 +24,7 @@ public class Usuario {
         this.email = email;
         this.senhaHash = senhaHash;
         this.tipoConta = tipoConta;
+        ativa = true;
     }
 
     public Integer getId() { return id; }
@@ -48,4 +50,11 @@ public class Usuario {
 
     public LocalDateTime getExpiracao2FA() { return expiracao2FA; }
     public void setExpiracao2FA(LocalDateTime expiracao2FA) { this.expiracao2FA = expiracao2FA; }
+
+    public boolean isAtiva(){
+        return ativa;
+    }
+    public void setAtiva(boolean ativa){
+        this.ativa = ativa;
+    }
 }

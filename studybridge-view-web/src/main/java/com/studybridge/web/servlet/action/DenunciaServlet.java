@@ -50,8 +50,8 @@ public class DenunciaServlet extends HttpServlet {
             Denuncia.MotivoDenuncia motivoDenuncia = Denuncia.MotivoDenuncia.valueOf(motivo);
             denunciaService.registrarDenuncia(usuarioLogado, denunciado, motivoDenuncia, descricao);
             req.getSession().setAttribute("denunciaSucesso", "true");
-            resp.sendRedirect("/denuncias");
-            //resp.sendRedirect("denuncias?sucesso=true");
+            //resp.sendRedirect("/denuncias");
+            resp.sendRedirect("denuncias?sucesso=true");
         }catch(IllegalArgumentException | SQLException e){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Erro ao registrar denuncia");
         }
