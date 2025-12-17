@@ -34,11 +34,13 @@ public class AulasMonitorPageServlet extends HttpServlet {
             throw new ServletException("Acesso permitido somente para monitores.");
         }
 
-        Integer idMonitor = usuario.getId();
+
+        String emailMonitor = usuario.getEmail();
 
         try {
-            List<Aula> aulas = aulaService.listarAulasDoMonitor(idMonitor);
+            List<Aula> aulas = aulaService.listarAulasDoMonitor(emailMonitor);
             req.setAttribute("aulas", aulas);
+
             req.getRequestDispatcher("/WEB-INF/views/monitor/aulas-monitor.jsp")
                     .forward(req, resp);
 
@@ -47,3 +49,5 @@ public class AulasMonitorPageServlet extends HttpServlet {
         }
     }
 }
+
+
