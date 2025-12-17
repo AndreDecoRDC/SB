@@ -11,11 +11,11 @@ import java.util.Formatter;
 import java.util.List;
 
 public class AulaService {
-    
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private final AulaDAO aulaDAO = new AulaDAO();
 
-    public void solicitar(String disciplina, String data_aula, String mensagem) throws Exception{
+    public void solicitar(String disciplina, String data_aula, String mensagem, String emailAluno) throws Exception{
 
         final LocalDateTime dataHora;
 
@@ -37,20 +37,33 @@ public class AulaService {
         if(dataHora.isBefore(LocalDateTime.now())){
             throw new Exception("Esta data já passou!");
         }
-        Aula novaAula = new Aula(disciplina, mensagem, dataHora);
+
+        if(emailAluno == null){
+            throw new Exception("Não tem usuário logado");
+        }
+
+        Aula novaAula = new Aula(disciplina, mensagem, dataHora, emailAluno);
         try {
             aulaDAO.inserir(novaAula);
         } catch (SQLException e) {
             throw new Exception("Erro ao salvar solicitação  no banco", e);
         }
     }
-    
+
+    public void aceitarSolicitacao(int idSolicitacao) throws Exception {
+        try {
+            aulaDAO.atualizarStatus(idSolicitacao, "ACEITA");
+        } catch (SQLException e) {
+            throw new Exception("Erro ao aceitar solicitação", e);
+        }
+    }
+
     public List<Aula> listarAulasDoEstudante(int idEstudante) throws SQLException {
         List<Aula> aulas = aulaDAO.listarPorEstudante(idEstudante);
-        
+
         for (int i = 0; i < aulas.size(); i++) {
             Aula aula = aulas.get(i);
-            
+
             if (aula.getData_aula() != null) {
                 String dataFormatada = aula.getData_aula().format(FORMATTER);
                 aula.setDataAulaFormatada(dataFormatada);
@@ -60,23 +73,29 @@ public class AulaService {
         }
         return aulas;
     }
-    
-    public List<Aula> listarAulasDoMonitor(int idMonitor) throws SQLException {
-        List<Aula> aulas = aulaDAO.listarPorMonitor(idMonitor);
-        
-        for (int i = 0; i < aulas.size(); i++) {
-            Aula aula = aulas.get(i);
-            
+
+    public List<Aula> listarAulasDoMonitor(String emailMonitor) throws SQLException {
+        List<Aula> aulas = aulaDAO.listarPorMonitor(emailMonitor);
+
+        for (Aula aula : aulas) {
             if (aula.getData_aula() != null) {
-                String dataFormatada = aula.getData_aula().format(FORMATTER);
-                aula.setDataAulaFormatada(dataFormatada);
+                aula.setDataAulaFormatada(
+                        aula.getData_aula().format(FORMATTER)
+                );
             } else {
                 aula.setDataAulaFormatada("Aguardando Definição");
             }
         }
         return aulas;
     }
-    
+
+    public Aula getProximaAula(String emailMonitor) throws Exception {
+        try {
+            return aulaDAO.buscarProximaAula(emailMonitor);
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar próxima aula", e);
+        }
+    }
     //estudante faz isso
     public void cancelarAula(int idAula) throws Exception {
         try {
@@ -85,16 +104,15 @@ public class AulaService {
             throw new Exception("Erro ao cancelar aula.", e);
         }
     }
-    
+
     //monitor faz isso
-    public void recusarAula(int idAula) throws Exception {
+    public void recusarSolicitacao(int idAula) throws Exception {
         try {
-            aulaDAO.recusar(idAula);
+            aulaDAO.atualizarStatus(idAula, "RECUSADA");
         } catch (SQLException e) {
-            throw new Exception("Erro ao recusar aula.", e);
+            throw new Exception("Erro ao recusar solicitação", e);
         }
     }
-
     public Aula buscarAulaPorId(int idAula) throws Exception {
         try {
             return aulaDAO.buscarPorId(idAula);

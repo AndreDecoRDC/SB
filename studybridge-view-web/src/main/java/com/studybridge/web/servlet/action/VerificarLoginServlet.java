@@ -43,8 +43,6 @@ public class VerificarLoginServlet extends HttpServlet {
 
             req.getSession().setAttribute("usuarioLogado", usuario);
 
-            req.getSession().removeAttribute("emailLogin");
-
             switch (usuario.getTipoConta()) {
                 case "Estudante" ->
                         res.sendRedirect(req.getContextPath() + "/estudante/dashboard");

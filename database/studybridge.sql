@@ -61,15 +61,15 @@ CREATE TABLE IF NOT EXISTS horarios_disponiveis (
     );
 
 CREATE TABLE IF NOT EXISTS solicitacoes_aula (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   id_estudante INT NOT NULL,
-   id_monitor INT NULL,
-   disciplina VARCHAR(100) NOT NULL,
-   descricao TEXT,
-   data_solicitacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   status ENUM('PENDENTE', 'ACEITA', 'RECUSADA', 'CANCELADA', 'CONCLUIDA') NOT NULL DEFAULT 'PENDENTE',
-   data_aula DATETIME NULL,
-   local VARCHAR(200) NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_estudante VARCHAR(30) NOT NULL,
+    id_monitor VARCHAR(30) NULL,
+    disciplina VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    data_solicitacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('PENDENTE', 'ACEITA', 'RECUSADA', 'CANCELADA', 'CONCLUIDA') NOT NULL DEFAULT 'PENDENTE',
+    data_aula DATETIME NULL,
+    local VARCHAR(200) NULL,
 
    CONSTRAINT fk_solicitacao_estudante FOREIGN KEY (id_estudante)
        REFERENCES usuarios(id)
