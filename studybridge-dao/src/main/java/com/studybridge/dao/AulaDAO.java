@@ -275,4 +275,30 @@ public class AulaDAO {
         return aula;
     }
 
+    private int contar(String sql) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+                
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                    return 0;
+                }
+    }
+    
+    public int contarAulasMarcadas() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM solicitacoes_aula WHERE status = 'ACEITA'";
+        return contar(sql);
+    }
+    
+    public int contarAulasConcluidas() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM solicitacoes_aula WHERE status = 'CONCLUIDA'";
+        return contar(sql);
+    }
+    
+    public int contarTotalAulas() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM solicitacoes_aula";
+        return contar(sql);
+    }
 }

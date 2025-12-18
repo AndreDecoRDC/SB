@@ -1,6 +1,28 @@
 CREATE DATABASE IF NOT EXISTS studybridge DEFAULT CHARACTER SET utf8mb4;
 USE studybridge;
 
+--senha_hash padrão de todos os admin: admin123
+
+INSERT INTO usuarios (email, senha_hash, tipo_conta, verificado)
+SELECT 'beatrizpiedade1@gmail.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Administrador', 1
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE email = 'beatrizpiedade1@gmail.com');
+
+INSERT INTO usuarios (email, senha_hash, tipo_conta, verificado)
+SELECT 'lilithgarbazza@gmail.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Administrador', 1
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE email = 'lilithgarbazza@gmail.com');
+
+INSERT INTO usuarios (email, senha_hash, tipo_conta, verificado)
+SELECT 'Guilhermemfpereira@gmail.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Administrador', 1
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE email = 'Guilhermemfpereira@gmail.com');
+
+INSERT INTO usuarios (email, senha_hash, tipo_conta, verificado)
+SELECT 'decosprite123@gmail.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Administrador', 1
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE email = 'decosprite123@gmail.com');
+
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
