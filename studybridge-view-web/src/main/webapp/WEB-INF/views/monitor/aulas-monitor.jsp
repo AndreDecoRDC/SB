@@ -314,7 +314,7 @@
                 <select class="select" name="motivo" required>
                     <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
                     <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
-                    <option value="ASSEDIO">Assédio / Discurso ofensivo</option>
+                    <option value="ASSEDIO_DISCURSO_OFENSIVO">Assédio / Discurso ofensivo</option>
                     <option value="OUTRO">Outro</option>
                 </select>
             </label>

@@ -35,7 +35,12 @@ public class DenunciaServlet extends HttpServlet {
 
         try{
             int denuncianteId = usuarioLogado.getId();
-            int denunciadoId = Integer.parseInt(req.getParameter("denunciadoId"));
+            String denunciadoIdParam = req.getParameter("denunciadoId");
+            if(denunciadoIdParam == null || denunciadoIdParam.isEmpty()){
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do denunciado é obrigatório.");
+                return;
+            }
+            int denunciadoId = Integer.parseInt(denunciadoIdParam);
             String motivo = req.getParameter("motivo");
             String descricao = req.getParameter("descricao");
 
@@ -47,11 +52,11 @@ public class DenunciaServlet extends HttpServlet {
             Usuario denunciado = new Usuario();
             denunciado.setId(denunciadoId);
 
-            Denuncia.MotivoDenuncia motivoDenuncia = Denuncia.MotivoDenuncia.valueOf(motivo);
+            Denuncia.MotivoDenuncia motivoDenuncia = Denuncia.MotivoDenuncia.valueOf(motivo.trim().toUpperCase());
             denunciaService.registrarDenuncia(usuarioLogado, denunciado, motivoDenuncia, descricao);
-            req.getSession().setAttribute("denunciaSucesso", "true");
+            //req.getSession().setAttribute("denunciaSucesso", "true");
             //resp.sendRedirect("/denuncias");
-            resp.sendRedirect("denuncias?sucesso=true");
+            resp.sendRedirect("/denuncias?sucesso=true");
         }catch(IllegalArgumentException | SQLException e){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Erro ao registrar denuncia");
         }
