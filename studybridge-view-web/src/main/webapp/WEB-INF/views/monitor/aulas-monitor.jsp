@@ -164,7 +164,12 @@
                                 <c:if test="${a.status == 'PENDENTE' || a.status == 'ACEITA'}">
                                     <c:set var="encontrouAtivas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>${a.dataAulaFormatada}</td>
                                         <td>
@@ -178,15 +183,24 @@
 
                                             <c:choose>
                                                 <c:when test="${a.status == 'PENDENTE'}">
-                                                    <form action="${pageContext.request.contextPath}/monitor/aula/confirmar" method="post" style="display:inline;">
-                                                        <input type="hidden" name="idAula" value="${a.id}" />
-                                                        <button class="btn ghost" type="submit">Confirmar</button>
-                                                    </form>
-                                                    <a class="btn ghost" href="#">Recusar</a>
-                                                </c:when>
+
+                                                <form action="${pageContext.request.contextPath}/monitor/aceitar-solicitacao"
+                                                      method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" value="${a.id}" />
+                                                    <button class="btn ghost" type="submit">Confirmar</button>
+                                                </form>
+
+                                                <form action="${pageContext.request.contextPath}/monitor/recusar-solicitacao"
+                                                      method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" value="${a.id}" />
+                                                    <button class="btn ghost" type="submit">Recusar</button>
+                                                </form>
+
+                                            </c:when>
+
                                                 <c:when test="${a.status == 'ACEITA'}">
                                                     <a class="btn" href="${pageContext.request.contextPath}/monitor/aula/concluir?idAula=${a.id}">Concluir</a>
-                                                    <button class="btn ghost"
+                                                    <button class="btn ghost" type="button"
                                                             onclick="abrirModalCancelamento('${a.id}', '${a.disciplina}', '${a.dataAulaFormatada}', '${pageContext.request.contextPath}/monitor/aula/cancelar')">
                                                         Cancelar
                                                     </button>
@@ -217,7 +231,12 @@
                                 <c:if test="${a.status == 'RECUSADA' || a.status == 'CANCELADA'}">
                                     <c:set var="encontrouInativas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>${a.dataAulaFormatada}</td>
                                         <td><span class="status fail">${a.status}</span></td>
@@ -241,7 +260,12 @@
                                 <c:if test="${a.status == 'CONCLUIDA'}">
                                     <c:set var="encontrouConcluidas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>
                                             ${a.dataAulaFormatada}
@@ -275,39 +299,16 @@
             </div>
         </div>
 
-<div id="avaliarAluno1" class="modal">
-    <div class="modal-content">
-        <h3>Avaliar Estudante</h3>
-        <form action="${pageContext.request.contextPath}/avaliar" method="post">
-            <input type="hidden" name="tipoConta" value="monitor">
+
             <input type="hidden" name="idAluno" id="idAlunoAvaliar" value="">
             <input type="hidden" name="idAula" id="idAulaAvaliar" value="">
 
-            <div class="stars10">
-                <input type="radio" id="t5" name="nota" value="5"><label for="t5">★</label>
-                <input type="radio" id="t4" name="nota" value="4"><label for="t4">★</label>
-                <input type="radio" id="t3" name="nota" value="3"><label for="t3">★</label>
-                <input type="radio" id="t2" name="nota" value="2"><label for="t2">★</label>
-                <input type="radio" id="t1" name="nota" value="1"><label for="t1">★</label>
-            </div>
-            <label class="field">
-                <span>Comentário</span>
-                <textarea class="textarea" name="comentario" placeholder="Como foi a participação do aluno?"></textarea>
-            </label>
-            <div class="toolbar">
-                <button type="submit" class="btn">Enviar Avaliação</button>
-                <a class="btn ghost" href="#">Cancelar</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="denunciaModal" class="modal">
-    <div class="modal-content">
-        <h3>Registrar Denúncia contra Estudante</h3>
-        <form action="${pageContext.request.contextPath}/denuncias" method="post">
-            <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="">
-            <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
+        <div id="denunciaModal" class="modal">
+            <div class="modal-content">
+                <h3>Registrar Denúncia contra Estudante</h3>
+                <form action="${pageContext.request.contextPath}/denuncias" method="post">
+                    <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="">
+                    <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
 
             <label class="field">
                 <span>Motivo</span>
@@ -330,29 +331,16 @@
     </div>
 </div>
 
-        <div id="perfilModalJoao" class="modal">
-            <div class="modal-content perfil-modal">
-                <h3>Perfil de João Pedro</h3>
-                <div class="perfil-info">
-                    <p><span>Curso:</span> Informática</p>
-                    <p><b>Telefone de contato:</b> (99)9999-9999</p>
-                    <p><span>Nota média:</span> ⭐ 4.8</p>
-                    <p><span>Descrição:</span> Aluno dedicado</p>
-                </div>
-                <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
-            </div>
-        </div>
-
-<div id="perfilModalMaria" class="modal">
+<div id="perfilModalJoao" class="modal">
     <div class="modal-content perfil-modal">
-        <h3>Perfil de Maria Souza</h3>
+        <h3>Perfil de João Pedro</h3>
         <div class="perfil-info">
             <p><span>Curso:</span> Informática</p>
             <p><b>Telefone de contato:</b> (99)9999-9999</p>
             <p><span>Nota média:</span> ⭐ 4.8</p>
-            <p><span>Descrição:</span> Aluna dedicada</p>
+            <p><span>Descrição:</span> Aluno dedicado</p>
         </div>
-        <div class="toolbar"><a class="btn ghost" href="#">Fechar</a></div>
+        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
     </div>
 </div>
 
@@ -414,4 +402,77 @@
             });
         </script>
     </body>
+</html>
+
+<div id="modalDetalhes" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Detalhes da Aula</h3>
+
+        <p><b>Aluno:</b> <span id="detalhesAluno"></span></p>
+        <p><b>Disciplina:</b> <span id="detalhesDisciplina"></span></p>
+        <p><b>Data da Aula:</b> <span id="detalhesData"></span></p>
+        <p><b>Mensagem enviada:</b></p>
+        <p id="detalhesDescricao" style="margin:10px 0;"></p>
+
+        <div class="toolbar">
+            <button class="btn light" onclick="fecharDetalhes()">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalConfirmar" class="modal" style="display:none;">
+    <div class="modal-content">
+
+        <h3>Confirmar Solicitação</h3>
+
+        <p><b>Mensagem do aluno:</b></p>
+        <p id="descricaoModal" style="margin:10px 0;"></p>
+
+        <form id="formAceitar" method="post"
+              action="${pageContext.request.contextPath}/monitor/aceitar-solicitacao">
+            <input type="hidden" name="id" id="idAulaAceitar">
+            <button class="btn" type="submit">Aceitar</button>
+        </form>
+
+        <form id="formRecusar" method="post"
+              action="${pageContext.request.contextPath}/monitor/recusar-solicitacao">
+            <input type="hidden" name="id" id="idAulaRecusar">
+            <button class="btn ghost" type="submit" style="margin-top:10px;">Recusar</button>
+        </form>
+
+        <div class="toolbar">
+            <button class="btn light" style="margin-top:10px;" onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModal(id, descricao) {
+        document.getElementById('idAulaAceitar').value = id;
+        document.getElementById('idAulaRecusar').value = id;
+        document.getElementById('descricaoModal').textContent = descricao;
+        document.getElementById('modalConfirmar').style.display = 'block';
+    }
+
+    function fecharModal() {
+        document.getElementById('modalConfirmar').style.display = 'none';
+
+    }
+        function abrirModalDetalhes(descricao, disciplina, aluno, data) {
+        document.getElementById("detalhesDescricao").textContent = descricao;
+        document.getElementById("detalhesDisciplina").textContent = disciplina;
+        document.getElementById("detalhesAluno").textContent = aluno;
+        document.getElementById("detalhesData").textContent = data;
+
+        document.getElementById("modalDetalhes").style.display = "block";
+    }
+
+        function fecharDetalhes() {
+        document.getElementById("modalDetalhes").style.display = "none";
+    }
+
+</script>
+
+<footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
 </html>

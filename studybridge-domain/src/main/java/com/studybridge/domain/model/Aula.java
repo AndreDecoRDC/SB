@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Aula {
     private Integer id;
-    private Integer id_estudante;
-    private Integer id_monitor;
+    private String id_estudante;
+    private String id_monitor;
     private String disciplina;
     private String descricao;
     private LocalDateTime data_solicitacao;
@@ -21,7 +21,7 @@ public class Aula {
         this.status = "PENDENTE";
     }
 
-    public Aula(Integer id_estudante, Integer id_monitor, String disciplina, String descricao, LocalDateTime data_solicitacao, LocalDateTime data_aula){
+    public Aula(String id_estudante, String id_monitor, String disciplina, String descricao, LocalDateTime data_solicitacao, LocalDateTime data_aula){
         this();
         this.id_estudante = id_estudante;
         this.id_monitor = id_monitor;
@@ -31,11 +31,14 @@ public class Aula {
         this.data_aula = data_aula;
     }
 
-    public Aula(String disciplina, String descricao, LocalDateTime data_aula){
+    public Aula(String disciplina, String descricao, LocalDateTime data_aula, String id_estudante){
         this();
         this.disciplina = disciplina;
         this.descricao = descricao;
         this.data_aula = data_aula;
+        this.id_estudante = id_estudante;
+        // teoricamente, caso tivesse o caso de uso de cadastrar monitorias, não seria esse email aqui.
+        this.id_monitor = "guilhermemfpereira@gmail.com";
     }
     public Integer getId() {
         return id;
@@ -45,19 +48,19 @@ public class Aula {
         this.id = id;
     }
 
-    public Integer getId_estudante() {
+    public String getId_estudante() {
         return id_estudante;
     }
 
-    public void setId_estudante(Integer id_estudante) {
+    public void setId_estudante(String id_estudante) {
         this.id_estudante = id_estudante;
     }
 
-    public Integer getId_monitor() {
+    public String getId_monitor() {
         return id_monitor;
     }
 
-    public void setId_monitor(Integer id_monitor) {
+    public void setId_monitor(String id_monitor) {
         this.id_monitor = id_monitor;
     }
 

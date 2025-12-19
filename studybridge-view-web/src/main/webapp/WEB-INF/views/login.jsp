@@ -45,7 +45,6 @@
             <button class="btn" type="submit">Entrar</button>
         </div>
 
-        <%-- ERRO DO LOGIN --%>
         <% if (request.getAttribute("erro") != null) { %>
         <p style="color:#c62828; margin-top:1rem; text-align:center;">
             <%= request.getAttribute("erro") %>

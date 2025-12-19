@@ -1,5 +1,6 @@
 package com.studybridge.web.servlet.action;
 
+import com.studybridge.domain.model.Usuario;
 import com.studybridge.service.AulaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/solicitarAula")
+@WebServlet("/estudante/solicitarAula")
 public class SolicitarAulaServlet extends HttpServlet {
 
     private final AulaService aulaService = new AulaService();
@@ -20,14 +21,17 @@ public class SolicitarAulaServlet extends HttpServlet {
         String data_aula = request.getParameter("dataHora");
         String mensagem = request.getParameter("mensagem");
 
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+        String emailAluno = usuario.getEmail();
+
         try {
-            aulaService.solicitar(disciplina, data_aula, mensagem);
+            aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno);
         } catch (Exception e) {
                 e.printStackTrace();
                 request.setAttribute("erro", e.getMessage());
-                request.getRequestDispatcher("/WEB-INF/views/solicitar.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/estudante/solicitar.jsp").forward(request, response);
         }
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        response.sendRedirect(request.getContextPath() + "/estudante/dashboard");
     }
 }
 

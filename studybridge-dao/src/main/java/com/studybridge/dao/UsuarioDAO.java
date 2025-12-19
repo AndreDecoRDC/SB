@@ -247,4 +247,37 @@ public class UsuarioDAO {
             ps.executeUpdate();
         }
     }
+    
+    private int contar(String sql) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+    
+    public int contarTotalAtivos() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 1 AND tipo_conta != 'Administrador'";
+        return contar(sql);
+    }
+    
+    public int contarEstudantesAtivos() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM usuarios WHERE tipo_conta = 'Estudante' AND verificado = 1";
+        return contar(sql);
+    }
+    
+    public int contarMonitoresAtivos() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM usuarios WHERE tipo_conta = 'Monitor' AND verificado = 1";
+        return contar(sql);
+    }
+    
+    public int contarUsuariosInativos() throws SQLException {
+        String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 0 AND tipo_conta != 'Administrador'";
+        return contar(sql);
+    }
+    
 }

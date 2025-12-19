@@ -20,7 +20,7 @@
         <h2 class="card-title">Solicitar aula com Carla Mendes</h2>
         <p class="subtle">Preencha os detalhes e envie uma mensagem para o monitor.</p>
 
-        <form action="${pageContext.request.contextPath}/solicitarAula" method="post">
+        <form action="${pageContext.request.contextPath}/estudante/solicitarAula" method="post">
             <label class="field">
                 <span>Disciplina</span>
                 <input class="input" name="disciplina" value="Matemática" required />
