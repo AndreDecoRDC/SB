@@ -1,5 +1,7 @@
 package com.studybridge.web.servlet.page;
 
+import com.studybridge.domain.model.Denuncia;
+import com.studybridge.service.DenunciaService;
 import com.studybridge.dao.AulaDAO;
 import com.studybridge.dao.UsuarioDAO;
 import jakarta.servlet.ServletException;

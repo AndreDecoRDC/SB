@@ -93,7 +93,7 @@ public class DenunciaDAO {
     }
     public List<Denuncia> buscarDenunciasPendentes() throws SQLException{
         String sql = "SELECT id, usuario_denunciante_id, usuario_denunciado_id, motivo, descricao, status" +
-                "FROM denuncias WHERE status = 'PENDENTE";
+                "FROM denuncias WHERE status = 'PENDENTE'";
         List<Denuncia> denuncias = new ArrayList<>();
 
         try(Connection conn = ConnectionFactory.getConnection();
