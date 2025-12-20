@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -134,7 +135,7 @@
 
     <body>
         <header class="header">
-            <a href="${pageContext.request.contextPath}/monitor-dashboard" class="brand">
+            <a href="${pageContext.request.contextPath}/monitor/dashboard" class="brand">
                 <div class="logo">SB</div><strong>StudyBridge</strong>
             </a>
             <nav class="nav">
@@ -163,7 +164,12 @@
                                 <c:if test="${a.status == 'PENDENTE' || a.status == 'ACEITA'}">
                                     <c:set var="encontrouAtivas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>${a.dataAulaFormatada}</td>
                                         <td>
@@ -177,15 +183,24 @@
 
                                             <c:choose>
                                                 <c:when test="${a.status == 'PENDENTE'}">
-                                                    <form action="${pageContext.request.contextPath}/monitor/aula/confirmar" method="post" style="display:inline;">
-                                                        <input type="hidden" name="idAula" value="${a.id}" />
-                                                        <button class="btn ghost" type="submit">Confirmar</button>
-                                                    </form>
-                                                    <a class="btn ghost" href="#">Recusar</a>
-                                                </c:when>
+
+                                                <form action="${pageContext.request.contextPath}/monitor/aceitar-solicitacao"
+                                                      method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" value="${a.id}" />
+                                                    <button class="btn ghost" type="submit">Confirmar</button>
+                                                </form>
+
+                                                <form action="${pageContext.request.contextPath}/monitor/recusar-solicitacao"
+                                                      method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" value="${a.id}" />
+                                                    <button class="btn ghost" type="submit">Recusar</button>
+                                                </form>
+
+                                            </c:when>
+
                                                 <c:when test="${a.status == 'ACEITA'}">
                                                     <a class="btn" href="${pageContext.request.contextPath}/monitor/aula/concluir?idAula=${a.id}">Concluir</a>
-                                                    <button class="btn ghost"
+                                                    <button class="btn ghost" type="button"
                                                             onclick="abrirModalCancelamento('${a.id}', '${a.disciplina}', '${a.dataAulaFormatada}', '${pageContext.request.contextPath}/monitor/aula/cancelar')">
                                                         Cancelar
                                                     </button>
@@ -216,7 +231,12 @@
                                 <c:if test="${a.status == 'RECUSADA' || a.status == 'CANCELADA'}">
                                     <c:set var="encontrouInativas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>${a.dataAulaFormatada}</td>
                                         <td><span class="status fail">${a.status}</span></td>
@@ -240,7 +260,12 @@
                                 <c:if test="${a.status == 'CONCLUIDA'}">
                                     <c:set var="encontrouConcluidas" value="${true}" />
                                     <tr>
-                                        <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                        <td>
+                                            <a class="nome-link" href="#">
+                                                    ${a.nomeUsuarioAssociado}
+                                            </a>
+                                        </td>
+
                                         <td>${a.disciplina}</td>
                                         <td>
                                             ${a.dataAulaFormatada}
@@ -386,7 +411,6 @@
             </div>
         </div>
 
-        <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
         <script>
             const botoesDenunciar = document.querySelectorAll('.btn-denunciar');
             botoesDenunciar.forEach(btn => {
@@ -413,4 +437,77 @@
             });
         </script>
     </body>
+</html>
+
+<div id="modalDetalhes" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Detalhes da Aula</h3>
+
+        <p><b>Aluno:</b> <span id="detalhesAluno"></span></p>
+        <p><b>Disciplina:</b> <span id="detalhesDisciplina"></span></p>
+        <p><b>Data da Aula:</b> <span id="detalhesData"></span></p>
+        <p><b>Mensagem enviada:</b></p>
+        <p id="detalhesDescricao" style="margin:10px 0;"></p>
+
+        <div class="toolbar">
+            <button class="btn light" onclick="fecharDetalhes()">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalConfirmar" class="modal" style="display:none;">
+    <div class="modal-content">
+
+        <h3>Confirmar Solicitação</h3>
+
+        <p><b>Mensagem do aluno:</b></p>
+        <p id="descricaoModal" style="margin:10px 0;"></p>
+
+        <form id="formAceitar" method="post"
+              action="${pageContext.request.contextPath}/monitor/aceitar-solicitacao">
+            <input type="hidden" name="id" id="idAulaAceitar">
+            <button class="btn" type="submit">Aceitar</button>
+        </form>
+
+        <form id="formRecusar" method="post"
+              action="${pageContext.request.contextPath}/monitor/recusar-solicitacao">
+            <input type="hidden" name="id" id="idAulaRecusar">
+            <button class="btn ghost" type="submit" style="margin-top:10px;">Recusar</button>
+        </form>
+
+        <div class="toolbar">
+            <button class="btn light" style="margin-top:10px;" onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModal(id, descricao) {
+        document.getElementById('idAulaAceitar').value = id;
+        document.getElementById('idAulaRecusar').value = id;
+        document.getElementById('descricaoModal').textContent = descricao;
+        document.getElementById('modalConfirmar').style.display = 'block';
+    }
+
+    function fecharModal() {
+        document.getElementById('modalConfirmar').style.display = 'none';
+
+    }
+        function abrirModalDetalhes(descricao, disciplina, aluno, data) {
+        document.getElementById("detalhesDescricao").textContent = descricao;
+        document.getElementById("detalhesDisciplina").textContent = disciplina;
+        document.getElementById("detalhesAluno").textContent = aluno;
+        document.getElementById("detalhesData").textContent = data;
+
+        document.getElementById("modalDetalhes").style.display = "block";
+    }
+
+        function fecharDetalhes() {
+        document.getElementById("modalDetalhes").style.display = "none";
+    }
+
+</script>
+
+<footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+</body>
 </html>
