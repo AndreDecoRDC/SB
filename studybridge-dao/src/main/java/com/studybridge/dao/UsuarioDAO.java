@@ -2,6 +2,7 @@ package com.studybridge.dao;
 
 import com.studybridge.domain.model.Usuario;
 import java.sql.*;
+import java.util.UUID;
 
 public class UsuarioDAO {
 
@@ -83,7 +84,12 @@ public class UsuarioDAO {
     }
 
     public void confirmarEmail(String token) throws SQLException {
-        String sql = "UPDATE usuarios SET verificado = 1 WHERE token_verificacao = ?";
+
+        String sql = """
+            UPDATE usuarios
+            SET verificado = 1, token_verificacao = NULL
+            WHERE token_verificacao = ?
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -247,37 +253,37 @@ public class UsuarioDAO {
             ps.executeUpdate();
         }
     }
-    
+
     private int contar(String sql) throws SQLException {
         try (Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
-            
+
             if (rs.next()) {
                 return rs.getInt(1);
             }
             return 0;
         }
     }
-    
+
     public int contarTotalAtivos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 1 AND tipo_conta != 'Administrador'";
         return contar(sql);
     }
-    
+
     public int contarEstudantesAtivos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE tipo_conta = 'Estudante' AND verificado = 1";
         return contar(sql);
     }
-    
+
     public int contarMonitoresAtivos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE tipo_conta = 'Monitor' AND verificado = 1";
         return contar(sql);
     }
-    
+
     public int contarUsuariosInativos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 0 AND tipo_conta != 'Administrador'";
         return contar(sql);
     }
-    
+
 }

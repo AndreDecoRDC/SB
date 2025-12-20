@@ -299,48 +299,84 @@
             </div>
         </div>
 
-
+<div id="avaliarAluno1" class="modal">
+    <div class="modal-content">
+        <h3>Avaliar Estudante</h3>
+        <form action="${pageContext.request.contextPath}/avaliar" method="post">
+            <input type="hidden" name="tipoConta" value="monitor">
             <input type="hidden" name="idAluno" id="idAlunoAvaliar" value="">
             <input type="hidden" name="idAula" id="idAulaAvaliar" value="">
 
-        <div id="denunciaModal" class="modal">
-            <div class="modal-content">
-                <h3>Registrar Denúncia contra Estudante</h3>
-                <form action="${pageContext.request.contextPath}/denuncias" method="post">
-                    <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="">
-                    <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
+            <div class="stars10">
+                <input type="radio" id="t5" name="nota" value="5"><label for="t5">★</label>
+                <input type="radio" id="t4" name="nota" value="4"><label for="t4">★</label>
+                <input type="radio" id="t3" name="nota" value="3"><label for="t3">★</label>
+                <input type="radio" id="t2" name="nota" value="2"><label for="t2">★</label>
+                <input type="radio" id="t1" name="nota" value="1"><label for="t1">★</label>
+            </div>
+            <label class="field">
+                <span>Comentário</span>
+                <textarea class="textarea" name="comentario" placeholder="Como foi a participação do aluno?"></textarea>
+            </label>
+            <div class="toolbar">
+                <button type="submit" class="btn">Enviar Avaliação</button>
+                <a class="btn ghost" href="#">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 
-                    <label class="field">
-                        <span>Motivo</span>
-                        <select class="select" name="motivo" required>
-                            <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
-                            <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
-                            <option value="ASSEDIO">Assédio / Discurso ofensivo</option>
-                            <option value="OUTRO">Outro</option>
-                        </select>
-                    </label>
-                    <label class="field">
-                        <span>Descrição</span>
-                        <textarea class="textarea" name="descricao" placeholder="Descreva o ocorrido..."></textarea>
-                    </label>
-                    <div class="toolbar">
-                        <button type="submit" class="btn">Enviar Denúncia</button>
-                        <a class="btn ghost" href="#">Cancelar</a>
-                    </div>
-                </form>
+<div id="denunciaModal" class="modal">
+    <div class="modal-content">
+        <h3>Registrar Denúncia contra Estudante</h3>
+        <form action="${pageContext.request.contextPath}/denuncias" method="post">
+            <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="">
+            <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
+
+            <label class="field">
+                <span>Motivo</span>
+                <select class="select" name="motivo" required>
+                    <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
+                    <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
+                    <option value="ASSEDIO">Assédio / Discurso ofensivo</option>
+                    <option value="OUTRO">Outro</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Descrição</span>
+                <textarea class="textarea" name="descricao" placeholder="Descreva o ocorrido..."></textarea>
+            </label>
+            <div class="toolbar">
+                <button type="submit" class="btn">Enviar Denúncia</button>
+                <a class="btn ghost" href="#">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+        <div id="perfilModalJoao" class="modal">
+            <div class="modal-content perfil-modal">
+                <h3>Perfil de João Pedro</h3>
+                <div class="perfil-info">
+                    <p><span>Curso:</span> Informática</p>
+                    <p><b>Telefone de contato:</b> (99)9999-9999</p>
+                    <p><span>Nota média:</span> ⭐ 4.8</p>
+                    <p><span>Descrição:</span> Aluno dedicado</p>
+                </div>
+                <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
             </div>
         </div>
 
-<div id="perfilModalJoao" class="modal">
+<div id="perfilModalMaria" class="modal">
     <div class="modal-content perfil-modal">
-        <h3>Perfil de João Pedro</h3>
+        <h3>Perfil de Maria Souza</h3>
         <div class="perfil-info">
             <p><span>Curso:</span> Informática</p>
             <p><b>Telefone de contato:</b> (99)9999-9999</p>
             <p><span>Nota média:</span> ⭐ 4.8</p>
-            <p><span>Descrição:</span> Aluno dedicado</p>
+            <p><span>Descrição:</span> Aluna dedicada</p>
         </div>
-        <div class="toolbar"><a class="btn" href="#">Fechar</a></div>
+        <div class="toolbar"><a class="btn ghost" href="#">Fechar</a></div>
     </div>
 </div>
 

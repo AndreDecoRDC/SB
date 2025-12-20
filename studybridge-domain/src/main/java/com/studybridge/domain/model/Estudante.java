@@ -16,6 +16,10 @@ public class Estudante extends Usuario {
         this.avaliacaoRecebida = new Avaliacao(this);
     }
 
+    public Estudante() {
+        super(null, null, "Estudante");
+    }
+
     public String getNome() {
         return nome;
     }
