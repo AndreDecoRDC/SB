@@ -56,7 +56,6 @@
                 cursor: pointer;
                 text-decoration: underline;
             }
-
         </style>
     </head>
 
@@ -164,15 +163,13 @@
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
 
-            <h3>Detalhes do Usuário</h3>
+            <h3 style="color: #2563eb">Detalhes do Usuário</h3>
 
+            <p><strong>Nome:</strong> <span id="mNome"></span></p>
             <p><strong>Email:</strong> <span id="mEmail"></span></p>
             <p><strong>Tipo:</strong> <span id="mTipo"></span></p>
             <p><strong>Verificado:</strong> <span id="mVerificado"></span></p>
 
-            <hr>
-
-            <p><strong>Nome:</strong> <span id="mNome"></span></p>
             <p><strong>Telefone:</strong> <span id="mTelefone"></span></p>
             <p><strong>Curso / Disciplina:</strong> <span id="mExtra"></span></p>
             <p><strong>Campus:</strong> <span id="mCampus"></span></p>
@@ -183,10 +180,11 @@
 
     <script>
         function abrirModal(email, tipo, verificado, nome, telefone, curso, disciplina, campus, descricao) {
+            
+            document.getElementById("mNome").innerText = nome || '-';
             document.getElementById("mEmail").innerText = email;
             document.getElementById("mTipo").innerText = tipo;
             document.getElementById("mVerificado").innerText = verificado === 'true' ? 'Sim' : 'Não';
-            document.getElementById("mNome").innerText = nome || '-';
             document.getElementById("mTelefone").innerText = telefone || '-';
             document.getElementById("mExtra").innerText = curso || disciplina || '-';
             document.getElementById("mCampus").innerText = campus || '-';
