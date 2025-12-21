@@ -16,6 +16,11 @@ public class Monitor extends Usuario {
         super(email, senhaHash, "Monitor");
         this.avaliacaoRecebida = new Avaliacao(this);
    }
+
+    public Monitor() {
+        super(null, null, "Monitor");
+    }
+
    public Avaliacao getAvaliacaoRecebida() {
         return avaliacaoRecebida;
    }

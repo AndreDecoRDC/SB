@@ -13,6 +13,16 @@ html, body {
   min-height: 100vh;
 }
 
+.alert.success {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #b7dfc3;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
 
   .header {
     display: flex;
