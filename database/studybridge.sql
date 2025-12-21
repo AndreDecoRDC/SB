@@ -117,11 +117,6 @@ CREATE TABLE IF NOT EXISTS denuncias(
     CONSTRAINT fk_denuncia_denunciado
         FOREIGN KEY(usuario_denunciado_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
-    CONSTRAINT fk_solicitacao_monitor FOREIGN KEY (id_monitor)
-    REFERENCES usuarios(id)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
-    );
 
 ALTER TABLE estudantes
     MODIFY nome VARCHAR(255) NULL,

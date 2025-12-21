@@ -19,7 +19,7 @@
 
     <nav class="nav">
         <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas">Aulas</a>
-        <a class="btn" href="${pageContext.request.contextPath}/monitor/horarios">Horários</a>
+        <a class="btn" href="${pageContext.request.contextPath}horarios">Horários</a>
         <a class="btn" href="${pageContext.request.contextPath}/monitor/perfil">Perfil</a>
         <a class="notif" href="#notifPanel">
             <img src="${pageContext.request.contextPath}/images/notifications.svg" alt="Notificações">

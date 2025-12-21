@@ -26,7 +26,8 @@ public class CadastroService {
         int usuarioId;
 
         try {
-            usuarioId = usuarioDAO.inserir(novoUsuario);
+            usuarioDAO.inserir(novoUsuario);
+            usuarioId = novoUsuario.getId();
 
             if ("Estudante".equals(tipoConta)) {
                 estudanteDAO.inserir(usuarioId);

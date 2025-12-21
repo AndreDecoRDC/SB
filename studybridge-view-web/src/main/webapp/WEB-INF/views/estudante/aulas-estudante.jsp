@@ -219,7 +219,8 @@
                         </tbody>
                     </table>
                 </div>
-
+            </div>
+        </main>
 <div id="avaliar1" class="modal">
     <div class="modal-content">
         <h3>Avaliar Monitor</h3>
@@ -276,28 +277,31 @@
                     </div>
                 </div>
 
-                <div id="confirmarCancelamento" class="modal">
-                    <div class="modal-content">
-                        <h3>Confirmar Cancelamento</h3>
-                        <p>Você está prestes a cancelar a aula:</p>
-                        <ul>
-                            <li><b>Disciplina:</b> <span id="modalDisciplina"></span></li>
-                            <li><b>Data:</b> <span id="modalDataAula"></span></li>
-                        </ul>
-
-            <label class="field"><span>Motivo</span>
-                <select name="motivo" class="select" required>
-                    <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
-                    <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
-                    <option value="ASSEDIO">Assédio / Ofensa</option>
-                    <option value="OUTRO">Outro</option>
-                </select>
-            </label>
-
-            <label class="field"><span>Descrição (Opcional)</span>
+        <div id="denunciarMonitor" class="modal">
+            <div class="modal-content">
+                <h3>Registrar Denúncia</h3>
+                <form action="${pageContext.request.contextPath}/denuncias" method="post">
+                    <input type="hidden" name="denunciadoId" value="${param.denunciadoId}">
+                    <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="${param.denunciadoId}">
+                    <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
+                    <label class="field"><span>Motivo</span>
+                        <select name="motivo" class="select" required>
+                            <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
+                            <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
+                            <option value="ASSEDIO">Assédio / Ofensa</option>
+                            <option value="OUTRO">Outro</option>
+                        </select>
+                    </label>
+                    <label class="field"><span>Descrição (Opcional)</span>
+                        <textarea name="descricao" class="textarea" placeholder="Descreva o ocorrido..."></textarea>
+                    </label>
+                    <div class="toolbar">
+                        <button class="btn" type="submit">Enviar Denúncia</button>
+                        <a class="btn ghost" href="#">Cancelar</a>
+                    </div>
+                <label class="field"><span>Descrição (Opcional)</span>
                 <textarea name="descricao" class="textarea" placeholder="Descreva o ocorrido..."></textarea>
             </label>
-
             <div class="toolbar">
                 <button class="btn" type="submit">Enviar Denúncia</button>
                 <a class="btn ghost" href="#">Cancelar</a>
@@ -349,17 +353,23 @@
         });
     });
 </script>
-</body>
-                        <form id="formCancelamento" action="#" method="post">
-                            <input type="hidden" name="idAula" id="inputModalIdAula" value="" />
-                            <div class="toolbar" style="justify-content:center;">
-                                <button class="btn" type="submit">Sim, cancelar aula</button>
-                                <a class="btn ghost fechar-modal" href="#">Voltar</a>
-                            </div>
-                        </form>
+        <div id="confirmarCancelamento" class="modal">
+            <div class="modal-content">
+                <h3>Confirmar Cancelamento</h3>
+                <p>Você está prestes a cancelar a aula:</p>
+                <ul>
+                    <li><b>Disciplina:</b> <span id="modalDisciplina"></span></li>
+                    <li><b>Data:</b> <span id="modalDataAula"></span></li>
+                </ul>
+                <form id="formCancelamento" action="#" method="post">
+                    <input type="hidden" name="idAula" id="inputModalIdAula" value="" />
+                    <div class="toolbar" style="justify-content:center;">
+                        <button class="btn" type="submit">Sim, cancelar aula</button>
+                        <a class="btn ghost fechar-modal" href="#">Voltar</a>
                     </div>
-                </div>
+                </form>
+            </div>
+        </div>
 
-                    <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
     </body>
 </html>
