@@ -22,9 +22,8 @@ public class AdminDenunciaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            List<Denuncia> denuncias = denunciaDAO.buscarDenuncias();
-            if(denunciaDAO.buscarDenuncias() == null){
-                System.out.println("Lista Vazia do DAO");
+            List<Denuncia> denuncias = denunciaDAO.buscarDenunciasPendentes()   ;
+            if(denunciaDAO.buscarDenunciasPendentes() == null){
                 denuncias = new ArrayList<>();
             }
             req.setAttribute("denuncias", denuncias);
@@ -39,12 +38,28 @@ public class AdminDenunciaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
-            usuarioDAO.atualizarStatusAtivo(idUsuario, false);
+            String acao = req.getParameter("acao");
+            String idDenunciaString = req.getParameter("idDenuncia");
+            if(idDenunciaString == null || idDenunciaString.isEmpty()){
+                resp.sendRedirect(req.getContextPath() + "/admin/denuncias");
+                return;
+            }
+
+            int idDenuncia = Integer.parseInt(idDenunciaString);
+            if("suspender".equals(acao)){
+                String idUsuarioString = req.getParameter("idUsuario");
+                if(idUsuarioString != null && !idUsuarioString.isEmpty()){
+                    int idUsuario = Integer.parseInt((idUsuarioString));
+                    usuarioDAO.atualizarStatusAtivo(idUsuario, false);
+                    denunciaDAO.atualizarStatus(idDenuncia, Denuncia.StatusDenuncia.FINALIZADA);
+                }
+            }else if("arquivar".equals(acao)){
+                denunciaDAO.atualizarStatus(idDenuncia, Denuncia.StatusDenuncia.ARQUIVADA);
+            }
             resp.sendRedirect(req.getContextPath() + "/admin/denuncias");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendError(500);
+            throw new ServletException("Erro ao processar a ação na denúncia", e);
         }
     }
 }

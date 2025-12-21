@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<p>Total de denúncias vindas do Java: ${denuncias.size()}</p>
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -60,10 +59,21 @@
                             <form action="${pageContext.request.contextPath}/admin/denuncias" method="post" style="display:inline;">
                                 <input type="hidden" name="idUsuario" value="${d.usuarioDenunciado.id}">
                                 <input type="hidden" name="idDenuncia" value="${d.id}">
-                                <button type="submit" class="btn ghost"
-                                        style="color: #dc2626; border-color: #dc2626;"
-                                        onclick="return confirm('Tem certeza que deseja SUSPENDER a conta de ${d.usuarioDenunciado.nome}?')">
+                                <input type="hidden" name="acao" value="suspender">
+
+                                <button type="submit" class="btn ghost" style="color: #dc2626; border-color: #dc2626;"
+                                        onclick="return confirm('Suspender conta de ${d.usuarioDenunciado.nome}?')">
                                     Suspender
+                                </button>
+                            </form>
+
+                            <form action="${pageContext.request.contextPath}/admin/denuncias" method="post" style="display:inline;">
+                                <input type="hidden" name="idDenuncia" value="${d.id}">
+                                <input type="hidden" name="acao" value="arquivar">
+
+                                <button type="submit" class="btn ghost" style="color: #6b7280; border-color: #6b7280;"
+                                        onclick="return confirm('Deseja arquivar esta denúncia?')">
+                                    Arquivar
                                 </button>
                             </form>
                             <a class="btn ghost" href="#detalhes-${d.id}">Detalhes da Denúncia</a>

@@ -270,7 +270,8 @@ public class UsuarioDAO {
     }
 
     public Usuario buscarPorId(int id) throws SQLException {
-        String sql = "SELECT u.*, e.nome AS nome_estudante, m.nome AS nome_monitor " +
+        String sql = "SELECT u.id AS id_usuario, u.email, u.tipo_conta, u.ativa, " +
+                "e.nome AS nome_estudante, m.nome AS nome_monitor " +
                 "FROM usuarios u " +
                 "LEFT JOIN estudantes e ON u.id = e.usuario_id " +
                 "LEFT JOIN monitores m ON u.id = m.usuario_id " +
@@ -282,7 +283,7 @@ public class UsuarioDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Usuario u = new Usuario();
-                    u.setId(rs.getInt("id"));
+                    u.setId(rs.getInt("id_usuario"));
                     u.setEmail(rs.getString("email"));
                     u.setTipoConta(rs.getString("tipo_conta"));
                     u.setAtiva(rs.getBoolean("ativa"));

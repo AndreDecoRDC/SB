@@ -118,23 +118,24 @@ public class DenunciaDAO {
         return denuncias;
     }
     public List<Denuncia> buscarDenunciasPendentes() throws SQLException{
-        String sql = "SELECT id, usuario_denunciante_id, usuario_denunciado_id, motivo, descricao, status" +
-                "FROM denuncias WHERE status = 'PENDENTE'";
+        String sql = "SELECT d.id, d.usuario_denunciante_id, d.usuario_denunciado_id, d.motivo, d.descricao, d.status " +
+                "FROM denuncias d " +
+                "WHERE d.status IN ('PENDENTE', 'EM_ANALISE')";
         List<Denuncia> denuncias = new ArrayList<>();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
         try(Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery()){
 
             while(rs.next()){
-                Usuario denunciante = new Usuario();
-                denunciante.setId(rs.getInt("usuario_denunciante_id"));
+                Usuario denunciante = usuarioDAO.buscarPorId(rs.getInt("usuario_denunciante_id"));
+                Usuario denunciado = usuarioDAO.buscarPorId(rs.getInt("usuario_denunciado_id"));
 
-                Usuario denunciado = new Usuario();
-                denunciado.setId(rs.getInt("usuario_denunciado_id"));
+                Denuncia.MotivoDenuncia motivoDenuncia = Denuncia.MotivoDenuncia .valueOf(rs.getString("motivo").toUpperCase());
 
-                Denuncia denuncia = new Denuncia(rs.getInt("id"), denunciante, denunciado, Denuncia.MotivoDenuncia.valueOf(rs.getString("motivo")), rs.getString("descricao"));
-                denuncia.setStatus(Denuncia.StatusDenuncia.valueOf(rs.getString("status")));
+                Denuncia denuncia = new Denuncia(rs.getInt("id"), denunciante, denunciado, motivoDenuncia, rs.getString("descricao"));
+                denuncia.setStatus(Denuncia.StatusDenuncia.valueOf(rs.getString("status").toUpperCase()));
                 denuncias.add(denuncia);
             }
         }
