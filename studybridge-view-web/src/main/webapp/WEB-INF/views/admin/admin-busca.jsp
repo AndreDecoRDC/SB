@@ -133,7 +133,7 @@
                     <c:forEach var="u" items="${usuarios}">
                         <div class="card user-card">
                             <a href="javascript:void(0)"
-                               class="user-email"
+                               class="user-nome"
                                onclick="abrirModal(
                         '${u.email}',
                         '${u.tipoConta}',
@@ -145,7 +145,7 @@
                         '${u.campus}',
                         '${u.descricao}'
                    )">
-                                ${u.email}
+                                ${u.nome}
                             </a>
                         </div>
                     </c:forEach>
