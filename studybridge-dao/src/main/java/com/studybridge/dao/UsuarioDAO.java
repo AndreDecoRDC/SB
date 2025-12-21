@@ -2,10 +2,11 @@ package com.studybridge.dao;
 
 import com.studybridge.domain.model.Usuario;
 import java.sql.*;
+
 import com.studybridge.domain.model.UsuarioAdmin;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 
 public class UsuarioDAO {
 
@@ -87,7 +88,12 @@ public class UsuarioDAO {
     }
 
     public void confirmarEmail(String token) throws SQLException {
-        String sql = "UPDATE usuarios SET verificado = 1 WHERE token_verificacao = ?";
+
+        String sql = """
+            UPDATE usuarios
+            SET verificado = 1, token_verificacao = NULL
+            WHERE token_verificacao = ?
+        """;
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -251,8 +257,10 @@ public class UsuarioDAO {
         }
     }
 
-    private int contar(String sql) throws SQLException {
-        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    private int contar(String sql) throws SQLException {        
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getInt(1);
@@ -280,6 +288,7 @@ public class UsuarioDAO {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 0 AND tipo_conta != 'Administrador'";
         return contar(sql);
     }
+
 
     public List<UsuarioAdmin> buscarUsuariosAdmin(
             String nome,

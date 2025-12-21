@@ -19,15 +19,14 @@
 
     <nav class="nav">
         <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas">Aulas</a>
-        <a class="btn" href="${pageContext.request.contextPath}/monitor/horarios">Horários</a>
+        <a class="btn" href="${pageContext.request.contextPath}horarios">Horários</a>
         <a class="btn" href="${pageContext.request.contextPath}/monitor/perfil">Perfil</a>
         <a class="notif" href="#notifPanel">
-            <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
+            <img src="${pageContext.request.contextPath}/images/notifications.svg" alt="Notificações">
         </a>
         <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
 </header>
-
 
 <main class="container">
     <h2>Bem-vindo(a), Monitor</h2>
@@ -56,7 +55,6 @@
                 }
             %>
         </div>
-
 
         <div class="card">
             <h3>Ver Horários</h3>

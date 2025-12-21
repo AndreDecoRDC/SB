@@ -23,6 +23,8 @@ SELECT 'decosprite123@gmail.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE email = 'decosprite123@gmail.com');
 
+SHOW TABLES;
+
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -115,22 +117,35 @@ CREATE TABLE IF NOT EXISTS denuncias(
     CONSTRAINT fk_denuncia_denunciado
         FOREIGN KEY(usuario_denunciado_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
-    CONSTRAINT fk_solicitacao_monitor FOREIGN KEY (id_monitor)
-    REFERENCES usuarios(id)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
-    );
+
+ALTER TABLE estudantes
+    MODIFY nome VARCHAR(255) NULL,
+    MODIFY telefone VARCHAR(20) NULL,
+    MODIFY curso VARCHAR(100) NULL,
+    MODIFY campus ENUM('Nova Suica','Nova Gameleira') NULL;
+
+ALTER TABLE monitores
+    MODIFY nome VARCHAR(255) NULL,
+    MODIFY telefone VARCHAR(20) NULL,
+    MODIFY disciplina VARCHAR(100) NULL,
+    MODIFY campus ENUM('Nova Suica','Nova Gameleira') NULL;
 
 SELECT
-    sa.*,
-    m.nome AS nome_usuario_associado
-FROM
-    solicitacoes_aula sa
-JOIN
-    monitores m ON sa.id_monitor = m.usuario_id
-WHERE
-    sa.id_estudante = ?
-;
+    u.id            AS usuario_id,
+    u.email,
+    u.verificado,
+
+    e.nome,
+    e.telefone,
+    e.curso,
+    e.ano_turma,
+    e.campus,
+    e.descricao
+
+FROM usuarios u
+         JOIN estudantes e ON e.usuario_id = u.id
+WHERE u.tipo_conta = 'Estudante'
+ORDER BY u.id;
 
 SELECT
     sa.*,
@@ -143,6 +158,22 @@ JOIN
 WHERE
     sa.id_monitor = ?
 ;
+
+SELECT
+    u.id            AS usuario_id,
+    u.email,
+    u.verificado,
+
+    m.nome,
+    m.telefone,
+    m.disciplina,
+    m.campus,
+    m.descricao
+
+FROM usuarios u
+         JOIN monitores m ON m.usuario_id = u.id
+WHERE u.tipo_conta = 'Monitor'
+ORDER BY u.id;
 
 USE studybridge;
 SELECT disciplina, data_aula, descricao
