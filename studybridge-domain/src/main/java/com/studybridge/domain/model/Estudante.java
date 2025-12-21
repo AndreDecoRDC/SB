@@ -16,6 +16,7 @@ public class Estudante extends Usuario {
         this.avaliacaoRecebida = new Avaliacao(this);
     }
 
+    @Override
     public String getNome() {
         return nome;
     }

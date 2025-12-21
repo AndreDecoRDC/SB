@@ -259,6 +259,45 @@ public class UsuarioDAO {
             return 0;
         }
     }
+    public void atualizarStatusAtivo(int idUsuario, boolean status) throws SQLException {
+        String sql = "UPDATE usuarios SET ativa = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, status);
+            ps.setInt(2, idUsuario);
+            ps.executeUpdate();
+        }
+    }
+
+    public Usuario buscarPorId(int id) throws SQLException {
+        String sql = "SELECT u.*, e.nome AS nome_estudante, m.nome AS nome_monitor " +
+                "FROM usuarios u " +
+                "LEFT JOIN estudantes e ON u.id = e.usuario_id " +
+                "LEFT JOIN monitores m ON u.id = m.usuario_id " +
+                "WHERE u.id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("id"));
+                    u.setEmail(rs.getString("email"));
+                    u.setTipoConta(rs.getString("tipo_conta"));
+                    u.setAtiva(rs.getBoolean("ativa"));
+
+                    String nome = rs.getString("nome_estudante");
+                    if (nome == null) {
+                        nome = rs.getString("nome_monitor");
+                    }
+                    u.setNome(nome);
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
     
     public int contarTotalAtivos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 1 AND tipo_conta != 'Administrador'";

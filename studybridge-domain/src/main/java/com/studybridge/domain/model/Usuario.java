@@ -13,6 +13,7 @@ public class Usuario {
     private String codigo2FA;
     private LocalDateTime expiracao2FA;
     private boolean ativa;
+    private String nome;
 
     public Usuario() {
         this.verificado = false;
@@ -56,5 +57,11 @@ public class Usuario {
     }
     public void setAtiva(boolean ativa){
         this.ativa = ativa;
+    }
+    public String getNome(){
+        return nome;
+    }
+    public void setNome(String nome){
+        this.nome = nome;
     }
 }

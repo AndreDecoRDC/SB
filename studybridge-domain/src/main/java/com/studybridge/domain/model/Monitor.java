@@ -19,7 +19,8 @@ public class Monitor extends Usuario {
    public Avaliacao getAvaliacaoRecebida() {
         return avaliacaoRecebida;
    }
-   
+
+   @Override
    public String getNome() {
        return nome;
    }
