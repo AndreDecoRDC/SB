@@ -139,12 +139,11 @@
                 <div class="logo">SB</div><strong>StudyBridge</strong>
             </a>
             <nav class="nav">
-                <a class="btn" href="${pageContext.request.contextPath}/aulas">Aulas</a>
+                <a class="btn" href="${pageContext.request.contextPath}/monitor/aulas">Aulas</a>
                 <a class="btn" href="${pageContext.request.contextPath}/horarios">Horários</a>
-                <a class="btn" href="${pageContext.request.contextPath}/perfil-monitor">Perfil</a>
-                <a class="notif" href="#notifPanel">
-                    <img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações">
-                </a>
+                <a class="btn" href="${pageContext.request.contextPath}/monitor/perfil">Perfil</a>
+                <a class="notif" href="#notifPanel"> </a>
+                    <img src="${pageContext.request.contextPath}/images/notifications.svg" alt="Notificações">
                 <a class="btn" href="${pageContext.request.contextPath}/">Sair</a>
             </nav>
         </header>
