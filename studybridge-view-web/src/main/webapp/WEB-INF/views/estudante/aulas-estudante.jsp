@@ -8,7 +8,6 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Aulas — Estudante | StudyBridge</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
-
         <style>
             .aulas-container {
                 display: grid;
@@ -67,46 +66,20 @@
             td:last-child {
                 padding-right: 0;
             }
+            .modal:target {
+                display: flex !important;
+            }
+            .success-msg {
+                background-color: #dcfce7;
+                color: #166534;
+                padding: 1rem;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                border: 1px solid #bbf7d0;
+                text-align: center;
+            }
         </style>
     </head>
-    <script>
-        function abrirModalCancelamento(idAula, disciplina, dataAula, urlAction) {
-            document.getElementById('modalDisciplina').innerText = disciplina;
-            document.getElementById('modalDataAula').innerText = dataAula;
-
-            document.getElementById('inputModalIdAula').value = idAula;
-
-            document.getElementById('formCancelamento').action = urlAction;
-
-            const modal = document.getElementById('confirmarCancelamento');
-            if (modal) {
-                modal.style.display = 'flex';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const fecharBotoes = document.querySelectorAll('.fechar-modal');
-            const modal = document.getElementById('confirmarCancelamento');
-
-            fecharBotoes.forEach(btn => {
-                btn.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-
-            if (modal) {
-                modal.addEventListener('click', (event) => {
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
-
     <body>
         <header class="header">
             <a href="${pageContext.request.contextPath}/estudante/dashboard" class="brand">
@@ -125,6 +98,14 @@
             <h2>Suas Aulas</h2>
             <p class="subtle">Veja suas aulas, detalhes e avaliações de monitores.</p>
 
+            <c:if test="${not empty sessionScope.denunciaSucesso}">
+                <div class="success-msg" id="tempMsg">
+                    Denúncia enviada com sucesso!
+                </div>
+                <c:remove var="denunciaSucesso" scope="session" />
+            </c:if>
+
+
             <div class="aulas-container">
 
                 <div class="aulas-section">
@@ -132,7 +113,6 @@
                     <table>
                         <thead><tr><th>Monitor</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
                         <tbody>
-
                             <c:forEach var="a" items="${aulas}">
 
                                 <c:if test="${a.status == 'PENDENTE' || a.status == 'ACEITA'}">
@@ -153,10 +133,7 @@
                                             </button>
                                         </td>
                                         <td>
-                                            <a class="btn-denunciar"
-                                               href="#"
-                                               data-denunciado-id="${aula.monitor.id}"
-                                               data-aula-id="${aula.id}">
+                                            <a class="btn-denunciar" href="#denunciarMonitor" data-denunciado-id="${a.idUsuarioAssociado}" data-aula-id="${a.id}">
                                                 <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
                                             </a>
                                         </td>
@@ -205,11 +182,9 @@
                                             ${a.dataAulaFormatada}
                                         </td>
                                         <td>—</td>
-                                        <td><a class="btn light" href="${pageContext.request.contextPath}/avaliar?idAula=${a.id}">Avaliar</a>
-                                            <a class="btn-denunciar"
-                                               href="#"
-                                               data-denunciado-id="${aula.monitor.id}"
-                                               data-aula-id="${aula.id}">
+                                        <td>
+                                            <a class="btn light btn-avaliar" href="#avaliar1" data-avaliado-id="${a.idUsuarioAssociado}" data-aula-id="${a.id}">Avaliar</a>
+                                            <a class="btn-denunciar" href="#denunciarMonitor" data-denunciado-id="${a.idUsuarioAssociado}" data-aula-id="${a.id}">
                                                 <img src="${pageContext.request.contextPath}/Imagens/report_23dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Denunciar">
                                             </a>
                                         </td>
@@ -220,156 +195,114 @@
                     </table>
                 </div>
             </div>
-        </main>
-<div id="avaliar1" class="modal">
-    <div class="modal-content">
-        <h3>Avaliar Monitor</h3>
-        <form action="${pageContext.request.contextPath}/avaliar" method="post">
-            <input type="hidden" name="idMonitor" id="idMonitorAvaliar" value="">
-            <input type="hidden" name="idAula" id="idAulaAvaliar" value="">
 
-            <div class="stars">
-                <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
-                <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
-                <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
-                <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
-                <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
-            </div>
+        <div id="avaliar1" class="modal">
+            <div class="modal-content">
+                <h3>Avaliar Monitor</h3>
+                <form action="${pageContext.request.contextPath}/avaliar" method="post">
+                    <input type="hidden" name="idMonitor" id="idMonitorAvaliar" value="">
+                    <input type="hidden" name="idAula" id="idAulaAvaliar" value="">
 
-                            <label class="field"><span>Comentário</span>
-                                <textarea class="textarea" name="comentario" placeholder="Como foi sua experiência com o monitor?" required></textarea>
-                            </label>
-
-            <div class="toolbar">
-                <button class="btn" type="submit">Enviar Avaliação</button>
-                <a class="btn ghost" href="#">Cancelar</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="denunciarMonitor" class="modal">
-    <div class="modal-content">
-        <h3>Registrar Denúncia</h3>
-
-        <form action="${pageContext.request.contextPath}/denuncias" method="post">
-            <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="${param.denunciadoId}">
-            <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
-                            <div class="toolbar">
-                                <button class="btn" type="submit">Enviar Avaliação</button>
-                                <a class="btn ghost" href="#">Cancelar</a>
-                            </div>
-                        </form>
-
-                        <%
-                            java.util.List<String> comentarios = (java.util.List<String>) request.getAttribute("comentarios");
-                            if (comentarios != null && !comentarios.isEmpty()) {
-                        %>
-                        <div class="comentarios">
-                            <h4>Comentários enviados:</h4>
-                            <ul>
-                                <% for (String c : comentarios) {%>
-                                <li><%= c%></li>
-                                    <% } %>
-                            </ul>
-                        </div>
-                        <% }%>
+                    <div class="stars">
+                        <input type="radio" id="star5" name="nota" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="nota" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="nota" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="nota" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="nota" value="1"><label for="star1">★</label>
                     </div>
-                </div>
+
+                    <label class="field"><span>Comentário</span>
+                        <textarea class="textarea" name="comentario" required></textarea>
+                    </label>
+
+                    <div class="toolbar">
+                        <button class="btn" type="submit">Enviar Avaliação</button>
+                        <a class="btn ghost fechar-modal" href="#">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div id="denunciarMonitor" class="modal">
             <div class="modal-content">
                 <h3>Registrar Denúncia</h3>
+
                 <form action="${pageContext.request.contextPath}/denuncias" method="post">
-                    <input type="hidden" name="denunciadoId" value="${param.denunciadoId}">
-                    <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="${param.denunciadoId}">
+                    <input type="hidden" name="denunciadoId" id="idDenunciadoDenuncia" value="">
                     <input type="hidden" name="aulaId" id="idAulaDenuncia" value="">
                     <label class="field"><span>Motivo</span>
                         <select name="motivo" class="select" required>
+                            <option value="" disabled selected>Selecione um motivo</option>
                             <option value="FALTA_SEM_AVISO">Falta sem aviso</option>
                             <option value="COMPORTAMENTO_INADEQUADO">Comportamento inadequado</option>
-                            <option value="ASSEDIO">Assédio / Ofensa</option>
+                            <option value="ASSEDIO_DISCURSO_OFENSIVO">Assédio / Ofensa</option>
                             <option value="OUTRO">Outro</option>
                         </select>
                     </label>
                     <label class="field"><span>Descrição (Opcional)</span>
-                        <textarea name="descricao" class="textarea" placeholder="Descreva o ocorrido..."></textarea>
+                        <textarea name="descricao" class="textarea"></textarea>
                     </label>
                     <div class="toolbar">
                         <button class="btn" type="submit">Enviar Denúncia</button>
-                        <a class="btn ghost" href="#">Cancelar</a>
+                        <a class="btn ghost fechar-modal" href="#">Cancelar</a>
                     </div>
-                <label class="field"><span>Descrição (Opcional)</span>
-                <textarea name="descricao" class="textarea" placeholder="Descreva o ocorrido..."></textarea>
-            </label>
-            <div class="toolbar">
-                <button class="btn" type="submit">Enviar Denúncia</button>
-                <a class="btn ghost" href="#">Cancelar</a>
+                </form>
             </div>
-        </form>
-
-        <%String sucesso = (String) session.getAttribute("denunciaSucesso");
-            if ("true".equals(sucesso)) {
-        %>
-
-        <p class="success" id="mensagemSucesso">Denúncia enviada com sucesso!</p>
-
-        <%session.removeAttribute("denunciaSucesso");
-        }
-        %>
-    </div>
-</div>
-
-<footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
-<script>
-    const botoesAvaliar = document.querySelectorAll('.btn-avaliar');
-    botoesAvaliar.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idAvaliado = btn.dataset.avaliadoId;
-            const idAula = btn.dataset.aulaId;
-            document.getElementById('idMonitorAvaliar').value = idAvaliado;
-            document.getElementById('idAulaAvaliar').value = idAula;
-        });
-    });
-
-    const botoesDenunciar = document.querySelectorAll('.btn-denunciar');
-    botoesDenunciar.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const idDenunciado = btn.dataset.denunciadoId;
-            const idAula = btn.dataset.aulaId;
-            document.getElementById('idDenunciadoDenuncia').value = idDenunciado;
-            document.getElementById('idAulaDenuncia').value = idAula;
-            window.location.hash = 'denunciarMonitor';
-        });
-    });
-
-    document.querySelectorAll('.modal .btn, .modal-content .btn, .notif-close').forEach(element => {
-        element.addEventListener('click', (e) => {
-            if (e.currentTarget.getAttribute('href') === '#') {
-                e.preventDefault();
-                window.location.hash = '';
-            }
-        });
-    });
-</script>
-        <div id="confirmarCancelamento" class="modal">
+        </div>
+        <div id="confirmarCancelamento" class="modal" style="display:none;">
             <div class="modal-content">
                 <h3>Confirmar Cancelamento</h3>
-                <p>Você está prestes a cancelar a aula:</p>
-                <ul>
-                    <li><b>Disciplina:</b> <span id="modalDisciplina"></span></li>
-                    <li><b>Data:</b> <span id="modalDataAula"></span></li>
-                </ul>
+                <p><b id="modalDisciplina"></b> - <b id="modalDataAula"></b></p>
                 <form id="formCancelamento" action="#" method="post">
                     <input type="hidden" name="idAula" id="inputModalIdAula" value="" />
-                    <div class="toolbar" style="justify-content:center;">
+                    <div class="toolbar">
                         <button class="btn" type="submit">Sim, cancelar aula</button>
                         <a class="btn ghost fechar-modal" href="#">Voltar</a>
                     </div>
                 </form>
             </div>
         </div>
+    </main>
 
-    </body>
+    <footer class="footer">© 2025 StudyBridge — CEFET-MG Campus Belo Horizonte</footer>
+
+    <script>
+        function abrirModalCancelamento(idAula, disciplina, dataAula, urlAction) {
+            document.getElementById('modalDisciplina').innerText = disciplina;
+            document.getElementById('modalDataAula').innerText = dataAula;
+            document.getElementById('inputModalIdAula').value = idAula;
+            document.getElementById('formCancelamento').action = urlAction;
+            document.getElementById('confirmarCancelamento').style.display = 'flex';
+        }
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-denunciar, .btn-avaliar, .fechar-modal');
+            if (!btn)
+                return;
+
+            if (btn.classList.contains('fechar-modal')) {
+                e.preventDefault();
+                document.getElementById('confirmarCancelamento').style.display = 'none';
+                window.location.hash = '';
+                return;
+            }
+
+            const idUser = btn.dataset.denunciadoId || btn.dataset.avaliadoId;
+            const idAula = btn.dataset.aulaId;
+
+            if (btn.classList.contains('btn-denunciar')) {
+                document.getElementById('idDenunciadoDenuncia').value = idUser;
+                document.getElementById('idAulaDenuncia').value = idAula;
+            } else if (btn.classList.contains('btn-avaliar')) {
+                document.getElementById('idMonitorAvaliar').value = idUser;
+                document.getElementById('idAulaAvaliar').value = idAula;
+            }
+        });
+
+        const tempMsg = document.getElementById('tempMsg');
+        if (tempMsg)
+            setTimeout(() => tempMsg.style.display = 'none', 4000);
+    </script>
+</body>
 </html>
+

@@ -14,11 +14,6 @@ public class Avaliacao{
         this.notas = new ArrayList<>();
         this.comentarios = new ArrayList<>();
     }
-    public Avaliacao(){
-        this.notas = new ArrayList<>();
-        this.comentarios = new ArrayList<>();
-    }
-
 
     public void registrarAvaliacao(double nota, String comentario) throws NotaInvalidaException{
         if(nota < 1 || nota > 5){
