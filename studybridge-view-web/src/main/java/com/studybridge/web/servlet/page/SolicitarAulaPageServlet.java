@@ -16,7 +16,7 @@ public class SolicitarAulaPageServlet extends PageServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        String monitorId = req.getParameter("monitorId");
+        String monitorId = req.getParameter("usuarioId");
 
         if (monitorId == null || monitorId.isBlank()) {
             res.sendRedirect(req.getContextPath() + "/estudante/busca");

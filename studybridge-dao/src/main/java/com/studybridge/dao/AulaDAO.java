@@ -321,7 +321,7 @@ public class AulaDAO {
             if (rs.next()) return mapAula(rs);
         }
     }
-    return null;
+        return null;
     }
 
     public Aula buscarUltimaAulaConcluida(String idEstudante) throws SQLException {
@@ -364,6 +364,32 @@ public class AulaDAO {
             ps.setString(2, emailAluno);
             ps.executeUpdate();
         }
+    }
+
+    public List<Aula> listarConcluidasPorEstudante(String idEstudante) throws SQLException {
+        String sql = """
+        SELECT sa.*, m.nome AS nome_usuario_associado,
+               m.usuario_id AS id_usuario_associado
+        FROM solicitacoes_aula sa
+        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        WHERE sa.id_estudante = ?
+          AND sa.status = 'CONCLUIDA'
+        ORDER BY sa.data_aula DESC
+    """;
+
+        List<Aula> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, idEstudante);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapAula(rs));
+                }
+            }
+        }
+        return lista;
     }
 
 }

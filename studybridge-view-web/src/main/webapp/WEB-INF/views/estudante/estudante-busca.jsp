@@ -101,17 +101,17 @@
                     </select>
                 </label>
 
-                <label class="field">
-                    <span>Ordenar por</span>
-                    <select class="select" name="ordenar">
-                        <option value="alfabetica" ${ordenar == 'alfabetica' ? 'selected' : ''}>
-                            Ordem Alfabética
-                        </option>
-                        <option value="avaliacao" ${ordenar == 'avaliacao' ? 'selected' : ''}>
-                            Maior Avaliação
-                        </option>
-                    </select>
-                </label>
+                        <label class="field">
+                            <span>Ordenar por</span>
+                            <select class="select" name="ordenar">
+                                <option value="alfabetica" ${ordenar == 'alfabetica' ? 'selected' : ''}>
+                                    Ordem Alfabética
+                                </option>
+                                <option value="avaliacao" ${ordenar == 'avaliacao' ? 'selected' : ''}>
+                                    Maior Avaliação
+                                </option>
+                            </select>
+                        </label>
 
             </div>
 
@@ -155,7 +155,7 @@
                         </button>
 
                         <a class="btn"
-                           href="${pageContext.request.contextPath}/estudante/solicitar?monitorId=${m.monitorId}">
+                           href="${pageContext.request.contextPath}/estudante/solicitar?usuarioId=${m.usuarioId}">
                             Solicitar aula
                         </a>
                     </div>

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @WebServlet("/estudante/dashboard")
 public class EstudanteDashboardPageServlet extends PageServlet {
@@ -32,6 +33,9 @@ public class EstudanteDashboardPageServlet extends PageServlet {
             MonitorBusca melhor = monitorDAO.buscarMelhorMonitor();
             Aula ultima = aulaDAO.buscarUltimaAulaConcluida(idEstudante);
 
+            List<Aula> historico = aulaDAO.listarConcluidasPorEstudante(idEstudante);
+
+            
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             if (proxima != null && proxima.getData_aula() != null) {
                 proxima.setDataAulaFormatada(proxima.getData_aula().format(fmt));
@@ -39,10 +43,19 @@ public class EstudanteDashboardPageServlet extends PageServlet {
             if (ultima != null && ultima.getData_aula() != null) {
                 ultima.setDataAulaFormatada(ultima.getData_aula().format(fmt));
             }
+     
+            for (Aula a : historico) {
+                if (a.getData_aula() != null) {
+                    a.setDataAulaFormatada(
+                            a.getData_aula().format(fmt)
+                    );
+                }
+            }
 
             req.setAttribute("proximaAula", proxima);
             req.setAttribute("monitorBom", melhor);
             req.setAttribute("ultimaAula", ultima);
+            req.setAttribute("historico", historico);
 
         } catch (SQLException e) {
             e.printStackTrace();
