@@ -1,5 +1,7 @@
 package com.studybridge.web.servlet.action;
 
+import com.studybridge.dao.MonitorDAO;
+import com.studybridge.domain.model.MonitorBusca;
 import com.studybridge.domain.model.Usuario;
 import com.studybridge.service.AulaService;
 import jakarta.servlet.ServletException;
@@ -16,6 +18,15 @@ public class SolicitarAulaServlet extends HttpServlet {
     private final AulaService aulaService = new AulaService();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        
+        String monitorId = request.getParameter("monitorId");
+
+        if (monitorId == null || monitorId.isBlank()) {
+            request.setAttribute("erro", "Monitor não identificado.");
+            request.getRequestDispatcher("/WEB-INF/views/estudante/solicitar.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         String disciplina = request.getParameter("disciplina");
         String data_aula = request.getParameter("dataHora");
@@ -25,11 +36,23 @@ public class SolicitarAulaServlet extends HttpServlet {
         String emailAluno = usuario.getEmail();
 
         try {
-            aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno);
+            aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno, monitorId);
         } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("erro", e.getMessage());
-                request.getRequestDispatcher("/WEB-INF/views/estudante/solicitar.jsp").forward(request, response);
+            e.printStackTrace();
+            try {
+                MonitorDAO monitorDAO = new MonitorDAO();
+                    MonitorBusca monitor = monitorDAO.buscarPorUsuarioId(monitorId);
+
+                request.setAttribute("monitorId", monitorId);
+                request.setAttribute("monitorNome", monitor.getNome());
+            } catch (Exception ex) {
+                throw new ServletException(ex);
+            }
+
+            request.setAttribute("erro", e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/estudante/solicitar.jsp")
+                    .forward(request, response);
+            return;
         }
         response.sendRedirect(request.getContextPath() + "/estudante/dashboard");
     }

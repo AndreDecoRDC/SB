@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/busca.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/estudante/dashboard" class="brand">
         <div class="logo">SB</div>
         <strong>StudyBridge</strong>
     </a>
@@ -17,10 +17,12 @@
 
 <main class="container" style="max-width:600px">
     <div class="card">
-        <h2 class="card-title">Solicitar aula com Carla Mendes</h2>
+        <h2 class="card-title">Solicitar aula com ${monitorNome}</h2>
         <p class="subtle">Preencha os detalhes e envie uma mensagem para o monitor.</p>
 
         <form action="${pageContext.request.contextPath}/estudante/solicitarAula" method="post">
+            <input type="hidden" name="monitorId" value="${monitorId}" />
+            
             <label class="field">
                 <span>Disciplina</span>
                 <input class="input" name="disciplina" value="Matemática" required />
@@ -38,7 +40,7 @@
 
             <div class="toolbar" style="margin-top:16px">
                 <button type="submit" class="btn">Enviar solicitação</button>
-                <a class="btn ghost" href="${pageContext.request.contextPath}/busca.jsp">Cancelar</a>
+                <a class="btn ghost" href="${pageContext.request.contextPath}/estudante/busca">Cancelar</a>
             </div>
         </form>
     </div>

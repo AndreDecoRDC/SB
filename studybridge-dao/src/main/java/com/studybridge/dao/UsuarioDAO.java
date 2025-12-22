@@ -2,6 +2,10 @@ package com.studybridge.dao;
 
 import com.studybridge.domain.model.Usuario;
 import java.sql.*;
+
+import com.studybridge.domain.model.UsuarioAdmin;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UsuarioDAO {
@@ -246,8 +250,7 @@ public class UsuarioDAO {
 
         String sql = "UPDATE usuarios SET token_redefinicao = NULL, expiracao_redefinicao = NULL WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
 
@@ -255,7 +258,7 @@ public class UsuarioDAO {
         }
     }
 
-    private int contar(String sql) throws SQLException {
+    private int contar(String sql) throws SQLException {        
         try (Connection conn = ConnectionFactory.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
@@ -326,6 +329,98 @@ public class UsuarioDAO {
     public int contarUsuariosInativos() throws SQLException {
         String sql = "SELECT COUNT(id) FROM usuarios WHERE ativa = 0 AND tipo_conta != 'Administrador'";
         return contar(sql);
+    }
+
+
+    public List<UsuarioAdmin> buscarUsuariosAdmin(
+            String nome,
+            String tipo,
+            String ordenar
+    ) throws SQLException {
+
+        List<UsuarioAdmin> lista = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("""
+        SELECT
+            u.id,
+            u.email,
+            u.tipo_conta,
+            u.verificado,
+        
+            COALESCE(e.nome, m.nome) AS nome,
+            COALESCE(e.telefone, m.telefone) AS telefone,
+            e.curso,
+            m.disciplina,
+            COALESCE(e.campus, m.campus) AS campus,
+            COALESCE(e.descricao, m.descricao) AS descricao,
+        
+            COALESCE(
+                (
+                    SELECT AVG(av.nota)
+                    FROM avaliacoes av
+                    WHERE av.usuario_id = u.id
+                ),
+                0
+            ) AS media_avaliacao
+        
+        FROM usuarios u
+        LEFT JOIN estudantes e ON e.usuario_id = u.id
+        LEFT JOIN monitores m ON m.usuario_id = u.id
+        WHERE u.tipo_conta != 'Administrador'
+    """);
+
+        if (nome != null && !nome.isBlank()) {
+            sql.append(" AND COALESCE(e.nome, m.nome) LIKE ? ");
+        }
+
+        if (tipo != null && !tipo.isBlank()) {
+            sql.append(" AND u.tipo_conta = ? ");
+        }
+
+        if ("avaliacao".equals(ordenar)) {
+            sql.append(" ORDER BY media_avaliacao DESC ");
+        } else {
+            sql.append(" ORDER BY nome ASC ");
+        }
+
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            int index = 1;
+
+            if (nome != null && !nome.isBlank()) {
+                ps.setString(index++, "%" + nome + "%");
+            }
+
+            if (tipo != null && !tipo.isBlank()) {
+                ps.setString(index++, tipo);
+            }
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UsuarioAdmin ua = new UsuarioAdmin();
+
+                ua.setId(rs.getInt("id"));
+                ua.setEmail(rs.getString("email"));
+                ua.setTipoConta(rs.getString("tipo_conta"));
+                ua.setVerificado(rs.getBoolean("verificado"));
+
+                ua.setNome(rs.getString("nome"));
+                ua.setTelefone(rs.getString("telefone"));
+                ua.setCurso(rs.getString("curso"));
+                ua.setDisciplina(rs.getString("disciplina"));
+                ua.setCampus(rs.getString("campus"));
+                ua.setDescricao(rs.getString("descricao"));
+
+                ua.setMediaAvaliacao(rs.getDouble("media_avaliacao"));
+
+                lista.add(ua);
+
+            }
+        }
+
+        return lista;
     }
 
 }
