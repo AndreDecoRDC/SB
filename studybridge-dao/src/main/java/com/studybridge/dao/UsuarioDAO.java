@@ -323,7 +323,7 @@ public class UsuarioDAO {
     }
 
     public int contarUsuariosInativos() throws SQLException {
-        String sql = "SELECT COUNT(id) FROM usuarios WHERE verificado = 0 AND tipo_conta != 'Administrador'";
+        String sql = "SELECT COUNT(id) FROM usuarios WHERE ativa = 0 AND tipo_conta != 'Administrador'";
         return contar(sql);
     }
 

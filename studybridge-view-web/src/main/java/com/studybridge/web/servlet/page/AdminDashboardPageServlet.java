@@ -1,5 +1,6 @@
 package com.studybridge.web.servlet.page;
 
+import com.studybridge.dao.DenunciaDAO;
 import com.studybridge.domain.model.Denuncia;
 import com.studybridge.service.DenunciaService;
 import com.studybridge.dao.AulaDAO;
@@ -21,23 +22,12 @@ public class AdminDashboardPageServlet extends PageServlet {
 
    private UsuarioDAO usuarioDAO = new UsuarioDAO();
    private AulaDAO aulaDAO = new AulaDAO();
+   private DenunciaDAO denunciaDAO = new DenunciaDAO();
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
-        List<Denuncia> denunciasPendentes = Collections.emptyList();
-        try{
-            denunciasPendentes = denunciaService.obterDenunciasPendentes();
-
-        }catch(SQLException e){
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro ao carregar dados do dashboard.");
-        }
-        req.setAttribute("denunciasPendentes", denunciasPendentes);
-        render(req, res, "admin/admin-dashboard");
-
         try {
 
             int totalAtivos = usuarioDAO.contarTotalAtivos();
@@ -49,6 +39,8 @@ public class AdminDashboardPageServlet extends PageServlet {
             int aulasMarcadas = aulaDAO.contarAulasMarcadas();
             int aulasConcluidas = aulaDAO.contarAulasConcluidas();
 
+            int denunciasAtivas = denunciaDAO.contarDenunciasAtivas();
+
             req.setAttribute("totalAtivos", totalAtivos);
             req.setAttribute("estudantesAtivos", estudantesAtivos);
             req.setAttribute("monitoresAtivos", monitoresAtivos);
@@ -57,9 +49,7 @@ public class AdminDashboardPageServlet extends PageServlet {
             req.setAttribute("totalAulas", totalAulas);
             req.setAttribute("aulasMarcadas", aulasMarcadas);
             req.setAttribute("aulasConcluidas", aulasConcluidas);
-
-            //Não está concluído o CSU de denúncias, então não consigo preencher a parte de denúncias
-            req.setAttribute("denunciasAtivas", 7);
+            req.setAttribute("denunciasAtivas", denunciasAtivas);
 
             render(req, res, "admin/admin-dashboard");
         } catch (Exception e) {

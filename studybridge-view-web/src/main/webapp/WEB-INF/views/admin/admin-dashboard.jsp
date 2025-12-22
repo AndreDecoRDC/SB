@@ -17,7 +17,7 @@
             </a>
             <nav class="nav">
                 <a class="btn" href="${pageContext.request.contextPath}/admin/busca">Buscar Usuários</a>
-                <a class="btn" href="${pageContext.request.contextPath}/admin/denuncias     ">Denúncias</a>
+                <a class="btn" href="${pageContext.request.contextPath}/admin/denuncias">Denúncias</a>
                 <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
             </nav>
         </header>

@@ -141,4 +141,19 @@ public class DenunciaDAO {
         }
         return denuncias;
     }
+    private int contar(String sql) throws SQLException {
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+    public int contarDenunciasAtivas() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM denuncias WHERE status IN ('PENDENTE', 'EM_ANALISE')";
+        return contar(sql);
+    }
 }
