@@ -23,11 +23,11 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/admin/denuncias" class="brand">
+    <a href="${pageContext.request.contextPath}/admin/dashboard" class="brand">
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
-        <a class="btn" href="${pageContext.request.contextPath}/admin/usuarios">Buscar Usuários</a>
+        <a class="btn" href="${pageContext.request.contextPath}/admin/busca">Buscar Usuários</a>
         <a class="btn" href="${pageContext.request.contextPath}/admin/denuncias">Denúncias</a>
         <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>
     </nav>
