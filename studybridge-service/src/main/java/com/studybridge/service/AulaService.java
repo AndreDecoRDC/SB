@@ -80,8 +80,8 @@ public class AulaService {
         return aulas;
     }
 
-    public List<Aula> listarAulasDoMonitor(String emailMonitor) throws SQLException {
-        List<Aula> aulas = aulaDAO.listarPorMonitor(emailMonitor);
+    public List<Aula> listarAulasDoMonitor(int idMonitor) throws SQLException {
+        List<Aula> aulas = aulaDAO.listarPorMonitor(idMonitor);
 
         for (Aula aula : aulas) {
             if (aula.getData_aula() != null) {

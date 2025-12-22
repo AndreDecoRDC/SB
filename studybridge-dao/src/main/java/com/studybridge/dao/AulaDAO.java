@@ -166,14 +166,15 @@ public class AulaDAO {
         return aulas;
     }
 
-    public List<Aula> listarPorMonitor(String emailMonitor) throws SQLException {
+    public List<Aula> listarPorMonitor(int idMonitor) throws SQLException {
         String sql = """
         SELECT
-            sa.*,
-            sa.id_estudante AS nome_usuario_associado,
-            NULL AS id_usuario_associado
-        FROM solicitacoes_aula sa
-        WHERE sa.id_monitor = ?
+        sa.*,
+        e.nome AS nome_usuario_associado,
+        sa.id_estudante AS id_usuario_associado
+    FROM solicitacoes_aula sa
+    LEFT JOIN estudantes e ON sa.id_estudante = e.usuario_id
+    WHERE sa.id_monitor = ?
     """;
 
         List<Aula> aulas = new ArrayList<>();
@@ -181,7 +182,7 @@ public class AulaDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, emailMonitor);
+            ps.setInt(1, idMonitor);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

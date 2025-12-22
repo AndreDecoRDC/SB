@@ -35,10 +35,10 @@ public class AulasMonitorPageServlet extends HttpServlet {
         }
 
 
-        String emailMonitor = usuario.getEmail();
+        Integer idMonitor = usuario.getId();
 
         try {
-            List<Aula> aulas = aulaService.listarAulasDoMonitor(emailMonitor);
+            List<Aula> aulas = aulaService.listarAulasDoMonitor(idMonitor);
             req.setAttribute("aulas", aulas);
 
             req.getRequestDispatcher("/WEB-INF/views/monitor/aulas-monitor.jsp")
