@@ -32,8 +32,10 @@ public class SolicitarAulaPageServlet extends PageServlet {
             throw new ServletException(e);
         }
 
-        req.setAttribute("monitorId", monitorId);
+        req.setAttribute("monitorEmail", monitor.getEmail());
+        req.setAttribute("monitorId", monitor.getUsuarioId()); // se quiser usar em outro lugar
         req.setAttribute("monitorNome", monitor.getNome());
+
         
         render(req, res, "estudante/solicitar");
     }

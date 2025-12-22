@@ -21,7 +21,7 @@
         <p class="subtle">Preencha os detalhes e envie uma mensagem para o monitor.</p>
 
         <form action="${pageContext.request.contextPath}/estudante/solicitarAula" method="post">
-            <input type="hidden" name="monitorId" value="${monitorId}" />
+            <input type="hidden" name="monitorId" value="${monitorEmail}" />
             
             <label class="field">
                 <span>Disciplina</span>
