@@ -53,4 +53,7 @@ public class DenunciaService {
         }
         denunciaDAO.atualizarStatus(idDenuncia, status);
     }
+    public List<Denuncia> obterDenunciasPendentes() throws SQLException{
+        return denunciaDAO.buscarDenunciasPendentes();
+    }
 }

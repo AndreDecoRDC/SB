@@ -15,11 +15,11 @@ public class Estudante extends Usuario {
         super(email, senhaHash, "Estudante"); 
         this.avaliacaoRecebida = new Avaliacao(this);
     }
-
     public Estudante() {
         super(null, null, "Estudante");
     }
 
+    @Override
     public String getNome() {
         return nome;
     }
