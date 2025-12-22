@@ -109,11 +109,11 @@
 
     <body>
         <header class="header">
-            <a href="${pageContext.request.contextPath}/" class="brand">
+            <a href="${pageContext.request.contextPath}/estudante/dashboard" class="brand">
                 <div class="logo">SB</div><strong>StudyBridge</strong>
             </a>
             <nav class="nav">
-                <a class="btn" href="${pageContext.request.contextPath}/busca">Buscar Monitores</a>
+                <a class="btn" href="${pageContext.request.contextPath}/estudante/busca">Buscar Monitores</a>
                 <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas-estudante">Aulas</a>
                 <a class="btn" href="${pageContext.request.contextPath}/estudante/perfil">Perfil</a>
                 <a class="notif" href="#notifPanel"><img src="Imagens/notifications_24dp_1E3FAE_FILL0_wght400_GRAD0_opsz24.svg" alt="Notificações"></a>

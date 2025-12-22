@@ -90,20 +90,18 @@
                            value="${nome}">
                 </label>
 
-                <label class="field">
-                    <span>Disciplina</span>
-                    <select class="select" name="disciplina">
-                        <option value="">Todas</option>
-                        <option value="Matemática" ${disciplina == 'Matemática' ? 'selected' : ''}>Matemática</option>
-                        <option value="Física" ${disciplina == 'Física' ? 'selected' : ''}>Física</option>
-                        <option value="Português" ${disciplina == 'Português' ? 'selected' : ''}>Português</option>
-                        <option value="Química" ${disciplina == 'Química' ? 'selected' : ''}>Química</option>
-                    </select>
-                </label>
+                           <label class="field">
+                               <span>Disciplina</span>
+                               <input class="input"
+                                      type="text"
+                                      name="disciplina"
+                                      placeholder="Ex: Matemática, Física..."
+                                      value="${disciplina}">
+                           </label>
 
-                        <label class="field">
-                            <span>Ordenar por</span>
-                            <select class="select" name="ordenar">
+                           <label class="field">
+                               <span>Ordenar por</span>
+                               <select class="select" name="ordenar">
                                 <option value="alfabetica" ${ordenar == 'alfabetica' ? 'selected' : ''}>
                                     Ordem Alfabética
                                 </option>

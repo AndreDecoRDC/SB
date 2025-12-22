@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="header">
-    <a href="${pageContext.request.contextPath}/busca.jsp" class="brand">
+    <a href="${pageContext.request.contextPath}/estudante/dashboard" class="brand">
         <div class="logo">SB</div>
         <strong>StudyBridge</strong>
     </a>
@@ -40,7 +40,7 @@
 
             <div class="toolbar" style="margin-top:16px">
                 <button type="submit" class="btn">Enviar solicitação</button>
-                <a class="btn ghost" href="${pageContext.request.contextPath}/busca.jsp">Cancelar</a>
+                <a class="btn ghost" href="${pageContext.request.contextPath}/estudante/busca">Cancelar</a>
             </div>
         </form>
     </div>

@@ -96,7 +96,7 @@ public class MonitorDAO {
         }
 
         if (disciplina != null && !disciplina.isBlank()) {
-            sql.append(" AND m.disciplina = ? ");
+            sql.append(" AND m.disciplina LIKE ? ");
         }
 
         if ("avaliacao".equals(ordenar)) {
@@ -114,7 +114,7 @@ public class MonitorDAO {
             }
 
             if (disciplina != null && !disciplina.isBlank()) {
-                ps.setString(index++, disciplina);
+                ps.setString(index++, "%" + disciplina + "%");
             }
 
             ResultSet rs = ps.executeQuery();
