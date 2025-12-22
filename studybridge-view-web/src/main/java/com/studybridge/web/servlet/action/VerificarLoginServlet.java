@@ -35,6 +35,11 @@ public class VerificarLoginServlet extends HttpServlet {
                 throw new Exception("Usuário não encontrado.");
             }
 
+            if(!usuario.isAtiva()){
+                req.getSession().invalidate();
+                throw new Exception("Sua conta foi suspensa por violação das nossas diretrizes.");
+            }
+
             if (!usuarioDAO.validarCodigo2FA(usuario.getId(), codigo)) {
                 throw new Exception("Código inválido ou expirado.");
             }
