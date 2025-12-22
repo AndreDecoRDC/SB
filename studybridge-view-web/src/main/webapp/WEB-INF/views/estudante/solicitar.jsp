@@ -17,10 +17,12 @@
 
 <main class="container" style="max-width:600px">
     <div class="card">
-        <h2 class="card-title">Solicitar aula com Carla Mendes</h2>
+        <h2 class="card-title">Solicitar aula com ${monitorNome}</h2>
         <p class="subtle">Preencha os detalhes e envie uma mensagem para o monitor.</p>
 
         <form action="${pageContext.request.contextPath}/estudante/solicitarAula" method="post">
+            <input type="hidden" name="monitorId" value="${monitorId}" />
+            
             <label class="field">
                 <span>Disciplina</span>
                 <input class="input" name="disciplina" value="Matemática" required />

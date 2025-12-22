@@ -15,7 +15,7 @@ public class AulaService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private final AulaDAO aulaDAO = new AulaDAO();
 
-    public void solicitar(String disciplina, String data_aula, String mensagem, String emailAluno) throws Exception{
+    public void solicitar(String disciplina, String data_aula, String mensagem, String emailAluno, String monitorId) throws Exception{
 
         final LocalDateTime dataHora;
 
@@ -43,8 +43,14 @@ public class AulaService {
         }
 
         Aula novaAula = new Aula(disciplina, mensagem, dataHora, emailAluno);
+        
+        novaAula.setId_monitor(monitorId);
+        
         try {
             aulaDAO.inserir(novaAula);
+            
+            aulaDAO.associarMonitorUltimaSolicitacao(emailAluno, monitorId);
+            
         } catch (SQLException e) {
             throw new Exception("Erro ao salvar solicitação  no banco", e);
         }

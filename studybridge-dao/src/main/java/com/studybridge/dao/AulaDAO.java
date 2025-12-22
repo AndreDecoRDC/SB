@@ -1,5 +1,6 @@
 package com.studybridge.dao;
 
+import static com.studybridge.dao.ConnectionFactory.getConnection;
 import com.studybridge.domain.model.Aula;
 import java.sql.*;
 import java.util.ArrayList;
@@ -301,4 +302,68 @@ public class AulaDAO {
         String sql = "SELECT COUNT(id) FROM solicitacoes_aula";
         return contar(sql);
     }
+    
+    public Aula buscarProximaAulaEstudante(String idEstudante) throws SQLException {
+    String sql = """
+        SELECT sa.*, m.nome AS nome_usuario_associado,
+                m.usuario_id AS id_usuario_associado
+        FROM solicitacoes_aula sa
+        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        WHERE sa.id_estudante = ? AND sa.status = 'ACEITA' AND sa.data_aula > NOW()
+        ORDER BY sa.data_aula ASC LIMIT 1
+    """;
+    
+    try (Connection conn = ConnectionFactory.getConnection(); 
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, idEstudante);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return mapAula(rs);
+        }
+    }
+    return null;
+    }
+
+    public Aula buscarUltimaAulaConcluida(String idEstudante) throws SQLException {
+        String sql = """
+        SELECT sa.*, m.nome AS nome_usuario_associado,
+                m.usuario_id AS id_usuario_associado
+        FROM solicitacoes_aula sa
+        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        WHERE sa.id_estudante = ? AND sa.status = 'CONCLUIDA'
+        ORDER BY sa.data_aula DESC LIMIT 1
+    """;
+
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, idEstudante);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapAula(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void associarMonitorUltimaSolicitacao(String emailAluno, String monitorId)
+            throws SQLException {
+
+        String sql = """
+        UPDATE solicitacoes_aula
+        SET id_monitor = ?
+        WHERE id_estudante = (
+            SELECT id FROM usuarios WHERE email = ?
+        )
+        ORDER BY id DESC
+        LIMIT 1
+    """;
+
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, monitorId);
+            ps.setString(2, emailAluno);
+            ps.executeUpdate();
+        }
+    }
+
 }

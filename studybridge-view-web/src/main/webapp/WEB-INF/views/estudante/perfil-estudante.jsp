@@ -19,7 +19,7 @@
         <div class="logo">SB</div><strong>StudyBridge</strong>
     </a>
     <nav class="nav">
-        <a class="btn" href="${pageContext.request.contextPath}/busca">Buscar Monitores</a>
+        <a class="btn" href="${pageContext.request.contextPath}/estudante/solicitar">Buscar Monitores</a>
         <a class="btn" href="${pageContext.request.contextPath}/estudante/aulas">Aulas</a>
         <a class="btn active" href="${pageContext.request.contextPath}/estudante/perfil">Perfil</a>
         <a class="btn" href="${pageContext.request.contextPath}/logout">Sair</a>

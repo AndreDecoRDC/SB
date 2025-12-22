@@ -16,6 +16,15 @@ public class SolicitarAulaServlet extends HttpServlet {
     private final AulaService aulaService = new AulaService();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        
+        String monitorId = request.getParameter("monitorId");
+
+        if (monitorId == null || monitorId.isBlank()) {
+            request.setAttribute("erro", "Monitor não identificado.");
+            request.getRequestDispatcher("/WEB-INF/views/estudante/solicitar.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         String disciplina = request.getParameter("disciplina");
         String data_aula = request.getParameter("dataHora");
@@ -25,7 +34,7 @@ public class SolicitarAulaServlet extends HttpServlet {
         String emailAluno = usuario.getEmail();
 
         try {
-            aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno);
+            aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno, monitorId);
         } catch (Exception e) {
                 e.printStackTrace();
                 request.setAttribute("erro", e.getMessage());
