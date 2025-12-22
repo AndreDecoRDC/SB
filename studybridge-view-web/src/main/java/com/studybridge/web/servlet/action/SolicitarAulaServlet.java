@@ -24,6 +24,7 @@ public class SolicitarAulaServlet extends HttpServlet {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
         String emailAluno = usuario.getEmail();
 
+
         try {
             aulaService.solicitar(disciplina, data_aula, mensagem, emailAluno);
         } catch (Exception e) {

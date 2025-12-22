@@ -2,6 +2,8 @@ package com.studybridge.service;
 
 import com.studybridge.dao.AulaDAO;
 import com.studybridge.domain.model.Aula;
+import com.studybridge.domain.model.Notificacao;
+import com.studybridge.service.NotificacaoService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -13,20 +15,23 @@ import java.util.List;
 public class AulaService {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private final NotificacaoService notificacaoService = new NotificacaoService();
+
     private final AulaDAO aulaDAO = new AulaDAO();
 
-    public void solicitar(String disciplina, String data_aula, String mensagem, String emailAluno) throws Exception{
+    public void solicitar(String disciplina, String data_aula, String mensagem, String emailAluno) throws Exception {
 
         final LocalDateTime dataHora;
 
-        if(disciplina == null || disciplina.isBlank())
+        if (disciplina == null || disciplina.isBlank())
             throw new Exception("Informe uma disciplina");
 
-        if(mensagem == null || mensagem.isBlank())
+        if (mensagem == null || mensagem.isBlank())
             throw new Exception("Coloque uma Mensagem de descrição");
 
-        if(data_aula == null)
+        if (data_aula == null)
             throw new Exception("Coloque uma data");
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             dataHora = LocalDateTime.parse(data_aula, formatter);
@@ -34,21 +39,34 @@ public class AulaService {
             throw new Exception("Formato de data/hora inválido! Use o formato dd/MM/yyyy HH:mm");
         }
 
-        if(dataHora.isBefore(LocalDateTime.now())){
+        if (dataHora.isBefore(LocalDateTime.now()))
             throw new Exception("Esta data já passou!");
-        }
 
-        if(emailAluno == null){
+        if (emailAluno == null)
             throw new Exception("Não tem usuário logado");
-        }
 
         Aula novaAula = new Aula(disciplina, mensagem, dataHora, emailAluno);
+
         try {
             aulaDAO.inserir(novaAula);
         } catch (SQLException e) {
-            throw new Exception("Erro ao salvar solicitação  no banco", e);
+            throw new Exception("Erro ao salvar solicitação no banco", e);
+        }
+
+        Notificacao notif = new Notificacao();
+        notif.setEmailDestinatario(novaAula.getId_monitor());
+        notif.setTipo("SOLICITACAO_AULA");
+        notif.setMensagem("Nova solicitação de aula em " + disciplina);
+        notif.setLink("/monitor/aulas-monitor");
+        notif.setLida(false);
+
+        try {
+            notificacaoService.criar(notif);
+        } catch (Exception e) {
+            System.err.println("Falha ao criar notificação: " + e.getMessage());
         }
     }
+
 
     public void aceitarSolicitacao(int idSolicitacao) throws Exception {
         try {

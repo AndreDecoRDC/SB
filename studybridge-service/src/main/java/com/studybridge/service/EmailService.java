@@ -92,6 +92,16 @@ public class EmailService {
         enviarEmail(emailDestino, "Redefinição de senha - StudyBridge", corpo);
     }
 
+    public void enviarNotifMonitorAula(String emailDestino) throws MessagingException, UnsupportedEncodingException {
+
+        String corpo = """
+                <html>
+                <body style="font-family: Arial, sans-serif;">
+                    <h2>Você recebeu uma notificação - Studybridge</h2>
+                    <p>Você recebeu uma solicitação de aula!</p>
+                """;
+        enviarEmail(emailDestino,"Notificação de Aula - Studybridge", corpo);
+    }
 
     private void enviarEmail(String destinatario, String assunto, String corpoHtml)
             throws MessagingException, UnsupportedEncodingException {

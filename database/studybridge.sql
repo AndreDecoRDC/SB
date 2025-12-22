@@ -86,8 +86,8 @@ CREATE TABLE IF NOT EXISTS horarios_disponiveis (
 
 CREATE TABLE IF NOT EXISTS solicitacoes_aula (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_estudante VARCHAR(30) NOT NULL,
-    id_monitor VARCHAR(30) NULL,
+    id_estudante VARCHAR(255) NOT NULL,
+    id_monitor VARCHAR(255) NULL,
     disciplina VARCHAR(100) NOT NULL,
     descricao TEXT,
     data_solicitacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,14 +96,29 @@ CREATE TABLE IF NOT EXISTS solicitacoes_aula (
     local VARCHAR(200) NULL,
 
    CONSTRAINT fk_solicitacao_estudante FOREIGN KEY (id_estudante)
-       REFERENCES usuarios(id)
+       REFERENCES usuarios(email)
        ON DELETE CASCADE
        ON UPDATE CASCADE,
 
    CONSTRAINT fk_solicitacao_monitor FOREIGN KEY (id_monitor)
-       REFERENCES usuarios(id)
+       REFERENCES usuarios(email)
        ON DELETE SET NULL
        ON UPDATE CASCADE
+);
+
+CREATE TABLE notificacoes IF NOT EXISTS (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email_destinatario VARCHAR(255) NOT NULL,
+    tipo ENUM('SOLICITACAO_AULA', 'STATUS_AULA') NOT NULL,
+    mensagem VARCHAR(255) NOT NULL,
+    link VARCHAR(255) NULL,
+    lida BOOLEAN NOT NULL DEFAULT FALSE,
+    data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_notif_usuario
+          FOREIGN KEY (email_destinatario)
+              REFERENCES usuarios(email)
+              ON DELETE CASCADE
+              ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS denuncias(
     id INT AUTO_INCREMENT PRIMARY KEY,
