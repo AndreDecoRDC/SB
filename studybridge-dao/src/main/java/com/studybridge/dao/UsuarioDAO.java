@@ -118,6 +118,7 @@ public class UsuarioDAO {
             Usuario u = new Usuario();
             u.setId(rs.getInt("id"));
             u.setEmail(rs.getString("email"));
+            u.setAtiva(rs.getBoolean("ativa"));
             u.setSenhaHash(rs.getString("senha_hash"));
             u.setTipoConta(rs.getString("tipo_conta"));
             u.setVerificado(rs.getBoolean("verificado"));
