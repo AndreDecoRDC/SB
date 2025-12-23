@@ -309,7 +309,8 @@ public class AulaDAO {
         SELECT sa.*, m.nome AS nome_usuario_associado,
                 m.usuario_id AS id_usuario_associado
         FROM solicitacoes_aula sa
-        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        LEFT JOIN usuarios u ON sa.id_monitor = u.email
+        LEFT JOIN monitores m ON m.usuario_id = u.id
         WHERE sa.id_estudante = ? AND sa.status = 'ACEITA' AND sa.data_aula > NOW()
         ORDER BY sa.data_aula ASC LIMIT 1
     """;
@@ -330,7 +331,8 @@ public class AulaDAO {
         SELECT sa.*, m.nome AS nome_usuario_associado,
                 m.usuario_id AS id_usuario_associado
         FROM solicitacoes_aula sa
-        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        LEFT JOIN usuarios u ON sa.id_monitor = u.email
+        LEFT JOIN monitores m ON m.usuario_id = u.id
         WHERE sa.id_estudante = ? AND sa.status = 'CONCLUIDA'
         ORDER BY sa.data_aula DESC LIMIT 1
     """;
@@ -353,11 +355,9 @@ public class AulaDAO {
         String sql = """
         UPDATE solicitacoes_aula
         SET id_monitor = ?
-        WHERE id_estudante = (
-            SELECT id FROM usuarios WHERE email = ?
-        )
+        WHERE id_estudante = ?
         ORDER BY id DESC
-        LIMIT 1
+        LIMIT 1;
     """;
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
@@ -372,7 +372,8 @@ public class AulaDAO {
         SELECT sa.*, m.nome AS nome_usuario_associado,
                m.usuario_id AS id_usuario_associado
         FROM solicitacoes_aula sa
-        LEFT JOIN monitores m ON sa.id_monitor = m.usuario_id
+        LEFT JOIN usuarios u ON sa.id_monitor = u.email
+        LEFT JOIN monitores m ON m.usuario_id = u.id
         WHERE sa.id_estudante = ?
           AND sa.status = 'CONCLUIDA'
         ORDER BY sa.data_aula DESC
