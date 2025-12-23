@@ -22,7 +22,7 @@ public class EstudanteDashboardPageServlet extends PageServlet {
             throws ServletException, IOException {
 
         Usuario usuarioLogado = (Usuario) req.getSession().getAttribute("usuarioLogado");
-        String idEstudante = String.valueOf(usuarioLogado.getId());
+        String idEstudante = usuarioLogado.getEmail();
 
         AulaDAO aulaDAO = new AulaDAO();
         MonitorDAO monitorDAO = new MonitorDAO();
