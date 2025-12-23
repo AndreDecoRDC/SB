@@ -90,9 +90,31 @@
                 </tbody>
             </table>
         </div>
+        
+        <div class="aulas-section">
+            <h3>Canceladas e Recusadas</h3>
+            <table>
+                <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>
+                    <c:forEach var="a" items="${aulas}">
+                        <c:if test="${a.status == 'CANCELADA' || a.status == 'RECUSADA'}">
+                            <tr>
+                                <td><a class="nome-link" href="#">${a.nomeUsuarioAssociado}</a></td>
+                                <td>${a.disciplina}</td>
+                                <td>${a.dataAulaFormatada}</td>
+                                <td><span class="status fail">${a.status}</span></td>
+                                <td>
+                                    <a class="btn light" href="${pageContext.request.contextPath}/detalhes-aula?idAula=${a.id}">Detalhes</a>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
 
         <div class="aulas-section">
-            <h3>Aulas Concluídas</h3>
+            <h3>Histórico</h3>
             <table>
                 <thead><tr><th>Estudante</th><th>Disciplina</th><th>Data</th><th>Avaliação</th><th>Ações</th></tr></thead>
                 <tbody>

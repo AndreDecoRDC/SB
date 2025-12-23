@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     codigo_2fa VARCHAR(6),
     expiracao_2fa DATETIME,
     token_redefinicao VARCHAR(100),
+    ativa TINYINT(1) NOT NULL DEFAULT 1,
     expiracao_redefinicao DATETIME
     );
 
