@@ -394,4 +394,40 @@ public class AulaDAO {
         return lista;
     }
 
+    public List<Aula> listarPorEstudanteEmail(String emailEstudante) throws SQLException {
+        String sql = "SELECT sa.*, m.nome AS nome_usuario_associado, u.id AS id_usuario_associado "
+                + "FROM solicitacoes_aula sa "
+                + "LEFT JOIN usuarios u ON sa.id_monitor = u.email "
+                + "LEFT JOIN monitores m ON u.id = m.usuario_id "
+                + "WHERE sa.id_estudante = ?";
+        List<Aula> aulas = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, emailEstudante);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    aulas.add(mapAula(rs));
+                }
+            }
+        }
+        return aulas;
+    }
+
+    public List<Aula> listarPorMonitorEmail(String emailMonitor) throws SQLException {
+        String sql = "SELECT sa.*, e.nome AS nome_usuario_associado, u.id AS id_usuario_associado "
+                + "FROM solicitacoes_aula sa "
+                + "LEFT JOIN usuarios u ON sa.id_estudante = u.email "
+                + "LEFT JOIN estudantes e ON u.id = e.usuario_id "
+                + "WHERE sa.id_monitor = ?";
+        List<Aula> aulas = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, emailMonitor);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    aulas.add(mapAula(rs));
+                }
+            }
+        }
+        return aulas;
+    }
+    
 }

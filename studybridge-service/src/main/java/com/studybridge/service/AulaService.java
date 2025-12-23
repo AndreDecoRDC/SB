@@ -126,5 +126,29 @@ public class AulaService {
             throw new Exception("Erro ao buscar aula por ID.", e);
         }
     }
+    
+    public List<Aula> listarAulasPorEmailEstudante(String email) throws SQLException {
+        List<Aula> aulas = aulaDAO.listarPorEstudanteEmail(email);
+        for (Aula aula : aulas) {
+            if (aula.getData_aula() != null) {
+                aula.setDataAulaFormatada(aula.getData_aula().format(FORMATTER));
+            } else {
+                aula.setDataAulaFormatada("Aguardando Definição");
+            }
+        }
+        return aulas;
+    }
+
+    public List<Aula> listarAulasPorEmailMonitor(String email) throws SQLException {
+        List<Aula> aulas = aulaDAO.listarPorMonitorEmail(email);
+        for (Aula aula : aulas) {
+            if (aula.getData_aula() != null) {
+                aula.setDataAulaFormatada(aula.getData_aula().format(FORMATTER));
+            } else {
+                aula.setDataAulaFormatada("Aguardando Definição");
+            }
+        }
+        return aulas;
+    }
 
 }

@@ -37,7 +37,7 @@ public class AulasEstudantePageServlet extends HttpServlet {
         Integer idEstudante = usuario.getId();
 
         try {
-            List<Aula> aulas = aulaService.listarAulasDoEstudante(idEstudante);
+            List<Aula> aulas = aulaService.listarAulasPorEmailEstudante(usuario.getEmail());
             req.setAttribute("aulas", aulas);
             req.getRequestDispatcher("/WEB-INF/views/estudante/aulas-estudante.jsp")
                     .forward(req, resp);
